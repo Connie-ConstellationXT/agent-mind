@@ -8,7 +8,7 @@
     <RequiredInstrument instrumentName="cheese" type="grated" quantity="50g" />
     <RequiredInstrument instrumentName="butter" quantity="1tbsp" />
     <RequiredInstrument instrumentName="salt_pepper" />
-    <RequiredInstrument instrumentName="non_stick_pan" />
+    <RequiredInstrument instrumentName="non_stick_pan" alias="pan"/>
     <RequiredInstrument instrumentName="spatula" />
     
     <Constraint type="temperature">Medium heat throughout cooking</Constraint>
