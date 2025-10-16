@@ -398,7 +398,9 @@ Whenever you request a new implementation or scaffold, reference this document t
 - Legacy `<DirectElementName>` patterns should be updated to `<Precept name="DirectElementName">`
 - `RequiredResource` should be updated to `RequiredInstrument`
 - `resourceName` should be updated to `instrumentName`
-- Legacy `provides="..."` attributes should be converted to `<Provides><Capability>` nodes
+- Legacy `provides="..."` attributes should be updated to `providing="..."` for capability queries
+- Add explicit `<Provides><Capability name="..." /></Provides>` blocks for capability declarations
+- Use `providing="..."` in `RequiredInstrument` to query for precepts with specific capabilities
 - Add capability declarations to enable RESOLVE mode goal decomposition
 - Consider adding context references for environment-aware precept selection
 - Consider adding staging phases for complex precepts

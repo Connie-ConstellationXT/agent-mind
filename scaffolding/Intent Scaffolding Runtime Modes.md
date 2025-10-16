@@ -6,6 +6,7 @@ This document defines the distinct runtime modes available in the intent scaffol
 
 ## RESOLVE (R)
 Fetches a cached precept or implementation for a component, similar to dynamic linking (e.g., `ld(1)`). Used when a task or component has been previously learned, practiced, or stored in memory. This mode enables rapid, low-latency retrieval of known solutions, minimizing inference cost and maximizing efficiency. If a precept is not found in the cache, the system may escalate to INFER mode. RESOLVE is the default for routine, well-understood actions.
+The primary purpose of RESOLVE is to assist in the decomposition of complex tasks into manageable sub-tasks by leveraging previously learned or cached partial solutions.
 
 ## INFER (I)
 Handles zero-shot or few-shot challenges, uncached tasks, or tasks requiring ongoing adaptation. Uses inference, synthesis, or reasoning to generate a solution or plan when no cached precept is available. INFER mode is invoked for novel, ambiguous, or complex problems where the agent must generalize from prior experience or improvise. This mode may involve machine learning, analogical reasoning, or creative synthesis, and is typically more resource-intensive than RESOLVE.

@@ -70,7 +70,7 @@ The main execution tree is declared using type-safe, hierarchical syntax with en
     
     <!-- Execution Staging: Travel phase -->
     <StagingPhase type="execution" name="travel_to_destination">
-      <RequiredInstrument instrumentName="trip_validated" provides="preflight" />
+      <RequiredInstrument instrumentName="trip_validated" providing="preflight" />
       
       <Precept name="DriveToStore" destination="Grocery Store">
         <Precept name="CheckTrafficConditions" />
@@ -98,7 +98,7 @@ The main execution tree is declared using type-safe, hierarchical syntax with en
     
     <!-- Execution Staging: Shopping phase -->
     <StagingPhase type="execution" name="execute_shopping">
-      <RequiredInstrument instrumentName="arrived_at_store" provides="execution:travel_to_destination" />
+      <RequiredInstrument instrumentName="arrived_at_store" providing="execution:travel_to_destination" />
       
       <Precept name="PurchaseGroceries" store="Local Market">
         <Precept name="WriteGroceryList" />
@@ -139,7 +139,25 @@ The main execution tree is declared using type-safe, hierarchical syntax with en
   </Precept>
 </IntentDOM>
 ```
-```
+
+**Capability Declaration and Query Pattern:**
+- **`<Provides><Capability name="..." /></Provides>`** - Explicit capability declaration within precepts
+- **`<RequiredInstrument providing="..." />`** - Query hint to find precepts that provide specific capabilities
+
+This creates semantic distinction between capability declaration and dependency resolution.
+
+**Complete Example:** See `examples/omelette_refactored.xml` for a comprehensive demonstration of:
+- Type-safe precept declarations with capability providing/querying
+- Staging phases with preflight validation and execution boundaries  
+- Hardware-compatible RALN compilation targets
+- Context switch protocols using staging boundaries
+- Artifact pipelining between precepts
+
+**Key patterns demonstrated:**
+- Preflight staging for quality assurance validation
+- Execution staging with synchronized dependencies
+- Capability-based instrument resolution
+- State vector simplification across stage boundaries
 
 ### Enhanced Runtime Features
 

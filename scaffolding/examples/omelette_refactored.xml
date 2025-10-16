@@ -82,13 +82,34 @@
     
     <!-- Execution Staging: Ingredient preparation phase -->
     <StagingPhase type="execution" name="ingredient_preparation">
-      <RequiredInstrument instrumentName="verified_fresh_eggs" provides="preflight" />
-      <RequiredInstrument instrumentName="instruments_validated" provides="preflight" />
+      <RequiredInstrument instrumentName="verified_fresh_eggs" providing="preflight" />
+      <RequiredInstrument instrumentName="instruments_validated" providing="preflight" />
       <Description>Ready all ingredients before cooking starts</Description>
       
       <Precept name="CrackEggs" quantity="2-3" into="bowl" />
-      <Precept name="SeasonEggs" with="salt_pepper" />
-      <Precept name="WhiskEggs" until="well_combined" />
+      
+      <Precept name="SeasonEggs" with="salt_pepper">
+        <Provides>
+          <Capability name="SeasonEggs" context="kitchen" />
+        </Provides>
+        <Output>
+          <Artifact name="seasoned_eggs">
+            <Type>instrument</Type>
+            <Description>Cracked eggs seasoned with salt and pepper</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+      
+      <Precept name="WhiskEggs" until="well_combined">
+        <RequiredInstrument instrumentName="seasoned_eggs" providing="SeasonEggs" />
+        <Output>
+          <Artifact name="whisked_seasoned_eggs">
+            <Type>instrument</Type>
+            <Description>Pre-stirred and seasoned eggs ready for cooking</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+      
       <Precept name="GrateCheese" quantity="50g" type="cheddar_or_gruyere" />
       
       <!-- State vector simplifies to: ingredients_ready -->
@@ -103,7 +124,7 @@
     
     <!-- Execution Staging: Equipment setup phase -->
     <StagingPhase type="execution" name="equipment_setup">
-      <RequiredInstrument instrumentName="instruments_validated" provides="preflight" />
+      <RequiredInstrument instrumentName="instruments_validated" providing="preflight" />
       <Description>Prepare cooking equipment and establish proper temperature</Description>
       
       <Precept name="HeatPan">
@@ -128,8 +149,8 @@
     
     <!-- Execution Staging: Base cooking phase -->
     <StagingPhase type="execution" name="base_cooking">
-      <RequiredInstrument instrumentName="ingredients_ready" provides="execution:ingredient_preparation" />
-      <RequiredInstrument instrumentName="pan_ready" provides="execution:equipment_setup" />
+      <RequiredInstrument instrumentName="ingredients_ready" providing="execution:ingredient_preparation" />
+      <RequiredInstrument instrumentName="pan_ready" providing="execution:equipment_setup" />
       <Description>Cook omelette base until properly set</Description>
       
       <SyncPoint name="PanReadyEggsPrepped">
@@ -137,6 +158,15 @@
         <WaitForPrecept ref="WhiskEggs" />
         <WaitForPrecept ref="HeatPan" />
       </SyncPoint>
+      
+      <Precept name="PourEggsIntoPan">
+        <RequiredInstrument instrumentName="pan_ready" providing="execution:equipment_setup" />
+        <RequiredInstrument instrumentName="whisked_seasoned_eggs" providing="WhiskEggs" />
+        <Context type="temperature">Pan heated to medium heat with butter sizzling</Context>
+        <Context type="preparation">Eggs cracked, seasoned, and whisked until well combined</Context>
+        <Action>Pour pre-stirred and seasoned eggs into pre-heated pan</Action>
+        <Constraint type="technique">Pour smoothly to ensure even distribution</Constraint>
+      </Precept>
       
       <Precept name="CookBase">
         <Action>Let eggs set on bottom while stirring gently</Action>
@@ -156,7 +186,7 @@
     
     <!-- Execution Staging: Finishing phase -->
     <StagingPhase type="execution" name="finishing">
-      <RequiredInstrument instrumentName="base_ready" provides="execution:base_cooking" />
+      <RequiredInstrument instrumentName="base_ready" providing="execution:base_cooking" />
       <Description>Add cheese, fold, and complete omelette</Description>
       
       <Precept name="AddCheese">
