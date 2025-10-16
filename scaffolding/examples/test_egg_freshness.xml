@@ -1,0 +1,48 @@
+<!-- Canonical Egg Freshness Test - Reusable Precept for RESOLVE Mode -->
+<IntentDOM root="TestEggFreshness">
+  <Precept name="TestEggFreshness">
+    <Description>Perform canonical water float test to verify egg quality</Description>
+    <Domains>
+      <Domain ref="food_safety" />
+      <Domain ref="kitchen" />
+    </Domains>
+    
+    <Provides>
+      <Capability name="egg_validation"/>
+      <Capability name="food_safety_testing"/>
+    </Provides>
+    
+    <RequiredInstrument instrumentName="eggs" quantity="1+" />
+    <RequiredInstrument instrumentName="clear_bowl" />
+    <RequiredInstrument instrumentName="water" temperature="room_temp" />
+    
+    <Precept name="PrepareTest">
+      <Action>Fill bowl with room temperature water</Action>
+      <Action>Ensure water depth sufficient to submerge egg</Action>
+    </Precept>
+    
+    <Precept name="TestEachEgg">
+      <Action>Gently submerge first egg in water</Action>
+      
+      <Precept name="ObserveFloat">
+        <AcceptanceCriteria>
+          <Condition state="fresh" test="egg_sinks_lies_flat" action="Proceed with this egg" />
+          <Condition state="questionable" test="egg_stands_upright" action="Use within today only" />
+          <Condition state="spoiled" test="egg_floats" action="Discard and select replacement" />
+        </AcceptanceCriteria>
+      </Precept>
+      
+      <Action>Repeat test for remaining eggs as needed</Action>
+      <Constraint>Test each egg individually before use</Constraint>
+    </Precept>
+    
+    <Output>
+      <Artifact name="verified_fresh_eggs">
+        <Type>instrument</Type>
+        <Type>validation_data</Type>
+        <Description>Fresh eggs verified safe for cooking</Description>
+      </Artifact>
+    </Output>
+    
+  </Precept>
+</IntentDOM>

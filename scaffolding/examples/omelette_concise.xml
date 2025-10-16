@@ -1,0 +1,162 @@
+<!-- Concise Omelette Recipe - Demonstrating Core Intent Scaffolding Patterns -->
+<IntentDOM root="MakeOmelette">
+  <Precept name="MakeOmelette">
+    <Description>Prepare and cook a basic cheese omelette</Description>
+    <Domains>
+      <Domain ref="kitchen" />
+      <Domain ref="food_safety" />
+    </Domains>
+
+    <RequiredInstrument instrumentName="eggs" quantity="2-3" alias="chosen_eggs"/>
+    <RequiredInstrument instrumentName="cheese" type="grated" quantity="50g" alias="chosen_cheese"/>
+    <RequiredInstrument instrumentName="butter" quantity="1tbsp" alias="chosen_butter"/>
+    <RequiredInstrument instrumentName="salt_pepper" alias="chosen_seasonings"/>
+    <RequiredInstrument instrumentName="non_stick_pan" alias="chosen_pan"/>
+    <RequiredInstrument instrumentName="spatula" alias="chosen_spatula"/>
+    
+    <Constraint type="temperature">Medium heat throughout cooking</Constraint>
+    
+    <!-- Preflight: Basic validation -->
+    <StagingPhase type="preflight" name="validate_ingredients">
+    <ValidateInstrumentConditions>
+      <R:Precept name="TestEggFreshness" providing="domain:food_safety AND capability:egg_validation" instrument="chosen_eggs"/>
+      <R:Precept name="TestButterFreshness" providing="domain:food_safety AND capability:butter_validation" instrument="chosen_butter"/>
+      <R:Precept name="TestCheeseCondition" providing="domain:food_safety AND capability:cheese_validation" instrument="chosen_cheese"/>
+      <R:Precept name="ValidateSeasonings" providing="domain:food_safety AND capability:seasoning_validation" instrument="chosen_seasonings"/>
+      <R:Precept name="VerifyPanCondition" providing="domain:kitchen AND capability:pan_validation" instrument="chosen_pan"/>
+      <R:Precept name="CheckSpatulaCondition" providing="domain:kitchen AND capability:utensil_validation" instrument="chosen_spatula"/>
+    </ValidateInstrumentConditions>
+      <Output>
+        <Artifact name="ingredients_validated">
+          <Type>validation_data</Type>
+          <Description>All ingredients validated for cooking</Description>
+        </Artifact>
+      </Output>
+    </StagingPhase>
+    
+    <!-- Execution: Concurrent preparation with temporal optimization -->
+    <StagingPhase type="execution" name="concurrent_preparation">
+      <RequiredInstrument instrumentName="ingredients_validated" providing="preflight" />
+      <Description>Prepare ingredients and equipment concurrently</Description>
+      
+      <!-- Equipment track with sleepable step -->
+      <Precept name="equipment_prep">
+        <Precept name="HeatPan" hasSleepableSteps="true">
+          <Action>Place pan on stove and set to medium heat</Action>
+          <Action ref="WaitForHeat" sleepable="true">Wait for proper temperature
+            <IdleWait duration="1m" reason="Pan heating" />
+          </Action>
+          <Action>Add butter and swirl to coat</Action>
+          <WaitForSignal signal="butter_sizzling" />
+        </Precept>
+        
+        <Output>
+          <Artifact name="pan_ready">
+            <Type>state_vector</Type>
+            <Description>Pan heated and buttered</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+
+      <!-- Ingredient track (can run during pan heating) -->
+      <Precept name="ingredient_prep">
+        <Precept name="CrackEggs">
+          <Action>Crack eggs into bowl</Action>
+          <Output>
+            <Artifact name="cracked_eggs">
+              <Type>instrument</Type>
+              <Description>Raw eggs cracked into bowl</Description>
+            </Artifact>
+          </Output>
+        </Precept>
+        
+        <!-- Universal seasoning - reusable across all recipes -->
+        <R:Precept name="SeasonFood" 
+                   providing="capability:seasoning_application AND domain:food_preparation"
+                   food_item="cracked_eggs" 
+                   seasonings="chosen_seasonings" 
+                   quantity="to_taste"
+                   description="Add salt and pepper to cracked eggs, seasoning to taste"
+                   output:artifact="seasoned_eggs">
+        </R:Precept>
+        
+        <Precept name="WhiskEggs">
+          <RequiredInstrument instrumentName="seasoned_eggs" providing="SeasonedEggs" />
+          <Action>Whisk until well combined</Action>
+          <Output>
+            <Artifact name="whisked_eggs">
+              <Type>instrument</Type>
+              <Description>Eggs ready for cooking</Description>
+            </Artifact>
+          </Output>
+        </Precept>
+        
+        <Precept name="PrepCheese" output:artifact="grated_cheese">
+          <Action>Ensure cheese is grated and ready</Action>
+        </Precept>
+        
+        <Output>
+          <Artifact name="ingredients_ready">
+            <Type>state_vector</Type>
+            <Type>instrument</Type>
+            <Description>All ingredients prepared</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+    </StagingPhase>
+        
+    <!-- Execution: Synchronized cooking -->
+    <StagingPhase type="execution" name="cook_omelette">
+      <RequiredInstrument instrumentName="ingredients_ready" providing="execution:concurrent_preparation" />
+      <RequiredInstrument instrumentName="pan_ready" providing="execution:concurrent_preparation" />
+      <Description>Cook omelette using prepared ingredients and equipment</Description>
+      
+      <SyncPoint name="ReadyToCook">
+        <WaitForPrecept ref="WhiskEggs" />
+        <WaitForPrecept ref="HeatPan" />
+      </SyncPoint>
+      
+      <Precept name="CookBase">
+        <RequiredInstrument instrumentName="pan_ready">Heated pan with sizzling butter</RequiredInstrument>
+        <RequiredInstrument instrumentName="whisked_eggs">Well-combined seasoned eggs</RequiredInstrument>
+        
+        <Action>Pour eggs into pan smoothly</Action>
+        <Action>Let set while gently stirring</Action>
+        <IdleWait duration="45s" reason="Base setting" />
+        
+        <Output>
+          <Artifact name="base_set">
+            <Type>state_vector</Type>
+            <Description>Omelette base cooked and ready for cheese</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+      
+      <Precept name="FinishOmelette">
+        <RequiredInstrument instrumentName="base_set"/>
+        <RequiredInstrument instrumentName="grated_cheese"/>
+        
+        <Action>Sprinkle cheese over half</Action>
+        <Action>Fold omelette in half</Action>
+        <Action>Slide onto plate</Action>
+        <Action>Turn off heat</Action>
+        
+        <Output>
+          <Artifact name="finished_omelette">
+            <Type>food_item</Type>
+            <Type>state_vector</Type>
+            <Description>Completed omelette ready to serve</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+    </StagingPhase>
+    
+    <!-- Context Switch Protocol -->
+    <ContextSwitchProtocol>
+      <Step>Preserve staging phase completion status</Step>
+      <Step>Store current stage state vectors</Step>
+      <Step>On resumption: validate outputs and continue from last stage</Step>
+    </ContextSwitchProtocol>
+    
+  </Precept>
+</IntentDOM>
