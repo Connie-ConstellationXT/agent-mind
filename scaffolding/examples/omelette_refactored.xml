@@ -1,0 +1,192 @@
+<!-- Refactored Omelette Recipe using Enhanced Element Type Catalog Design -->
+<IntentDOM root="MakeOmelette">
+  <Precept name="MakeOmelette">
+    <Description>Prepare and cook a basic cheese omelette</Description>
+    <Output format="cooked_dish" audience="cook">Ready-to-eat omelette on plate</Output>
+    
+    <RequiredInstrument instrumentName="eggs" quantity="2-3" />
+    <RequiredInstrument instrumentName="cheese" type="grated" quantity="50g" />
+    <RequiredInstrument instrumentName="butter" quantity="1tbsp" />
+    <RequiredInstrument instrumentName="salt_pepper" />
+    <RequiredInstrument instrumentName="non_stick_pan" />
+    <RequiredInstrument instrumentName="spatula" />
+    
+    <Constraint type="temperature">Medium heat throughout cooking</Constraint>
+    <Constraint type="timing">Total cook time 3-4 minutes</Constraint>
+    
+    <!-- Preflight Staging: Automatic validation when MakeOmelette is imported -->
+    <StagingPhase type="preflight" name="quality_assurance">
+      <Description>Quality assurance checks before ingredient preparation</Description>
+      
+      <Precept name="TestEggFreshness">
+        <Description>Perform canonical water float test to verify egg quality</Description>
+        <RequiredInstrument instrumentName="clear_bowl" />
+        <RequiredInstrument instrumentName="water" temperature="room_temp" />
+        
+        <Precept name="FillBowl" with="water" depth="sufficient_to_submerge_egg" />
+        <Precept name="SubmergeEgg" ref="first_egg" into="water_bowl" />
+        
+        <Precept name="ObserveFloat">
+          <AcceptanceCriteria>
+            <Condition state="fresh" test="egg_sinks_lies_flat" action="Proceed with this egg" />
+            <Condition state="questionable" test="egg_stands_upright" action="Use within today only" />
+            <Condition state="spoiled" test="egg_floats" action="Discard and select replacement" />
+          </AcceptanceCriteria>
+        </Precept>
+        
+        <Precept name="TestAdditionalEggs">
+          <Constraint>Test each egg individually before use</Constraint>
+          <Action>Repeat test for remaining eggs as needed</Action>
+        </Precept>
+        
+        <Output>
+          <Artifact name="verified_fresh_eggs">
+            <Type>instrument</Type>
+            <Type>validation_data</Type>
+            <Description>Fresh eggs verified for cooking</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+      
+      <ValidateInstrumentCondition instrument="cheese" conditionSet="mold_signs" domain="food_safety">
+        <AcceptanceCriteria>
+          <Condition state="acceptable" test="no_visible_mold" action="Proceed with cooking" />
+          <Condition state="questionable" test="slight_discoloration" action="Inspect more closely" />
+          <Condition state="unacceptable" test="visible_mold_present" action="Discard and replace" />
+        </AcceptanceCriteria>
+        <Constraint type="safety">Never use moldy ingredients</Constraint>
+      </ValidateInstrumentCondition>
+      
+      <ValidateInstrumentCondition instrument="butter" conditionSet="rancidity" domain="flavor_quality">
+        <AcceptanceCriteria>
+          <Condition state="fresh" test="sweet_smell" action="Use for cooking" />
+          <Condition state="degraded" test="off_odor" action="Replace with fresh butter" />
+        </AcceptanceCriteria>
+      </ValidateInstrumentCondition>
+      
+      <ValidateInstrumentCondition instrument="pan" conditionSet="clean_non_stick_intact" domain="cooking_equipment">
+        <AcceptanceCriteria>
+          <Condition state="ready" test="clean_surface_intact_coating" action="Proceed with cooking" />
+          <Condition state="damaged" test="scratched_coating" action="Use different pan" />
+        </AcceptanceCriteria>
+      </ValidateInstrumentCondition>
+      
+      <Output>
+        <Artifact name="instruments_validated">
+          <Type>instrument</Type>
+          <Type>validation_data</Type>
+          <Description>All cooking instruments validated and ready</Description>
+        </Artifact>
+      </Output>
+    </StagingPhase>
+    
+    <!-- Execution Staging: Ingredient preparation phase -->
+    <StagingPhase type="execution" name="ingredient_preparation">
+      <RequiredInstrument instrumentName="verified_fresh_eggs" provides="preflight" />
+      <RequiredInstrument instrumentName="instruments_validated" provides="preflight" />
+      <Description>Ready all ingredients before cooking starts</Description>
+      
+      <Precept name="CrackEggs" quantity="2-3" into="bowl" />
+      <Precept name="SeasonEggs" with="salt_pepper" />
+      <Precept name="WhiskEggs" until="well_combined" />
+      <Precept name="GrateCheese" quantity="50g" type="cheddar_or_gruyere" />
+      
+      <!-- State vector simplifies to: ingredients_ready -->
+      <Output>
+        <Artifact name="ingredients_ready">
+          <Type>instrument</Type>
+          <Type>state_vector</Type>
+          <Description>All ingredients prepared and ready for cooking</Description>
+        </Artifact>
+      </Output>
+    </StagingPhase>
+    
+    <!-- Execution Staging: Equipment setup phase -->
+    <StagingPhase type="execution" name="equipment_setup">
+      <RequiredInstrument instrumentName="instruments_validated" provides="preflight" />
+      <Description>Prepare cooking equipment and establish proper temperature</Description>
+      
+      <Precept name="HeatPan">
+        <Action>Heat non-stick pan over medium heat</Action>
+        <IdleWait duration="1m" reason="Pan heating" />
+      </Precept>
+      
+      <Precept name="AddButter">
+        <Action>Add butter to heated pan, swirl to coat</Action>
+        <WaitForSignal signal="butter_sizzling_gently" />
+      </Precept>
+      
+      <!-- State vector simplifies to: pan_ready -->
+      <Output>
+        <Artifact name="pan_ready">
+          <Type>instrument</Type>
+          <Type>state_vector</Type>
+          <Description>Pan heated and buttered, ready for cooking</Description>
+        </Artifact>
+      </Output>
+    </StagingPhase>
+    
+    <!-- Execution Staging: Base cooking phase -->
+    <StagingPhase type="execution" name="base_cooking">
+      <RequiredInstrument instrumentName="ingredients_ready" provides="execution:ingredient_preparation" />
+      <RequiredInstrument instrumentName="pan_ready" provides="execution:equipment_setup" />
+      <Description>Cook omelette base until properly set</Description>
+      
+      <SyncPoint name="PanReadyEggsPrepped">
+        <WaitForPrecept ref="AddButter" />
+        <WaitForPrecept ref="WhiskEggs" />
+        <WaitForPrecept ref="HeatPan" />
+      </SyncPoint>
+      
+      <Precept name="CookBase">
+        <Action>Let eggs set on bottom while stirring gently</Action>
+        <IdleWait duration="45s" reason="Base setting" />
+        <Constraint type="technique">Gentle circular stirring to prevent sticking</Constraint>
+      </Precept>
+      
+      <!-- State vector simplifies to: base_ready -->
+      <Output>
+        <Artifact name="base_ready">
+          <Type>instrument</Type>
+          <Type>state_vector</Type>
+          <Description>Egg base properly set and ready for finishing</Description>
+        </Artifact>
+      </Output>
+    </StagingPhase>
+    
+    <!-- Execution Staging: Finishing phase -->
+    <StagingPhase type="execution" name="finishing">
+      <RequiredInstrument instrumentName="base_ready" provides="execution:base_cooking" />
+      <Description>Add cheese, fold, and complete omelette</Description>
+      
+      <Precept name="AddCheese">
+        <Action>Sprinkle grated cheese over half the omelette</Action>
+        <Constraint type="placement">Cheese on one half only for folding</Constraint>
+      </Precept>
+      
+      <Precept name="FoldAndFinish">
+        <Action>Fold omelette in half and slide onto plate</Action>
+        <Constraint type="technique">Gentle fold to maintain structure</Constraint>
+      </Precept>
+      
+      <!-- Final state: completed dish -->
+      <Output>
+        <Artifact name="finished_omelette">
+          <Type>instrument</Type>
+          <Type>validation_data</Type>
+          <Type>state_vector</Type>
+          <Description>Completed omelette plated and ready to serve</Description>
+        </Artifact>
+      </Output>
+    </StagingPhase>
+    
+    <!-- Context Switch Protocol using staging boundaries -->
+    <ContextSwitchProtocol>
+      <Step>Preserve staging phase completion status in volatile cache</Step>
+      <Step>Store current stage output state vector (simplified)</Step>
+      <Step>Log stage boundaries for resumption points</Step>
+      <Step>On resumption: validate stage outputs and continue from last completed stage</Step>
+    </ContextSwitchProtocol>
+    
+  </Precept>
+</IntentDOM>

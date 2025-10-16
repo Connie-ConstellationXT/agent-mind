@@ -1,0 +1,285 @@
+* RALN-based IC for "Hello World" Python Program Generation
+* Hierarchical stateless architecture following hello_world_hierarchy.md
+* Target Output: print('hello world')
+* Input: current program state, Output: next character
+
+.title RALN Hierarchical Hello World Python Generator
+
+* ============================================================================
+* LEVEL 4: MLP CHARACTER SEQUENCE (Terminal level)
+* Knows the sequence "hello world" and outputs next character
+* ============================================================================
+.subckt mlp_char_sequence pos_in target_len vdd vss
++ char_h char_e char_l char_o char_space char_w char_r char_d
+
+* Character mapping based on position in "hello world"
+* pos_in encodes current position (0-10 for "hello world")
+E_char_h char_h vss VCVS pos_in vss 1.0 ; position 0
+E_char_e1 char_e vss VCVS pos_in vss 0.9 ; position 1  
+E_char_l1 char_l vss VCVS pos_in vss 0.8 ; position 2,3,9
+E_char_l2 char_l vss VCVS pos_in vss 0.7 ; position 3
+E_char_o1 char_o vss VCVS pos_in vss 0.6 ; position 4,7
+E_char_space char_space vss VCVS pos_in vss 0.5 ; position 5
+E_char_w char_w vss VCVS pos_in vss 0.4 ; position 6
+E_char_o2 char_o vss VCVS pos_in vss 0.3 ; position 7
+E_char_r char_r vss VCVS pos_in vss 0.2 ; position 8  
+E_char_l3 char_l vss VCVS pos_in vss 0.1 ; position 9
+E_char_d char_d vss VCVS pos_in vss 0.05 ; position 10
+
+.ends mlp_char_sequence
+
+* ============================================================================
+* LEVEL 4: RALN POSITION TRACKER  
+* Determines current position within target string
+* ============================================================================
+.subckt raln_position_tracker current_text target_string goal_in domain_in vdd vss
++ position_out progress_out
+
+* Analyze current text to determine position in target
+* Simplified: uses text length as position indicator
+E_position position_out vss VCVS current_text vss 0.1
+E_progress progress_out vss VCVS current_text vss 0.2
+
+.ends raln_position_tracker
+
+* ============================================================================
+* LEVEL 3: RALN CONTENT GENERATOR
+* Generates "hello world" string content using Level 4 components
+* ============================================================================
+.subckt raln_content_gen goal_in state_in current_text target_string vdd vss
++ next_char_out content_complete
+
+* Instrument subnet: position tracker + character sequence
+X_pos_tracker current_text target_string goal_in domain_internal 
++ vdd vss position_out progress_out raln_position_tracker
+
+X_char_seq position_out target_len vdd vss
++ char_h_out char_e_out char_l_out char_o_out char_space_out 
++ char_w_out char_r_out char_d_out mlp_char_sequence
+
+* Junction for character selection based on position
+E_char_select next_char_out vss VCVS 
++ POLY(8) char_h_out vss char_e_out vss char_l_out vss char_o_out vss
++ char_space_out vss char_w_out vss char_r_out vss char_d_out vss
++ 0 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125
+
+* Domain constraint: content completion check
+E_complete content_complete vss VCVS progress_out vss 1.0
+
+.ends raln_content_gen
+
+* ============================================================================
+* LEVEL 3: RALN QUOTE HANDLER
+* Manages opening and closing quotes for string literals  
+* ============================================================================
+.subckt raln_quote_handler goal_in state_in parse_context vdd vss
++ quote_char_out quote_needed
+
+* MLP to determine if quote is needed based on parse context
+E_quote_detect quote_needed vss VCVS parse_context vss 1.0
+E_quote_char quote_char_out vss VCVS quote_needed vss 1.0 ; outputs '
+
+.ends raln_quote_handler
+
+* ============================================================================
+* LEVEL 2: RALN STRING GENERATOR
+* Generates complete string literal "'hello world'" using Level 3 components
+* ============================================================================
+.subckt raln_string_gen goal_in state_in parse_context current_text vdd vss
++ string_char_out string_complete
+
+* Instrument subnet: quote handler + content generator
+X_quote_handler goal_in state_in parse_context vdd vss
++ quote_out quote_needed raln_quote_handler
+
+X_content_gen goal_in state_in current_text target_hello_world vdd vss
++ content_char_out content_done raln_content_gen
+
+* Junction to multiplex between quote and content
+E_string_mux string_char_out vss VCVS 
++ POLY(2) quote_out vss content_char_out vss
++ 0 0.5 0.5
+
+* Domain: string completion logic
+E_string_done string_complete vss VCVS 
++ POLY(2) quote_needed vss content_done vss  
++ 0 0.5 0.5
+
+.ends raln_string_gen
+
+* ============================================================================
+* LEVEL 2: RALN KEYWORD GENERATOR
+* Generates "print" keyword using character-by-character approach
+* ============================================================================
+.subckt raln_keyword_gen goal_in state_in current_text target_keyword vdd vss
++ keyword_char_out keyword_complete
+
+* MLP for keyword character sequence "print"
+E_print_p keyword_char_out vss VCVS current_text vss 1.0 ; 'p' 
+E_print_r keyword_char_out vss VCVS current_text vss 0.8 ; 'r'
+E_print_i keyword_char_out vss VCVS current_text vss 0.6 ; 'i' 
+E_print_n keyword_char_out vss VCVS current_text vss 0.4 ; 'n'
+E_print_t keyword_char_out vss VCVS current_text vss 0.2 ; 't'
+
+* Completion detector
+E_keyword_done keyword_complete vss VCVS current_text vss 1.0
+
+.ends raln_keyword_gen
+
+* ============================================================================
+* LEVEL 2: RALN PUNCTUATION GENERATOR
+* Generates punctuation characters "(" and ")"
+* ============================================================================
+.subckt raln_punct_gen goal_in state_in parse_context current_text vdd vss
++ punct_char_out punct_complete
+
+* MLP for punctuation selection based on context
+E_open_paren punct_char_out vss VCVS parse_context vss 1.0 ; '('
+E_close_paren punct_char_out vss VCVS parse_context vss 0.5 ; ')'
+
+* Completion logic
+E_punct_done punct_complete vss VCVS parse_context vss 1.0
+
+.ends raln_punct_gen
+
+* ============================================================================
+* LEVEL 1: RALN TOKEN GENERATOR
+* Routes to appropriate token generator (keyword, punct, string)
+* ============================================================================
+.subckt raln_token_gen goal_in state_in next_token_type parse_context current_text vdd vss
++ token_char_out token_complete
+
+* Instrument subnets for different token types
+X_keyword_gen goal_in state_in current_text target_print vdd vss
++ keyword_char token_keyword_done raln_keyword_gen
+
+X_punct_gen goal_in state_in parse_context current_text vdd vss  
++ punct_char token_punct_done raln_punct_gen
+
+X_string_gen goal_in state_in parse_context current_text vdd vss
++ string_char token_string_done raln_string_gen
+
+* Junction for token type routing
+E_token_mux token_char_out vss VCVS
++ POLY(3) keyword_char vss punct_char vss string_char vss
++ 0 0.33 0.33 0.34
+
+* Domain: token completion aggregation
+E_token_done token_complete vss VCVS
++ POLY(3) token_keyword_done vss token_punct_done vss token_string_done vss
++ 0 0.33 0.33 0.34
+
+.ends raln_token_gen
+
+* ============================================================================
+* LEVEL 1: RALN PARSE STATE ANALYZER
+* Analyzes current program text to determine parsing context
+* ============================================================================
+.subckt raln_parse_state goal_in state_in current_text vdd vss
++ at_start in_statement in_string paren_depth
+
+* MLP clusters for parsing analysis
+E_start_detect at_start vss VCVS current_text vss 1.0
+E_stmt_detect in_statement vss VCVS current_text vss 0.8
+E_string_detect in_string vss VCVS current_text vss 0.6
+E_paren_count paren_depth vss VCVS current_text vss 0.4
+
+.ends raln_parse_state
+
+* ============================================================================
+* LEVEL 1: RALN NEXT TOKEN DECISION
+* Determines what type of token should come next
+* ============================================================================
+.subckt raln_next_token goal_in state_in parse_context vdd vss
++ token_type_keyword token_type_punct token_type_string token_type_eof
+
+* MLP clusters for token type classification
+E_need_keyword token_type_keyword vss VCVS parse_context vss 1.0
+E_need_punct token_type_punct vss VCVS parse_context vss 0.8  
+E_need_string token_type_string vss VCVS parse_context vss 0.6
+E_program_done token_type_eof vss VCVS parse_context vss 0.4
+
+.ends raln_next_token
+
+* ============================================================================
+* LEVEL 0: ROOT RALN 
+* Top-level coordinator for Python hello world generation
+* ============================================================================
+.subckt raln_root current_program_text goal_global domain_global vdd vss
++ next_character_out program_complete_out
++ anc_feedback_in chd_feedback_in self_feedback_in
++ anc_status_out chd_command_out self_status_out
+
+* Level 1 instrument subnet components
+X_parse_state goal_global current_program_text current_program_text vdd vss
++ at_start in_stmt in_str paren_depth raln_parse_state
+
+X_next_token goal_global current_program_text parse_context vdd vss  
++ need_keyword need_punct need_string is_complete raln_next_token
+
+X_token_gen goal_global current_program_text next_token_type parse_context current_program_text vdd vss
++ generated_char token_done raln_token_gen
+
+* RALN core processing
+E_goal_proc goal_processed vss VCVS goal_global vss 1.0
+E_domain_proc domain_processed vss VCVS domain_global vss 1.0
+
+* Output generation (RALN standard interface)
+E_next_char next_character_out vss VCVS generated_char vss 1.0
+E_prog_done program_complete_out vss VCVS token_done vss 1.0
+
+* Standard RALN feedback outputs
+E_anc_out anc_status_out vss VCVS goal_processed vss 0.8
+E_chd_out chd_command_out vss VCVS domain_processed vss 0.6  
+E_self_out self_status_out vss VCVS generated_char vss 0.4
+
+.ends raln_root
+
+* ============================================================================
+* TOP LEVEL CIRCUIT - ACTUATOR INTERFACE
+* ============================================================================
+
+* Power supplies
+Vdd vdd 0 DC 3.3V
+Vss vss 0 DC 0V
+
+* World state input (current program text)
+* In real hardware, this would be a digital interface
+Vcurrent_text current_program_input 0 DC 0V  ; empty program initially
+
+* Global goal and domain constraints  
+Vgoal global_goal 0 DC 3.0V     ; "generate print('hello world')"
+Vdomain global_domain 0 DC 2.8V ; "valid python syntax only"
+
+* Root RALN instance (the entire processor)
+X_root_processor current_program_input global_goal global_domain vdd vss
++ final_next_char program_is_complete
++ anc_fb chd_fb self_fb
++ anc_out chd_out self_out
++ raln_root
+
+* Feedback loops (RALN self-organization)
+R_anc_feedback anc_out anc_fb 1K
+R_chd_feedback chd_out chd_fb 1K
+R_self_feedback self_out self_fb 1K
+
+* ACTUATOR OUTPUT - next character to append to program
+* This would drive physical output (display, printer, etc.)
+.probe V(final_next_char)
+.probe V(program_is_complete)
+
+* Monitor internal states for debugging
+.probe V(at_start) V(in_stmt) V(in_str) 
+.probe V(need_keyword) V(need_punct) V(need_string)
+.probe V(generated_char) V(token_done)
+
+* Analysis
+.tran 0.1us 500us
+.op
+
+* Expected behavior: 
+* Circuit takes current program state as input
+* Outputs next character needed to complete "print('hello world')"
+* Stateless and resumable from any intermediate state
+
+.end

@@ -1,0 +1,58 @@
+v {xschem version=3.4.5 file_version=1.2
+}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname"
+template="name=X1"
+}
+V {}
+S {}
+E {}
+L 4 -80 -60 80 -60 {}
+L 4 -80 -60 -80 60 {}
+L 4 -80 60 80 60 {}
+L 4 80 -60 80 60 {}
+L 4 -100 -40 -80 -40 {}
+L 4 -100 -20 -80 -20 {}
+L 4 -100 0 -80 0 {}
+L 4 -100 20 -80 20 {}
+L 4 -100 40 -80 40 {}
+L 4 80 -40 100 -40 {}
+L 4 80 -20 100 -20 {}
+L 4 80 0 100 0 {}
+L 4 80 20 100 20 {}
+L 4 80 40 100 40 {}
+L 4 0 -80 0 -60 {}
+L 4 0 60 0 80 {}
+B 5 -102.5 -42.5 -97.5 -37.5 {name=current_program_text dir=in}
+B 5 -102.5 -22.5 -97.5 -17.5 {name=goal_global dir=in}
+B 5 -102.5 -2.5 -97.5 2.5 {name=domain_global dir=in}
+B 5 -102.5 17.5 -97.5 22.5 {name=anc_feedback_in dir=in}
+B 5 -102.5 37.5 -97.5 42.5 {name=chd_feedback_in dir=in}
+B 5 -102.5 57.5 -97.5 62.5 {name=self_feedback_in dir=in}
+B 5 97.5 -42.5 102.5 -37.5 {name=next_character_out dir=out}
+B 5 97.5 -22.5 102.5 -17.5 {name=program_complete_out dir=out}
+B 5 97.5 -2.5 102.5 2.5 {name=anc_status_out dir=out}
+B 5 97.5 17.5 102.5 22.5 {name=chd_command_out dir=out}
+B 5 97.5 37.5 102.5 42.5 {name=self_status_out dir=out}
+B 5 -2.5 -82.5 2.5 -77.5 {name=vdd dir=in}
+B 5 -2.5 77.5 2.5 82.5 {name=vss dir=in}
+T {@symname} -34.5 -6 0 0 0.3 0.3 {}
+T {@name} 85 -72 0 0 0.2 0.2 {}
+T {current_program_text} -75 -44 0 0 0.2 0.2 {}
+T {goal_global} -75 -24 0 0 0.2 0.2 {}
+T {domain_global} -75 -4 0 0 0.2 0.2 {}
+T {anc_feedback_in} -75 16 0 0 0.2 0.2 {}
+T {chd_feedback_in} -75 36 0 0 0.2 0.2 {}
+T {self_feedback_in} -75 56 0 0 0.2 0.2 {}
+T {next_character_out} 25 -44 0 0 0.2 0.2 {}
+T {program_complete_out} 25 -24 0 0 0.2 0.2 {}
+T {anc_status_out} 25 -4 0 0 0.2 0.2 {}
+T {chd_command_out} 25 16 0 0 0.2 0.2 {}
+T {self_status_out} 25 36 0 0 0.2 0.2 {}
+T {vdd} 5 -74 0 0 0.2 0.2 {}
+T {vss} 5 74 0 0 0.2 0.2 {}
+T {RALN} -20 -30 0 0 0.4 0.4 {}
+T {ROOT} -20 -10 0 0 0.4 0.4 {}
+T {Python Hello World} -50 10 0 0 0.25 0.25 {}
+T {Generator} -30 25 0 0 0.25 0.25 {}
