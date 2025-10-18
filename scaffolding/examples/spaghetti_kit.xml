@@ -217,15 +217,11 @@
           <WaitCondition duration="8-12m" reason="Pasta cooking while sauce stays warm" />
         </YieldSafePoint>
         
-        <Action>Test pasta for doneness</Action>
-        <Action>Drain pasta in colander</Action>
-        
-        <Output>
-          <Artifact name="pasta_cooked_perfectly_timed">
-            <Type>food_item</Type>
-            <Description>Pasta ready just as sauce finishes staying warm</Description>
-          </Artifact>
-        </Output>
+        <R:Precept providing="capability:test_pasta_doneness AND domain:food_preparation"
+            allocateOutput="pasta_is_aldente as pasta_is_aldente"
+            onStall="ignore"/>
+        <R:Precept providing="capability:drain_pasta AND domain:food_preparation"
+            allocateOutput="pasta_drained as pasta_drained"/>
         
         <!-- Minimal pasta monitoring since sauce is done -->
         <Vigil name="CheckPastaProgress" 
@@ -236,6 +232,13 @@
           <Action>Test doneness near end time</Action>
           <Condition>Primary attention during pasta cooking</Condition>
         </Vigil>
+        
+        <Output>
+          <Artifact name="pasta_cooked_perfectly_timed">
+            <Type>food_item</Type>
+            <Description>Pasta ready just as sauce finishes staying warm</Description>
+          </Artifact>
+        </Output>
       </Precept>
       
       <Output>

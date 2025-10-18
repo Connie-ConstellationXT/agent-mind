@@ -278,6 +278,30 @@ DISRUPT(hot_oil_spill) →
 - Different contexts may require different emergency responses
 - Use capability filters to match appropriate handlers to context
 
+### MLPTrigger as ISR recruitment
+
+`MLPTrigger` can be used not only to detect sensory/ML patterns but to recruit dynamically resolved precepts into ISR (interrupt service) duty. When an `R:Precept` allocates an output artifact, an `MLPTrigger` listening for that artifact or a related signal may promote the resolved precept or a handler to perform ISR-like responsibilities.
+
+Example: a resolved doneness test allocates `pasta_is_aldente`; an MLP detector can then trigger a high-priority handler.
+
+```xml
+<R:Precept providing="capability:test_pasta_doneness"
+           allocateOutput="pasta_is_aldente as pasta_is_aldente"
+           description="Test pasta doneness" />
+
+<!-- Somewhere in a D:Precept or ISR-capable precept -->
+<MLPTrigger ref="instrument:pasta_is_aldente" />
+
+<D:Precept name="QuickServeISR" entry_point="pasta_cooking_final">
+  <Trigger signal="pasta_is_aldente" />
+  <Action>Immediately drain and serve pasta</Action>
+</D:Precept>
+```
+
+Notes:
+- Recruitment via `MLPTrigger` doesn't guarantee hard realtime — it promotes priority handling within the DISRUPT/ISR model but respects system-level execution constraints.
+- Use `allocateOutput` so artifact names are explicit and discoverable by MLP-based listeners.
+
 ---
 
 **Related:** See `preflight_validation.md` for emergency equipment validation, `dependency_resolution_architecture.md` for caching strategies, and `staging_and_execution.md` for priority injection patterns.

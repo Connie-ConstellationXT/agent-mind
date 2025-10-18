@@ -420,6 +420,77 @@ The `description` attribute ensures R:Precept placeholders are **self-documentin
 - **Resolver integration**: Multi-context capabilities enable one precept to serve many situations through mathematical context composition
 - **Optional extension**: `ExportFrom` with `ContextTransform` enables precept adaptation across environments for repository reuse
 
+### `onStall` attribute for `R:Precept`
+
+`R:Precept` may include an optional `onStall` attribute to define policy when RESOLVE cannot find or instantiate a matching implementation at runtime. Common values:
+- `ignore` — continue without the resolved precept (best for optional checks)
+- `fail` — bubble a STALL up the intent tree (default behavior if omitted)
+- `fallback:<preceptName>` — attempt an alternative precept by name
+
+Example:
+```xml
+<R:Precept providing="capability:test_pasta_doneness"
+           allocateOutput="pasta_is_aldente as pasta_is_aldente"
+           onStall="ignore"
+           description="Try resolving a pasta doneness test; ignore if not available" />
+```
+
+This attribute helps authors control runtime resilience and avoid unnecessary STALLs.
+
+### Fallback child nodes for capability-query fallbacks
+
+When a fallback is more than a single named precept (for example, a capability query or a sequence of alternative RESOLVE filters), XML forces the fallback to be expressed as a child node. Use a `<Fallback>` container under an `R:Precept` to declare one or more fallback `R:Precept` filters or structured fallback policies.
+
+Runtime semantics (recommended):
+1. Attempt the primary `R:Precept` RESOLVE/filter on the host element.
+2. If RESOLVE finds no implementation or the resolved precept STALLs, evaluate each child fallback in document order.
+   - If the child is an `R:Precept`, run RESOLVE with its filter/parameters.
+   - If a fallback resolves to an implementation, bind outputs (honoring any `allocateOutput`) and continue execution.
+3. If no fallback resolves, apply the top-level `onStall` policy (ignore/fail/etc.).
+
+Examples
+
+1) Simple named fallback (attribute)
+```xml
+<R:Precept providing="capability:test_pasta_doneness"
+           allocateOutput="pasta_is_aldente as pasta_is_aldente"
+           onStall="fallback:SimpleDonenessTest"
+           description="Primary doneness test, fall back to named precept" />
+```
+
+2) Capability-query fallback (child node)
+```xml
+<R:Precept providing="capability:test_pasta_doneness"
+           allocateOutput="pasta_is_aldente as pasta_is_aldente"
+           onStall="fail"
+           description="Try preferred doneness test; if unavailable, run capability query fallback">
+  <Fallback>
+    <R:Precept providing="capability:basic_doneness_test AND domain:food_preparation"
+               allocateOutput="pasta_is_aldente as pasta_is_aldente"
+               description="Basic doneness test fallback" />
+  </Fallback>
+</R:Precept>
+```
+
+3) Multiple fallbacks (sophisticated → basic → ignore)
+```xml
+<R:Precept providing="capability:advanced_doneness_instrument"
+           allocateOutput="pasta_is_aldente as pasta_is_aldente">
+  <Fallback>
+    <R:Precept providing="capability:basic_doneness_test"
+               allocateOutput="pasta_is_aldente as pasta_is_aldente" />
+    <!-- last-resort: explicit instruction to ignore if nothing resolves -->
+    <Fallback onFail="ignore" />
+  </Fallback>
+</R:Precept>
+```
+
+Validation & authoring guidelines
+- Require `allocateOutput` on any primary or fallback `R:Precept` that is expected to create artifacts used downstream.
+- Prefer explicit aliasing (`provider_name as local_alias`) so consumers can reference instrument names reliably.
+- Lint suggestion: warn if a consumer references an instrument name that no local R:Precept or fallback declares.
+
+
 ## 9. Behavioral Control & Semantic Elements
 - Use `<Constraint>` nodes to specify execution requirements, behavioral limits, and domain restrictions.
 - Use `<Description>` for human-readable explanations of each precept.
