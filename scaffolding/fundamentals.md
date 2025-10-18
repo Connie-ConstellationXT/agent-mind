@@ -45,6 +45,8 @@ Intent scaffolding is a TypeScript-inspired, hierarchical XML markup language fo
 <RequiredInstrument instrumentName="non_stick_pan" />
 ```
 
+**Instrument Universality**: `RequiredInstrument` treats all dependency types uniformly - physical objects (`eggs`, `pan`), knowledge (`recipe_knowledge`, `technique_mastery`), other agents (`chef_assistant`, `safety_monitor`), validated states (`ingredients_fresh`, `equipment_ready`), and abstract resources (`time_allocation`, `attention_capacity`) are all handled identically by the dependency resolution system.
+
 ### **Output Artifacts**
 ```xml
 <Output>

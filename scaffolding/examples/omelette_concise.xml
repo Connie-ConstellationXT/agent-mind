@@ -3,8 +3,12 @@
   
   <!-- DISRUPT Handlers: Emergency preparedness outside normal workflow -->
   <D:Precept name="HandleBurnInjury" 
-             providing="capability:emergency_response AND domain:kitchen_safety"
              description="Immediate response to cooking burns with comprehensive first aid">
+    <Provides>
+      <Capability name="emergency_response" domain="kitchen_safety" />
+      <Capability name="burn_treatment" domain="cooking_incidents" />
+    </Provides>
+    
     <PreflightValidation>
       <R:Precept name="ValidateEmergencyKit" 
                  providing="capability:emergency_validation AND domain:kitchen"
@@ -28,8 +32,12 @@
   </D:Precept>
 
   <D:Precept name="HandleKitchenFire" 
-             providing="capability:fire_suppression AND domain:kitchen"
              description="Kitchen fire emergency response with validated equipment">
+    <Provides>
+      <Capability name="fire_suppression" domain="kitchen" />
+      <Capability name="emergency_response" domain="cooking_incidents" />
+    </Provides>
+    
     <PreflightValidation>
       <R:Precept name="ValidateFireSafety" 
                  providing="capability:fire_safety_validation AND domain:kitchen"

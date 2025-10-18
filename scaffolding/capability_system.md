@@ -18,68 +18,101 @@ The capability system enables automatic goal decomposition by declaring what pre
 ```xml
 <Precept name="FileSystemAnalyzer">
   <Provides>
-    <Capability name="workspace_scanning" context="UnixOfficeEnvironment" />
-    <Capability name="project_structure_analysis" context="SoftwareDevelopment" />
-    <Capability name="file_metadata_extraction" context="UnixOfficeEnvironment" />
+    <Capability name="workspace_scanning" domain="UnixOfficeEnvironment" />
+    <Capability name="project_structure_analysis" domain="SoftwareDevelopment" />
+    <Capability name="file_metadata_extraction" domain="UnixOfficeEnvironment" />
   </Provides>
 </Precept>
 ```
 
 ### **Key Principles**
-- **Context-married capabilities**: Every capability must specify its applicable context
+- **Domain-married capabilities**: Every capability must specify its applicable domain
+- **Domain universality**: Domain encompasses applicability scope, subject areas, constraint sets, organizational contexts, and any other relevant boundary - the system does not distinguish between these conceptual categories
 - **NOT data flow**: Unlike instruments, capabilities are not about passing data between precepts
-- **Resolver optimization**: Context enables lightning-fast search space filtering
-- **Multiple capabilities**: One precept can handle several related sub-goals across different contexts
+- **Resolver optimization**: Domain enables lightning-fast search space filtering
+- **Multiple capabilities**: One precept can handle several related sub-goals across different domains
 - **Optimization-level agnostic**: Precepts declare capabilities without optimization level awareness - executive manages complexity selection
 
 ### **Instrument vs Capability Distinction**
-- **Instruments** (`RequiredInstrument`): Concrete resources needed for precept execution (data, tools, validated states)
+- **Instruments** (`RequiredInstrument`): Concrete resources needed for precept execution - physical objects, knowledge, other agents, validated states, and abstract resources are all treated uniformly
 - **Capabilities** (`Provides`): Abstract problem-solving abilities that help RESOLVE decompose complex goals
 - **Optimization Levels**: Executive strategy for precept selection complexity, never declared in precepts themselves
 - **Separation of concerns**: Instruments handle "what do I need", capabilities handle "what can I do", executive handles "how sophisticated should this be"
+- **Universal abstraction**: Both instruments and domains operate above ontological categories - the system treats all dependencies and boundaries uniformly
 
-## Multi-Context Capabilities
+## Multi-Domain Capabilities
+
+### **XML Syntax Flexibility**
+XML provides multiple equivalent ways to express domain specifications. All of these are semantically identical:
+
+```xml
+<!-- Attribute syntax -->
+<Capability name="file_scanning" domain="UnixEnvironment" />
+
+<!-- Child element syntax -->
+<Capability name="file_scanning">
+  <Domain>UnixEnvironment</Domain>
+</Capability>
+
+<!-- Self-closing element -->
+<Capability name="file_scanning">
+  <Domain>UnixEnvironment</Domain>
+</Capability>
+```
+
+Choose the syntax that best fits your document structure and readability preferences.
+
+### **Domain Conceptual Universality**
+Just as `RequiredInstrument` treats knowledge, physical tools, and other agents uniformly as dependencies, `Domain` treats all boundary concepts uniformly:
+
+- **Subject areas**: `food_safety`, `software_development`, `mathematics`
+- **Applicability scopes**: `kitchen_environment`, `office_setting`, `emergency_response`
+- **Organizational contexts**: `engineering_team`, `corporate_environment`, `family_household`
+- **Constraint sets**: `real_time_systems`, `privacy_sensitive`, `safety_critical`
+- **Cultural contexts**: `european_workplace`, `academic_research`, `startup_culture`
+
+The system does not distinguish between these conceptual categories - they are all just domains that can be referenced, composed, and filtered upon.
 
 ### **Set Theory Operations**
 ```xml
 <Precept name="UniversalFileProcessor">
   <Provides>
     <Capability name="file_scanning">
-      <ContextSet>
+      <DomainSet>
         <Union>
-          <Context ref="UnixEnvironment" />
-          <Context ref="WindowsEnvironment" />
-          <Context ref="MacOSEnvironment" />
+          <Domain ref="UnixEnvironment" />
+          <Domain ref="WindowsEnvironment" />
+          <Domain ref="MacOSEnvironment" />
         </Union>
-      </ContextSet>
+      </DomainSet>
     </Capability>
     
     <Capability name="code_analysis">
-      <ContextSet>
+      <DomainSet>
         <Intersect>
-          <Context ref="SoftwareDevelopment" />
-          <Context ref="OfficeEnvironment" />
+          <Domain ref="SoftwareDevelopment" />
+          <Domain ref="OfficeEnvironment" />
         </Intersect>
-      </ContextSet>
+      </DomainSet>
     </Capability>
     
     <Capability name="security_validation">
-      <ContextSet>
+      <DomainSet>
         <Subtract>
-          <Context ref="CorporateEnvironment" />
-          <Context ref="PersonalProjects" />
+          <Domain ref="CorporateEnvironment" />
+          <Domain ref="PersonalProjects" />
         </Subtract>
-      </ContextSet>
+      </DomainSet>
     </Capability>
   </Provides>
 </Precept>
 ```
 
 ### **Set Operations**
-- `Union` - Capability applies across multiple contexts (additive scope)
-- `Intersect` - Capability requires combination of contexts (restrictive scope)  
-- `Subtract` - Capability applies except in certain contexts (exclusion scope)
-- `SymmetricDifference` - Capability applies in conflicting contexts (alternative scope)
+- `Union` - Capability applies across multiple domains (additive scope)
+- `Intersect` - Capability requires combination of domains (restrictive scope)  
+- `Subtract` - Capability applies except in certain domains (exclusion scope)
+- `SymmetricDifference` - Capability applies in conflicting domains (alternative scope)
 
 ## R:Precept Syntax
 
@@ -122,6 +155,8 @@ providing="(capability:butter_validation OR capability:dairy_validation) AND dom
 <!-- Complex filtering -->
 providing="domain:kitchen AND (capability:seasoning_application OR capability:flavor_enhancement)"
 ```
+
+**Note**: Domain filters in `providing` expressions match against the domain specifications declared in `<Provides>` capability declarations. The RALN compilation system uses these domain relationships for network topology optimization.
 
 ## Complete R:Precept Examples
 
@@ -189,35 +224,37 @@ The `description` attribute ensures R:Precept placeholders are **self-documentin
 - **Purpose**: Goal decomposition - find precept to produce missing dependency
 - **Failure Mode**: Precept STALLs until dependency resolved or times out
 
-## Context as First-Class Repository Objects
+## Domain as First-Class Repository Objects
 
-### **Context Repository Architecture**
+### **Domain Repository Architecture**
 ```
-ContextRepository/
+DomainRepository/
   ├── Geographic/European/German/MidSizedTown/
   ├── Organizational/Office/Engineering/
   └── Technical/Unix/FileSystem/
 
-PreceptIndex: (capability_name, context_id) → precept_list
+PreceptIndex: (capability_name, domain_id) → precept_list
 ```
 
-### **Context Definitions**
+### **Domain Definitions**
 ```xml
-<Context name="MyOffice">
+<Domain name="MyOffice">
   <Description>The office where I work</Description>
   <References>
-    <Context ref="GermanMidSizedTown" />
-    <Context ref="EuropeanOfficeSpace" />
-    <Context ref="EngineeringTeamCulture" />
+    <Domain ref="GermanMidSizedTown" />
+    <Domain ref="EuropeanOfficeSpace" />
+    <Domain ref="EngineeringTeamCulture" />
   </References>
-</Context>
+</Domain>
 ```
 
 ### **Resolver Workflow**
-1. **Context filtering happens first** - dramatically reduces search space
+1. **Domain filtering happens first** - dramatically reduces search space
 2. **Capability matching** - find precepts that provide needed capabilities
 3. **Parameter binding** - instantiate precept with provided parameters
 4. **Caching** - promote successful resolutions to faster cache tiers
+
+**RALN Integration**: Domain hierarchies compile directly to RALN network topology, enabling hardware-accelerated domain constraint evaluation and capability resolution.
 
 ## RESOLVE System Benefits
 
@@ -237,7 +274,7 @@ When multiple precepts provide the same capability, the executive resolves ambig
 <!-- Candidate 1: Simple approach (low LOC) -->
 <Precept name="BasicDeskCleanup">
   <Provides>
-    <Capability name="workspace_organization" context="office_environment" />
+    <Capability name="workspace_organization" domain="office_environment" />
   </Provides>
   <RequiredInstrument instrumentName="available_storage" />
   <Action>Sort items into basic categories and store</Action>
@@ -246,7 +283,7 @@ When multiple precepts provide the same capability, the executive resolves ambig
 <!-- Candidate 2: Sophisticated approach (high LOC) -->
 <Precept name="ErgonomicWorkspaceOptimization">
   <Provides> 
-    <Capability name="workspace_organization" context="office_environment" />
+    <Capability name="workspace_organization" domain="office_environment" />
   </Provides>
   <RequiredInstrument instrumentName="available_storage" />
   <RequiredInstrument instrumentName="workflow_analysis_data" />
