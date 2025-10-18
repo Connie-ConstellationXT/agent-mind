@@ -497,6 +497,8 @@ This modern executive design integrates seamlessly with the current modular arch
 
 The executive serves as the **runtime substrate** that makes the universal cognitive architecture practical and performant while preserving the declarative nature of intent scaffolding.
 
+Note: Hardware compilation and RALN network generation is documented in `scaffolding/integration/intent_to_hardware_compilation.md`. This canonical compilation guide shows how intent scaffolding precepts compile to RALN networks through the executive runtime.
+
 ---
 
 **Status**: Modern architecture aligned with emergent singleton behavior, three-tier dependency resolution, and current preflight validation patterns. Ready for hardware integration through RALN compilation.
