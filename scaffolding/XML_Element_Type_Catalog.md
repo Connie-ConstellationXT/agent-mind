@@ -14,8 +14,50 @@
 ### IntentDOM  
 **Purpose**: Root container for domain-specific intent trees
 **Attributes**: `root` (specifies root precept name)
-**Children**: Domain-specific precepts
+**Children**: Domain-specific precepts, D:Precepts, Vigils
 **Example Context**: Cooking workflows, specific task domains
+
+### YieldSafePoint
+**Purpose**: Explicit declaration of safe interruption points within precept execution
+**Attributes**: `name` (checkpoint identifier)
+**Children**: StateVector, WaitCondition, ResumeCondition
+**Example Context**: Long-running operations with expected idle time, context switch points
+
+### StateVector
+**Purpose**: Captures minimal state information needed to safely resume execution
+**Attributes**: None
+**Children**: Multiple State elements
+**Example Context**: Context switching, resumption after interruption
+
+### State
+**Purpose**: Individual state variable capture for resumption
+**Attributes**: `key` (variable name), `value` (current value)
+**Children**: None (self-closing)
+**Example Context**: Temporal context, physical state, progress markers
+
+### WaitCondition
+**Purpose**: Describes expected waiting period during yield-safe point
+**Attributes**: `duration` (expected time), `reason` (explanation)
+**Children**: None (self-closing)
+**Example Context**: Pan heating, dough rising, compilation
+
+### ResumeCondition
+**Purpose**: Specifies conditions that indicate readiness to resume execution
+**Attributes**: None
+**Children**: Check elements
+**Example Context**: Temperature targets, completion signals
+
+### Vigil
+**Purpose**: Background monitoring tasks that execute when attention is available
+**Attributes**: `name` (task identifier), `frequency` (scheduling), `during` (yield-safe point binding)
+**Children**: Description, Action, Condition
+**Example Context**: Periodic checking, optional monitoring, background maintenance
+
+### Check
+**Purpose**: Condition evaluation for resume readiness
+**Attributes**: `state` (variable to check), `target` (expected value)
+**Children**: None (self-closing)
+**Example Context**: Temperature checks, completion verification
 
 ### PreceptList
 **Purpose**: Container for multiple precepts within an intent scaffold

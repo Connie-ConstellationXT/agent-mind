@@ -119,6 +119,28 @@ Use semantic elements that affect agent reasoning:
 - `Location` - Enables spatial reasoning and resource proximity decisions
 - `Purpose` - Guides goal alignment and optimization decisions
 
+### **Yield-Safe Points and Background Monitoring**
+```xml
+<YieldSafePoint name="checkpoint_name">
+  <StateVector>
+    <State key="variable_name" value="current_value" />
+  </StateVector>
+  <WaitCondition duration="expected_time" reason="explanation" />
+</YieldSafePoint>
+
+<Vigil name="background_monitoring" 
+       frequency="every_30s" 
+       during="checkpoint_name">
+  <Description>Optional periodic monitoring when attention is available</Description>
+  <Action>Check status or perform light maintenance</Action>
+  <Condition>Only if not busy with other tasks</Condition>
+</Vigil>
+```
+
+**Yield-Safe Points** declare explicit checkpoints where precept execution can be safely interrupted and resumed later. They capture sufficient state to enable context switching without losing progress.
+
+**Vigils** represent background monitoring tasks that run periodically when the executive has spare attention. Unlike interrupts, vigils are optional and only execute when the agent is not busy with higher-priority tasks. The executive/runtime may wake vigil tasks earlier than their scheduled frequency if conditions warrant attention.
+
 ## RALN Compilation Target
 
 ### **Hardware Alignment**

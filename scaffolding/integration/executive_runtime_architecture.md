@@ -577,6 +577,13 @@ void promote_provider_cache(provider_ref_t provider, cache_tier_t target_tier);
 bool register_disrupt_handler(capability_filter_t emergency_type, d_precept_ref_t handler);
 void emit_emergency_signal(disrupt_signal_t signal);
 
+// Vigil and yield-safe point management
+bool register_vigil(vigil_ref_t vigil, yield_safe_point_t checkpoint);
+void wake_vigil(vigil_id_t vigil_id, wake_reason_t reason);
+bool check_vigil_attention_available();
+yield_safe_point_t create_yield_safe_point(state_vector_t state, wait_condition_t condition);
+bool resume_from_yield_safe_point(yield_safe_point_t checkpoint, job_id_t job);
+
 // System monitoring
 executive_telemetry_t get_executive_stats();
 alarm_log_t get_recent_alarms();
@@ -600,10 +607,16 @@ three_tier_stats_t get_cache_statistics();
 4. **Recovery procedures**: Failed emergency response triggers system-level recovery
 
 ### **Cooperative Multitasking Safety**
-1. **Yield point restriction**: Only yield at staging boundaries or dependency waits
+1. **Yield point restriction**: Only yield at staging boundaries, dependency waits, or yield-safe points
 2. **State vector integrity**: All yields must preserve simplified state vectors
 3. **Resumption validation**: Validate execution context before resuming yielded jobs
 4. **Timeout enforcement**: Jobs that don't yield cooperatively get forced preemption
+
+### **Vigil Management Safety**
+1. **Attention awareness**: Vigils only execute when cognitive capacity is available
+2. **Early wake capability**: Executive may wake vigil tasks before scheduled time if conditions warrant
+3. **Graceful degradation**: Vigils can be skipped without affecting core precept execution
+4. **Checkpoint binding**: Vigils are bound to specific yield-safe points and cannot operate outside their declared scope
 
 ---
 

@@ -115,6 +115,21 @@ Intent scaffolding formalizes this universal cognitive architecture.
   <RequiredInstrument instrumentName="safety_kit" preflight="true" />
 </D:Precept>
 
+<!-- Yield-safe waiting with background monitoring -->
+<YieldSafePoint name="process_checkpoint">
+  <StateVector>
+    <State key="process_active" value="true" />
+    <State key="start_time" value="timestamp" />
+  </StateVector>
+  <WaitCondition duration="expected_time" reason="Process completion" />
+</YieldSafePoint>
+
+<Vigil name="MonitorProgress" frequency="every_30s" during="process_checkpoint">
+  <Description>Optional monitoring when attention is available</Description>
+  <Action>Check process status</Action>
+  <Condition>Only if not busy with other tasks</Condition>
+</Vigil>
+
 <!-- Recursive goal decomposition -->
 <R:Precept name="SolveComplexProblem" 
            providing="capability:problem_domain" 

@@ -234,6 +234,47 @@ Document order provides implicit dependency ordering - earlier precepts typicall
 - Context switches can only occur at staging boundaries (not mid-precept)
 - Resumption validates state vectors and continues from last completed stage
 
+## Yield-Safe Points and Background Monitoring
+
+### **Yield-Safe Checkpoints**
+```xml
+<YieldSafePoint name="heating_checkpoint">
+  <StateVector>
+    <State key="pan_on_stove" value="true" />
+    <State key="heat_setting" value="medium" />
+    <State key="start_time" value="timestamp" />
+  </StateVector>
+  <WaitCondition duration="1m" reason="Pan heating" />
+  <ResumeCondition>
+    <Check state="pan_temperature" target="ready" />
+  </ResumeCondition>
+</YieldSafePoint>
+```
+
+**Purpose**: Explicit declaration of safe interruption points within precept execution where context switching can occur without losing critical state.
+
+**State Vector Capture**: Records minimal information needed to safely resume execution, including temporal context and physical state.
+
+### **Vigil Tasks - Background Monitoring**
+```xml
+<Vigil name="CheckPanOccasionally" 
+       frequency="every_30s" 
+       during="heating_checkpoint">
+  <Description>Optional periodic monitoring when attention is available</Description>
+  <Action>Glance at pan to ensure even heating</Action>
+  <Action>Listen for appropriate sizzling sounds</Action>
+  <Condition>Only if not busy with other tasks</Condition>
+</Vigil>
+```
+
+**Executive Control**: The executive/runtime manages vigil execution based on attention availability:
+- **Scheduled execution**: Vigils normally run at their declared frequency
+- **Early wake capability**: Executive may wake vigil tasks before their scheduled time if conditions warrant attention
+- **Attention-aware**: Vigils only execute when the agent has spare cognitive cycles
+- **Optional execution**: Unlike interrupts, vigils can be skipped if higher-priority tasks require attention
+
+**Integration with Yield-Safe Points**: Vigils are bound to specific yield-safe checkpoints and only operate during those execution phases.
+
 ## DISRUPT Handler Integration
 
 ### **Emergency Precepts**
