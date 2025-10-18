@@ -1,5 +1,56 @@
 <!-- Concise Omelette Recipe - Demonstrating Core Intent Scaffolding Patterns -->
 <IntentDOM root="MakeOmelette">
+  
+  <!-- DISRUPT Handlers: Emergency preparedness outside normal workflow -->
+  <D:Precept name="HandleBurnInjury" 
+             providing="capability:emergency_response AND domain:kitchen_safety"
+             description="Immediate response to cooking burns with comprehensive first aid">
+    <PreflightValidation>
+      <R:Precept name="ValidateEmergencyKit" 
+                 providing="capability:emergency_validation AND domain:kitchen"
+                 description="Comprehensive emergency kit validation with branching logic" />
+      <RequiredInstrument instrumentName="emergency_kit" />
+    </PreflightValidation>
+    <RequiredInstrument instrumentName="ice_pack" preflight="true" location="freezer" />
+    <RequiredInstrument instrumentName="clean_towel" preflight="true" />
+    
+    <Action>Remove hand from heat source immediately</Action>
+    <Action>Apply ice pack to burned area for 10-15 minutes</Action>
+    <Action>Apply burn gel if available and burn is severe</Action>
+    <Action>Cover with clean towel if blistering occurs</Action>
+    
+    <Output>
+      <Artifact name="burn_treated">
+        <Type>medical_intervention</Type>
+        <Description>Burn injury treated and stabilized</Description>
+      </Artifact>
+    </Output>
+  </D:Precept>
+
+  <D:Precept name="HandleKitchenFire" 
+             providing="capability:fire_suppression AND domain:kitchen"
+             description="Kitchen fire emergency response with validated equipment">
+    <PreflightValidation>
+      <R:Precept name="ValidateFireSafety" 
+                 providing="capability:fire_safety_validation AND domain:kitchen"
+                 description="Validate fire extinguisher and blanket readiness" />
+      <RequiredInstrument instrumentName="emergency_kit" />
+    </PreflightValidation>
+    
+    <Action>Turn off heat source immediately</Action>
+    <Action>Smother small grease fires with fire blanket</Action>
+    <Action>Use fire extinguisher for larger fires</Action>
+    <Action>Evacuate if fire cannot be controlled</Action>
+    
+    <Output>
+      <Artifact name="fire_suppressed">
+        <Type>emergency_intervention</Type>
+        <Description>Kitchen fire contained or area evacuated</Description>
+      </Artifact>
+    </Output>
+  </D:Precept>
+
+  <!-- Normal cooking workflow begins here -->
   <Precept name="MakeOmelette">
     <Description>Prepare and cook a basic cheese omelette</Description>
     <Domains>
@@ -36,7 +87,13 @@
     
     <!-- Execution: Concurrent preparation with temporal optimization -->
     <StagingPhase type="execution" name="concurrent_preparation">
-      <RequiredInstrument instrumentName="ingredients_validated" providing="preflight" />
+      <PreflightValidation>
+        <R:Precept name="ValidatePreviousStage" 
+                   stage="validate_ingredients" 
+                   expected_artifact="ingredients_validated"
+                   description="Ensure ingredient validation stage completed successfully" />
+        <RequiredInstrument instrumentName="ingredients_validated" />
+      </PreflightValidation>
       <Description>Prepare ingredients and equipment concurrently</Description>
       
       <!-- Equipment track with sleepable step -->
@@ -107,6 +164,15 @@
         
     <!-- Execution: Synchronized cooking -->
     <StagingPhase type="execution" name="cook_omelette">
+      <PreflightValidation>
+        <R:Precept name="ValidateStagePipeline" 
+                   required_stages="concurrent_preparation"
+                   expected_outputs="ingredients_ready,pan_ready"
+                   description="Validate that prerequisite stages can produce required artifacts" />
+        <RequiredInstrument instrumentName="stage_pipeline_validated" />
+      </PreflightValidation>
+      
+      <!-- Runtime dependencies -->
       <RequiredInstrument instrumentName="ingredients_ready" providing="execution:concurrent_preparation" />
       <RequiredInstrument instrumentName="pan_ready" providing="execution:concurrent_preparation" />
       <Description>Cook omelette using prepared ingredients and equipment</Description>

@@ -1,54 +1,138 @@
 # Intent Scaffold Guidelines & Rules
 
 ## Purpose
-This document defines the canonical rules and patterns for generating intent scaffolds and implementation examples in this workspace. It is designed for reuse whenever you request a new scaffold, implementation, or protocol.
+This document serves as the main index for intent scaffolding documentation. The system has been modularized into focused topic areas for better maintainability and clarity.
 
-**Updated**: October 16, 2025 - Enhanced with type-safe XML patterns and hardware-aligned terminology
+**Updated**: October 18, 2025 - Modularized into focused documentation modules
 
 ---
 
-## 1. Type-Safe Precept Structure
-- Every actionable item is a type-safe precept: `<Precept name="GenerateProjectArchitectureDoc">`, `<Precept name="SearchWorkspaceForCodeFiles">`, etc.
-- Direct XML element naming is deprecated in favor of explicit type safety: `<GenerateProjectArchitectureDoc>` → `<Precept name="GenerateProjectArchitectureDoc">`
-- There is no distinction between root intents and subtasks; all are precepts and can be nested arbitrarily.
-- Avoid generic tags like `<Subtask>` or `<Task>`.
+## Documentation Architecture
 
-## 2. Instrument Declaration (Hardware-Aligned)
-- Instruments required by a precept are declared using `RequiredInstrument` (aligned with RALN architecture):
-  ```xml
-  <RequiredInstrument instrumentName="eggs" quantity="2-3" />
-  <RequiredInstrument instrumentName="non_stick_pan" />
-  ```
-- Use React-style inline function syntax for instrument metadata when needed:
-  ```xml
-  <RequiredInstrument instrumentName={() => (
-    <Meta>
-      <Source>...</Source>
-      <Context>...</Context>
-      <Purpose>...</Purpose>
-    </Meta>
-  )} />
-  ```
-- The intent compiler is responsible for resolving instrument dependencies.
+### **Core Modules**
+- **[Fundamentals](./fundamentals.md)** - Type-safe precepts, instruments, basic execution model
+- **[Dependency Resolution Architecture](./dependency_resolution_architecture.md)** - RequiredInstrument, preflight validation, RESOLVE mode integration, query priorities
+- **[Capability System](./capability_system.md)** - Capability declarations, RESOLVE mode, R:Precept syntax, goal decomposition
+- **[Staging and Execution](./staging_and_execution.md)** - Staging phases, sync points, temporal optimization, speculative execution
+- **[Preflight Validation](./preflight_validation.md)** - Validation patterns, emergent instruments, dependency verification
+- **[DISRUPT Handlers](./disrupt_handlers.md)** - D:Precept syntax, emergency preparedness, DISRUPT mode integration
 
-## 3. Context-Aware Capability Declaration for RESOLVE System
-- **Purpose**: Capabilities enable automatic goal decomposition by declaring what a precept can handle in specific contexts
-- **NOT data flow**: Unlike instruments, capabilities are not about passing data between precepts
-- **Resolver optimization**: Context is a **required parameter** of each capability, enabling lightning-fast search space filtering
-- Precepts declare capabilities with mandatory context references:
-  ```xml
-  <Precept name="FileSystemAnalyzer">
-    <Provides>
-      <Capability name="workspace_scanning" context="UnixOfficeEnvironment" />
-      <Capability name="project_structure_analysis" context="SoftwareDevelopment" />
-      <Capability name="file_metadata_extraction" context="UnixOfficeEnvironment" />
-    </Provides>
-  </Precept>
-  ```
-- **Context-married capabilities**: Every capability must specify its applicable context for precise resolver matching
-- **Hierarchical filtering**: RESOLVE first filters by context compatibility, then by capability match
-- **RALN compiler simplification**: Context + capability = deterministic network topology selection
-- **Multiple capabilities**: One precept can handle several related types of sub-goals across different contexts
+### **Implementation Guides**
+- **[Migration Guide](./migration_guide.md)** - Legacy pattern updates, breaking changes, best practices
+
+### **Examples**
+- **[Omelette Concise Example](./examples/omelette_concise.xml)** - Comprehensive example demonstrating all patterns
+- **[Emergency Kit Validation](./examples/validate_emergency_kit.xml)** - Complex validation precept example
+- **[Egg Freshness Test](./examples/test_egg_freshness.xml)** - Simple validation precept example
+- **[Universal Seasoning](./examples/season_food.xml)** - Reusable precept example
+
+---
+
+## Quick Reference
+
+### **Modern Syntax Patterns**
+
+#### **Basic Precept Structure**
+```xml
+<Precept name="ActionName">
+  <Description>What this precept does</Description>
+  <RequiredInstrument instrumentName="dependency" />
+  <Action>Do something</Action>
+  <Output>
+    <Artifact name="result" />
+  </Output>
+</Precept>
+```
+
+#### **Three Preflight Validation Patterns**
+```xml
+<!-- Simple -->
+<RequiredInstrument instrumentName="ice_pack" preflight="true" />
+
+<!-- R:Precept -->
+<RequiredInstrument instrumentName="emergency_kit" preflight="R:ValidateEmergencyKit" />
+
+<!-- Emergent -->
+<PreflightValidation>
+  <R:Precept name="ValidateEmergencyKit" />
+  <RequiredInstrument instrumentName="emergency_kit" />
+</PreflightValidation>
+```
+
+#### **DISRUPT Handlers**
+```xml
+<D:Precept name="HandleEmergency" providing="capability:emergency_response">
+  <PreflightValidation>
+    <R:Precept name="ValidateEquipment" />
+    <RequiredInstrument instrumentName="emergency_ready" />
+  </PreflightValidation>
+  <!-- Emergency actions... -->
+</D:Precept>
+```
+
+#### **R:Precept Resolution**
+```xml
+<R:Precept name="SeasonFood" 
+           providing="capability:seasoning_application AND domain:food_preparation"
+           food_item="cracked_eggs" 
+           seasonings="salt_pepper" 
+           description="Add salt and pepper to cracked eggs, seasoning to taste" />
+```
+
+---
+
+## General Rules
+
+### **Syntax Requirements**
+- Use clear, descriptive names for all precepts
+- Use type-safe patterns: `<Precept name="ActionName">` instead of direct `<ActionName>`
+- Align terminology with RALN hardware architecture (instruments, not resources)
+- All scaffolds must be platform-independent and declarative
+
+### **Composability Rules**
+- A precept must not care if it's a root or child element - infinite composability is key
+- Dependencies and provisions are declared, not hardcoded
+- Avoid runtime-specific tags (e.g., `<RuntimeMode>`)
+- Prefer explicitness and composability over brevity
+
+### **Modern Architectural Principles**
+- **Most RESOLVE calls are preflight-related** (not runtime STALLs)
+- **Speculative execution with dependency-driven activation** (not imperative control flow)
+- **Document order execution** with depth-first traversal
+- **Emergency preparedness via D:Precept handlers** (not inline exception handling)
+- **Three-tier caching strategy** (runtime → DOM → repository)
+
+---
+
+## Legacy Pattern Migration
+
+### **Required Updates**
+```xml
+<!-- Old → New -->
+<RequiredResource resourceName="eggs" /> → <RequiredInstrument instrumentName="eggs" />
+<DirectElementName /> → <Precept name="DirectElementName" />
+providing="preflight" → preflight="true"
+```
+
+See **[Migration Guide](./migration_guide.md)** for comprehensive transition instructions.
+
+---
+
+## Reuse Guidelines
+
+Whenever you request a new implementation or scaffold, reference the appropriate module documentation:
+
+1. **Start with [Fundamentals](./fundamentals.md)** for basic syntax and concepts
+2. **Check [Dependency Resolution](./dependency_resolution_architecture.md)** for instrument and validation patterns  
+3. **Use [Capability System](./capability_system.md)** for RESOLVE mode and R:Precept syntax
+4. **Apply [Staging and Execution](./staging_and_execution.md)** for complex workflows
+5. **Add [Preflight Validation](./preflight_validation.md)** for robust dependency checking
+6. **Include [DISRUPT Handlers](./disrupt_handlers.md)** for emergency preparedness
+7. **Follow [Migration Guide](./migration_guide.md)** when updating legacy patterns
+
+---
+
+**Architecture Status**: The intent scaffolding system has evolved to prioritize preflight validation, speculative execution, and emergency preparedness. The modular documentation reflects this mature architecture while maintaining backward compatibility through migration guidance.
 
 ## 3.5. Instrument vs Capability Distinction
 - **Instruments** (`RequiredInstrument`): Concrete resources needed for precept execution (data, tools, validated states)
@@ -208,6 +292,109 @@ This document defines the canonical rules and patterns for generating intent sca
   - `Subtract` - Capability applies except in certain contexts (exclusion scope)
   - `SymmetricDifference` - Capability applies in conflicting contexts (alternative scope)
 - **Repository efficiency**: RESOLVE can precisely match precepts based on complex context requirements
+
+## 7.5. R:Precept Syntax for RESOLVE Mode Integration
+
+The `R:Precept` syntax provides a declarative way to request cached precept resolution with parameterized binding. The `R:` prefix signals to the executive that this is a RESOLVE mode operation requiring dynamic precept insertion.
+
+### **Core R:Precept Pattern**
+```xml
+<R:Precept name="PreceptName" 
+           providing="capability_filter_expression"
+           parameter_name="parameter_value"
+           description="Human-readable description of intent">
+  <!-- Optional: Override outputs or add local behavior -->
+</R:Precept>
+```
+
+### **Key Attributes**
+
+#### **Required Attributes**
+- **`name`**: Exact name of the precept to resolve from the repository
+- **`providing`**: Boolean filter expression for capability matching using AND/OR logic
+- **`description`**: Human-readable explanation of what this precept does in context
+
+#### **Parameter Binding**
+Any additional attributes become parameter bindings for the resolved precept:
+```xml
+<R:Precept name="SeasonFood" 
+           food_item="cracked_eggs" 
+           seasonings="salt_pepper" 
+           quantity="to_taste" />
+```
+
+### **Providing Filter Expressions**
+Use boolean logic to precisely match precept capabilities:
+```xml
+<!-- Single capability -->
+providing="capability:egg_validation"
+
+<!-- Domain + capability -->
+providing="domain:food_safety AND capability:egg_validation"
+
+<!-- Multiple options -->
+providing="(capability:butter_validation OR capability:dairy_validation) AND domain:food_safety"
+
+<!-- Complex filtering -->
+providing="domain:kitchen AND (capability:seasoning_application OR capability:flavor_enhancement)"
+```
+
+### **Complete Examples**
+
+#### **Basic Validation**
+```xml
+<R:Precept name="TestEggFreshness" 
+           providing="domain:food_safety AND capability:egg_validation" 
+           instrument="chosen_eggs"
+           description="Perform canonical water float test to verify egg quality" />
+```
+
+#### **Parameterized Food Processing**
+```xml
+<R:Precept name="SeasonFood" 
+           providing="capability:seasoning_application AND domain:food_preparation"
+           food_item="cracked_eggs" 
+           seasonings="salt_pepper" 
+           quantity="to_taste"
+           description="Add salt and pepper to cracked eggs, seasoning to taste" />
+```
+
+#### **Equipment Validation**
+```xml
+<R:Precept name="VerifyPanCondition" 
+           providing="domain:kitchen AND capability:pan_validation" 
+           instrument="chosen_pan"
+           description="Check pan for cleanliness and non-stick coating integrity" />
+```
+
+### **Human-Readability Principle**
+The `description` attribute ensures R:Precept placeholders are **self-documenting**. A human reader should be able to understand the intent without examining the implementation precept:
+
+```xml
+<!-- Good: Clear intent -->
+<R:Precept name="ChopVegetables" 
+           providing="capability:knife_work AND domain:food_prep"
+           vegetables="carrots_celery_onions"
+           cut_size="medium_dice"
+           description="Dice carrots, celery, and onions into uniform medium cubes for mirepoix" />
+
+<!-- Bad: Requires implementation knowledge -->
+<R:Precept name="ChopVegetables" vegetables="carrots_celery_onions" />
+```
+
+### **RESOLVE System Benefits**
+- **Caching**: Precepts are cached for fast lookup and reuse
+- **Parameterization**: Same logic works with different inputs across recipes
+- **Modularity**: Universal precepts (seasoning, chopping, validation) separate from specific recipes
+- **Scalability**: Repository can efficiently index and match precepts by capabilities and domains
+- **Reusability**: Any recipe can resolve common food preparation patterns
+
+### **Implementation Guidelines**
+1. **Extract Universal Patterns**: Any frequently-used action should become a separate precept
+2. **Use Descriptive Parameters**: Parameter names should be self-explanatory
+3. **Provide Human Context**: Always include meaningful descriptions
+4. **Filter Precisely**: Use specific capability/domain combinations for exact matching
+5. **Design for Reuse**: Think beyond the current recipe - how would other recipes use this?
 - **Resolver integration**: Multi-context capabilities enable one precept to serve many situations through mathematical context composition
 - **Optional extension**: `ExportFrom` with `ContextTransform` enables precept adaptation across environments for repository reuse
 
