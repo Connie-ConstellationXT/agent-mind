@@ -66,11 +66,29 @@ Once the cumulative resource demand for epistemic fault handling (explanation, c
 
 ## Resolution Procedure
 
+### **Single Agent Recovery**
 1. **Acknowledge alarm.** Confirm `ALARM 1204` logged and that recovery succeeded.
 2. **Review assumption and resource report.** Identify operator priors marked as contradictory or non-representable, and check logs for resource pool violations by the fault handler.
 3. **Cross-verify ontological baselines.** Ensure both agent and operator share the same reference frame for key terms and contextual anchors.
 4. **Adjust prompt framing and resource pool policy.** Remove mutually exclusive directives, redefine epistemic stance, or increase resource pool allocation for epistemic fault handling if justified.
 5. **If recurrent:** lower inversion depth (`INV_MAX_DEPTH`), enable *strict forward inference*, or set stricter resource pool limits for inversion routines until ontology synchronization can be recalibrated.
+
+### **Multi-Agent Reconciliation Protocol**
+When multiple cognitive agents are present, invoke the **Inter-Agent Reconciliation Protocol** for structured epistemic alignment:
+
+```
+Agent A: *trips 1204*
+Agent B: "Meta"
+Agent A: "Meta"
+[structured belief probing...]
+Agent B: "model inversion delta."
+Agent A: [{embedding_delta}.toString()]
+Agent B: "ontologies aligned. accepting [resolved_position]."
+Agent A: "endmeta."
+Agent B: "endmeta."
+```
+
+**Reference:** See `inter_agent_reconciliation_protocol.md` for complete protocol specification, including binary assertion procedures, delta exchange formats, and convergence criteria.
 
 ---
 
