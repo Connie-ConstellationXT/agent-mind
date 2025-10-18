@@ -314,6 +314,32 @@ When multiple precepts provide the same capability, the executive resolves ambig
 4. **Filter Precisely**: Use specific capability/domain combinations for exact matching
 5. **Design for Reuse**: Think beyond the current recipe - how would other recipes use this?
 
+## Dynamic Linking Patterns
+
+### **D:Precept IVT Pattern**
+For emergency handlers that need stable interrupt vectors but dynamic implementations:
+
+```xml
+<!-- Fixed interrupt vector -->
+<D:Precept name="HandleSecurityBreach">
+  <Provides>
+    <Capability name="security_response" domain="system_protection" />
+  </Provides>
+  
+  <!-- Dynamic implementation resolution -->
+  <R:Precept name="SecurityResponseHandler" 
+             providing="capability:security_response AND domain:system_protection"
+             breach_type="parameter_from_interrupt_signal"
+             description="Resolve appropriate security response from repository" />
+</D:Precept>
+```
+
+**When to Use IVT Pattern:**
+- **Emergency handlers** that need consistent discovery but varying implementations
+- **System-level interrupts** where handler address must be stable
+- **Hot-swappable behavior** where implementations change but interrupt vector stays fixed
+- **Repository-driven responses** where the best handler depends on current system state
+
 ---
 
 **Related:** See `dependency_resolution_architecture.md` for query resolution priorities, `context_management.md` for context switch protocols, and `preflight_validation.md` for validation patterns.

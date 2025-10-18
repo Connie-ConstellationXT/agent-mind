@@ -245,12 +245,12 @@ typedef struct {
 
 ### **DISRUPT (D) - Emergency Response**
 ```c
-// Modern D:Precept handler integration
+// Modern D:Precept handler integration with IVT pattern support
 void d_isr_handler(disrupt_signal_t signal) {
   // 1. Identify emergency type and required capability
   capability_query_t emergency_query = classify_emergency(signal);
   
-  // 2. Check for pre-loaded emergency handlers (D:Precept)
+  // 2. Check for pre-loaded emergency handlers (D:Precept) - IVT lookup
   d_precept_ref_t handler = lookup_emergency_handler(emergency_query);
   if (!handler.valid) {
     // No handler available - normal STALL/TAC resolution will handle this
@@ -264,6 +264,7 @@ void d_isr_handler(disrupt_signal_t signal) {
   }
   
   // 4. Create high-priority emergency job
+  // Note: D:Precept may contain R:Precept for dynamic implementation resolution
   job_descriptor_t emergency_job = {
     .priority = PRIORITY_EMERGENCY,
     .compilation = INTENT_FULLY_DETERMINISTIC,  // Emergency handlers must be fast
@@ -275,6 +276,13 @@ void d_isr_handler(disrupt_signal_t signal) {
   preempt_for_emergency(&emergency_job);
   enqueue_job(emergency_job);
 }
+```
+
+**IVT Pattern Implementation:**
+- `lookup_emergency_handler()` finds the **D:Precept interrupt vector** by capability
+- **D:Precept executes** as normal precept (may contain R:Precept for dynamic linking)
+- **R:Precept within D:Precept** resolves actual implementation from repository
+- **Stable interrupt addressing** with **dynamic implementation resolution**
 ```
 
 ### **M (MLP) - Recognition and Identification**

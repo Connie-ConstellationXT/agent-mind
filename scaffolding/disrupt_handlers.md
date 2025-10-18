@@ -17,8 +17,11 @@ DISRUPT handlers manage emergency and exceptional situations that require immedi
 ### **Basic D:Precept Declaration**
 ```xml
 <D:Precept name="HandleBurnInjury" 
-           providing="capability:emergency_response AND domain:kitchen_safety"
            description="Immediate response to cooking burns with comprehensive first aid">
+  <Provides>
+    <Capability name="emergency_response" domain="kitchen_safety" />
+    <Capability name="burn_treatment" domain="cooking_incidents" />
+  </Provides>
   
   <!-- Preflight validation ensures emergency readiness -->
   <PreflightValidation>
@@ -28,6 +31,30 @@ DISRUPT handlers manage emergency and exceptional situations that require immedi
   
   <RequiredInstrument instrumentName="ice_pack" preflight="true" location="freezer" />
   <RequiredInstrument instrumentName="clean_towel" preflight="true" />
+```
+
+### **Dynamic Linking D:Precept (IVT Style)**
+```xml
+<!-- Interrupt vector table entry - delegates to resolved implementation -->
+<D:Precept name="HandleKitchenFire" 
+           description="Kitchen fire emergency response with dynamic implementation">
+  <Provides>
+    <Capability name="fire_suppression" domain="kitchen" />
+    <Capability name="emergency_response" domain="cooking_incidents" />
+  </Provides>
+  
+  <!-- This D:Precept acts as IVT entry - delegates to actual handler -->
+  <R:Precept name="KitchenFireHandler" 
+             providing="capability:fire_suppression AND domain:kitchen"
+             description="Resolve actual fire suppression implementation from repository" />
+</D:Precept>
+```
+
+**IVT Pattern Benefits:**
+- **Fixed interrupt vector** - D:Precept always discoverable at same capability address
+- **Dynamic implementation** - Actual handler resolved from repository at runtime  
+- **Hot-swappable handlers** - Different implementations can be loaded without changing interrupt vector
+- **Clean separation** - Emergency dispatch (D:Precept) vs. emergency implementation (R:Precept)
   
   <!-- Immediate response actions -->
   <Action>Remove hand from heat source immediately</Action>
