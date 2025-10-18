@@ -196,12 +196,6 @@ The system has evolved where dependency validation happens upfront rather than d
 - **Predictable Performance** - Validation cost paid once during loading
 - **Better Resource Management** - No surprise resource demands during execution
 
-### **NOPs Evolved into Sophisticated Waiting**
-Simple NOP behavior transformed into:
-- **Dependency-Driven Activation** - Precepts wait for specific instruments
-- **Timeout-Based Termination** - Graceful failure after reasonable wait
-- **Speculative Execution** - Multiple precepts can wait for same dependency
-
 ### **Repository as Last Resort**
 The "heavy sigh" repository query is truly last resort:
 - **Smart Caching** prevents repeated expensive lookups

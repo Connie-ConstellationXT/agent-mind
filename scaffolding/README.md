@@ -210,7 +210,7 @@ Intent scaffolding formalizes this universal cognitive architecture.
 
 ### **Current State (October 2025)**
 - **Predictive cognitive modeling**: Most goal decomposition happens during planning phase
-- **Speculative execution**: Multiple solution paths explored simultaneously
+- **Adaptive, emergent control flow**:missing dependencies invoke the RESOLVE process and dependent precepts yield until a provider is found; execution order and yielding are emergent (see `dependency_resolution_architecture.md`).
 - **Proactive adaptation**: Response strategies pre-computed before challenges arise
 - **Multi-tier intelligence**: Hierarchical cognitive caching from reflexes to reasoning
 

@@ -96,7 +96,7 @@ This document serves as the main index for intent scaffolding documentation. The
 - Prefer explicitness and composability over brevity
 
 ### **Modern Architectural Principles**
-- **Most RESOLVE calls are preflight-related** (not runtime STALLs)
+- **Most RESOLVE calls are preflight-related** 
 - **Speculative execution with dependency-driven activation** (not imperative control flow)
 - **Document order execution** with depth-first traversal
 - **Emergency preparedness via D:Precept handlers** (not inline exception handling)

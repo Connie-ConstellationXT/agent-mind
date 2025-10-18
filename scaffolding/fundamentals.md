@@ -71,8 +71,14 @@ Intent scaffolding is a TypeScript-inspired, hierarchical XML markup language fo
 ### **Dependency-Driven Activation**
 - Precepts check `RequiredInstrument` dependencies before executing
 - If dependencies satisfied → execute
-- If dependencies missing → wait (don't NOP immediately)
-- Speculative execution: all precepts can spawn and wait for their conditions
+
+### **Dependency-Driven Activation**
+- Precepts check `RequiredInstrument` dependencies before executing.
+- If dependencies are satisfied → the precept executes.
+- If required dependencies are missing → the resolver is invoked immediately. The resolver queries for providers using the canonical priority order (Priority 1: Active runtime / hot cache → Priority 2: Intent DOM / warm cache → Priority 3: Repository / cold storage) as defined in `dependency_resolution_architecture.md`.
+- The dependent precept yields (suspends) until the resolver locates a provider and the required instrument/artifact becomes available, or until a configured timeout/failure occurs. There is no semantic "NOP" or explicit flow control; the precept simply waits for its dependencies to be satisfied before proceeding.
+- How a provider is instantiated does not change this behavior — whether the provider was predeclared in the Intent DOM, resolved from cache, or created via repository lookup, the dependent precept simply yields until its dependency is satisfied. Execution order and yielding are therefore emergent from dependency-driven resolution and cache promotion policies.
+- Yield/concurrency semantics are equivalent to a blocking call that returns when the artifact is produced; function-call style delegation and yield-based concurrency are unified under the same resolution semantics.
 
 ### **Artifact Pipelining**
 ```xml

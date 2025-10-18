@@ -169,11 +169,14 @@ All precepts spawn and attempt to execute immediately, but check dependencies be
 </Precept>
 ```
 
-### **Wait vs NOP Logic**
+### **Missing Dependencies**
 When a precept finds dependencies missing:
-1. **Check document order**: Are there earlier precepts that could produce the dependency?
-2. **If yes → WAIT**: Dependencies might appear later in execution
-3. **If no → NOP**: Dependencies will never be available in this execution
+- The Runtime invokes the RESOLVE process to locate providers of the missing instruments/artifacts.
+- The dependent precept yields (suspends) until the required instruments/artifacts become available
+- There is no semantic "NOP" or explicit flow control; the precept simply waits for its dependencies to be satisfied before proceeding.
+- This allows natural concurrency, as multiple precepts can be waiting for their dependencies simultaneously.
+- if a dependency cannot be resolved, the affected precept raises STALL and the parent precept must now handle that failure according to its own logic, such as trying alternative strategies or failing gracefully or propagating the failure up.
+
 
 ### **Dependency-Driven Activation**
 ```xml
