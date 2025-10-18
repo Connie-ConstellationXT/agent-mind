@@ -9,10 +9,10 @@
 
     <!-- Output: resolver cache map used by RESOLVE. Keep the artifact name stable so consumers can reference it. -->
     <Output>
-      <Artifact name="finger_delta_cache">
-        <Type>resolver_cache_map</Type>
+      <Artifact name="finger_delta_cache" type="resolver_cache_map">
         <Description>Map of candidate precept name → {score, confidence, latency_ms, verbosity_level, health_status, last_updated}.
           This artifact is updated continuously by the INFER loop and is intended as a soft, high-frequency guide for the RESOLVE subsystem.</Description>
+        <SystemOffering />
       </Artifact>
     </Output>
 

@@ -1,6 +1,10 @@
 # Runtime Mode and Optimization Level Combinations
 
-This document defines the syntax and constraints for combining runtime modes with optimization levels in the intent scaffolding system. Use this as a reference for valid and invalid (illegal) combinations.
+This document describes how operational concepts (NAVIGATE, LEAP, EXECUTE, PRUNE, DISRUPT, STALL, etc.) and optimization levels (E1–E5, GE) combine to form the **state transitions of a job descriptor** during its lifecycle. Job descriptors represent individual instantiations of intent trees.
+
+**Key clarification**: These combinations describe states within a single job descriptor's lifecycle, not global system-wide mode switches. In the concurrent dual-mirror architecture, each mirror (EXECUTE job, INFER job) is its own job descriptor with independent state transitions. Both mirrors maintain separate operational states and may be in different modes simultaneously (e.g., EXECUTE in E1 while INFER is in NGE).
+
+See `executive_runtime_architecture.md` for job descriptor semantics and the executive main loop.
 
 ---
 
@@ -17,7 +21,6 @@ Where:
 Examples:
 - `IGE`: INFER mode running in Gamma Entrainment (GE) optimization level
 - `E2`: EXECUTE mode running in optimization level 2 (low gear)
-- `PGE`: PRUNE mode running in Gamma Entrainment (GE) optimization level
 
 ---
 
