@@ -1,0 +1,38 @@
+<!-- Typing IntentDOM fragment -->
+<IntentDOM root="TypeHelloWorld">
+
+  <!-- Consumer asks for 'compute finger delta' but leaves implementation dynamic -->
+  <Precept name="TypeCharacter">
+    <Description>Compute finger movement to press next key and execute</Description>
+
+    <!-- Request a resolved precept to compute the delta -->
+    <R:Precept name="ComputeFingerDelta"
+               providing="capability:compute_finger_delta AND domain:typing"
+               parameter_key="next_key"
+               allocateOutput="finger_delta as finger_delta"
+               onStall="fallback:VisualCompute" >
+      <!-- structured fallback: try tactile or visual queries if primary fails -->
+      <Fallback>
+        <R:Precept providing="capability:tactile_delta_estimation AND domain:typing"
+                   allocateOutput="finger_delta as finger_delta"
+                   description="Fallback tactile estimate (e.g., f/j home anchors)" />
+        <R:Precept providing="capability:visual_delta_estimation AND domain:typing"
+                   allocateOutput="finger_delta as finger_delta"
+                   description="Fallback visual geometry-based estimate" />
+      </Fallback>
+    </R:Precept>
+
+    <!-- downstream consumer consumes the finger_delta artifact -->
+    <RequiredInstrument instrumentName="finger_delta" />
+    <Action>Move finger by vector from artifact 'finger_delta'</Action>
+    <Action>Press key</Action>
+  </Precept>
+
+  <!-- Optional: MLPTrigger: monitor IMU or keystroke error and recruit a DISRUPT precept -->
+
+  <D:Precept name="HandleDrift">
+    <MLPTrigger ref="kinesthetic drift detected" />
+    <Action>Prioritize VisualCompute resolution for N next keystrokes</Action>
+  </D:Precept>
+
+</IntentDOM>

@@ -64,6 +64,38 @@ Once the cumulative resource demand for epistemic fault handling (explanation, c
 
 ---
 
+### Interpersonal 1204: Manifold Normalization
+
+Between agents, ALARM 1204 detects when one agent's embedded model of another's world model has drifted too far from reality (as the first agent understands it):
+
+- **Embedded model**: Agent A's internal representation of what Agent B knows/believes; lower-dimensional or differently-scaled.
+- **Comprehensive model**: Agent A's full model of reality (reference manifold).
+- **Alignment via k-scaling**: 
+  - Compute uniform scale factor *k* such that `embedded_model * k` best matches `comprehensive_model`.
+  - This is manifold normalization — finding the isotropic scaling that aligns the two manifolds.
+- **Ontology drift magnitude**: `||embedded_model * k - comprehensive_model||` (Euclidean distance after scaling).
+- **Threshold**: When drift > `max_ontology_drift_threshold`, Agent A recognizes the ontological misalignment and triggers DISRUPT handlers or escalates to reconciliation.
+
+**Example**: You believe a colleague understands the system architecture. Internally you model their knowledge as a lower-resolution embedding. Over time, they make decisions that contradict your embedded model. By computing *k* and the residual error, you detect the mismatch: their model has scaled or shifted (perhaps they learned something, or you misunderstood them). High error triggers clarifying questions → `inter_agent_reconciliation_protocol`.
+
+### Unified Alarm Semantics
+
+Both intrapersonal and interpersonal 1204 produce the same output:
+- **Shouting**: Predictor's verbosity rises; blinkenlights panel alerts.
+- **DISRUPT escalation**: High-priority handlers activate (e.g., pause automation, request human intervention, initiate reconciliation).
+- **Health signals**: Both mirror divergence and *k*-drift are logged and exposed to operators/other agents.
+
+### Reconciliation
+
+When 1204 fires:
+- **Intrapersonal**: EXECUTE halts speculation (writes code, takes action); INFER re-syncs with reality.
+- **Interpersonal**: Agents initiate `inter_agent_reconciliation_protocol` to reduce *k* divergence and re-align embedded models.
+
+See `inter_agent_reconciliation_protocol.md` for multi-agent coordination strategies.
+
+---
+
+
 ## Resolution Procedure
 
 ### **Single Agent Recovery**

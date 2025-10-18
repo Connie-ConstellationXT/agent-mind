@@ -289,11 +289,9 @@ Example: a resolved doneness test allocates `pasta_is_aldente`; an MLP detector 
            allocateOutput="pasta_is_aldente as pasta_is_aldente"
            description="Test pasta doneness" />
 
-<!-- Somewhere in a D:Precept or ISR-capable precept -->
-<MLPTrigger ref="instrument:pasta_is_aldente" />
-
 <D:Precept name="QuickServeISR" entry_point="pasta_cooking_final">
-  <Trigger signal="pasta_is_aldente" />
+  <!-- The precept owns its MLP trigger so it can manage lifecycle, preflight, and priority -->
+  <MLPTrigger ref="instrument 'pasta_is_aldente' is allocated" />
   <Action>Immediately drain and serve pasta</Action>
 </D:Precept>
 ```
@@ -301,6 +299,7 @@ Example: a resolved doneness test allocates `pasta_is_aldente`; an MLP detector 
 Notes:
 - Recruitment via `MLPTrigger` doesn't guarantee hard realtime — it promotes priority handling within the DISRUPT/ISR model but respects system-level execution constraints.
 - Use `allocateOutput` so artifact names are explicit and discoverable by MLP-based listeners.
+ - `MLPTrigger` refs may be natural-language identifiers (for example, "kinesthetic drift detected" or "pasta_is_aldente") because the MLP/embedding network maps these phrases into the same high-dimensional semantic space used to detect patterns. Use whichever form is most readable to authors and compatible with your runtime matcher.
 
 ---
 
