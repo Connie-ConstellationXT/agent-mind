@@ -81,6 +81,28 @@ This document serves as the main index for intent scaffolding documentation. The
 
 ---
 
+
+## Dynamic Precept Output Mapping
+
+When consuming a dynamically linked precept (R:Precept) whose output artifact will be used as an instrument in a downstream precept, always declare the expected output explicitly using the `allocateOutput` attribute. This makes the artifact contract clear for both the parser and future maintainers, enabling static validation and modular composition.
+This is not necessary for the runtime execution, because the RESOLVE system will handle output binding automatically, but it is a best practice for clarity and maintainability.
+
+**Pattern:**
+```xml
+<R:Precept name="ExternalComputation"
+           providing="capability:math_computation AND domain:external_services"
+           input_value="42"
+           allocateOutput="computed_result as computed_result"
+           description="Perform computation externally and return result as artifact 'computed_result'" />
+```
+
+**Guideline:**
+- The name before `as` is the artifact produced by the provider precept.
+- The name after `as` is the local alias used as instrumentName in the consumer DOM.
+- This practice enables intent scaffolds to be validated and composed even when the provider precept is not locally defined.
+
+---
+
 ## General Rules
 
 ### **Syntax Requirements**

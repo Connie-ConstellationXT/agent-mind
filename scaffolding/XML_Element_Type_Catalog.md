@@ -59,6 +59,12 @@
 **Children**: None (self-closing)
 **Example Context**: Temperature checks, completion verification
 
+### MLPTrigger
+**Purpose**: Optional linkage from D:Precepts to machine-learned pattern symbols (MLP activations). Enables event-driven activation of emergency handlers from neural detectors (audio/olfactory/vision models).
+**Attributes**: `model` (model identifier), `symbol` (activation symbol/name), `confidence_threshold` (float 0-1 for activation gating)
+**Children**: None (self-closing)
+**Example Context**: Trigger D:Precept when a neural model detects a boil-over sound spike or burning odor signal.
+
 ### PreceptList
 **Purpose**: Container for multiple precepts within an intent scaffold
 **Attributes**: None

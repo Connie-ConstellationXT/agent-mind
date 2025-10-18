@@ -1,0 +1,34 @@
+<!-- Example IntentDOM: Consuming a dynamically linked precept and using its output artifact -->
+<IntentDOM root="DemoDynlinkConsumer">
+
+  <!-- Dynamically linked precept: referenced, not defined here -->
+  <!-- Assume elsewhere: Precept 'ExternalComputation' outputs artifact 'computed_result' -->
+
+  <Precept name="InvokeExternalComputation">
+    <Description>Invoke a dynamically linked precept to perform an external computation</Description>
+  <R:Precept name="ExternalComputation"
+         providing="capability:math_computation AND domain:external_services"
+         input_value="42"
+         allocateOutput="computed_result as computed_result"
+         description="Perform computation externally and return result as artifact 'computed_result'" />
+    <Output>
+      <Artifact name="external_computation_invoked">
+        <Type>state_vector</Type>
+        <Description>External computation requested</Description>
+      </Artifact>
+    </Output>
+  </Precept>
+
+  <Precept name="ConsumeComputationResult">
+    <Description>Consume the output artifact from the dynamically linked precept</Description>
+    <RequiredInstrument instrumentName="computed_result" />
+    <Action>Log or process the computed result as needed</Action>
+    <Output>
+      <Artifact name="result_consumed">
+        <Type>state_vector</Type>
+        <Description>Computation result has been processed</Description>
+      </Artifact>
+    </Output>
+  </Precept>
+
+</IntentDOM>
