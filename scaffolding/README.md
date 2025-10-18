@@ -6,6 +6,37 @@
 
 ## Quick Start
 
+### **👩‍💻 New Engineers - Start Here (30 minutes to productivity)**
+
+1. **📖 Read Core Concepts (10 min)** - [Fundamentals](./fundamentals.md)
+2. **🔍 Study Working Example (10 min)** - [Omelette Example](./examples/omelette_concise.xml)  
+3. **📋 Copy Template (5 min)** - Use patterns from [Examples README](./examples/README.md)
+4. **🚀 Start Building (5 min)** - Modify example for your use case
+
+### **⚡ Common Patterns Quick Reference**
+```xml
+<!-- Basic action -->
+<Precept name="YourAction">
+  <RequiredInstrument instrumentName="dependency" />
+  <Action>Do something</Action>
+</Precept>
+
+<!-- With validation -->
+<RequiredInstrument instrumentName="equipment" preflight="true" />
+
+<!-- Emergency handler -->
+<D:Precept name="HandleEmergency" providing="capability:emergency_response">
+  <RequiredInstrument instrumentName="safety_kit" preflight="true" />
+</D:Precept>
+
+<!-- Reusable logic -->
+<R:Precept name="UniversalAction" 
+           providing="capability:your_capability" 
+           description="What this does" />
+```
+
+---
+
 1. **New to Intent Scaffolding?** Start with [Fundamentals](./fundamentals.md)
 2. **Migrating Legacy Code?** See [Migration Guide](./migration_guide.md)  
 3. **Need Examples?** Check [Omelette Example](./examples/omelette_concise.xml)
