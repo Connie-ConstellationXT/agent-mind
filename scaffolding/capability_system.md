@@ -56,7 +56,7 @@ XML provides multiple equivalent ways to express domain specifications. All of t
 
 <!-- Self-closing element -->
 <Capability name="file_scanning">
-  <Domain>UnixEnvironment</Domain>
+  <Domain name="UnixEnvironment" />
 </Capability>
 ```
 
@@ -296,8 +296,8 @@ When multiple precepts provide the same capability, the executive resolves ambig
 ```
 
 ### **Executive Selection Logic**
-- **E1/E2**: Choose `BasicDeskCleanup` (lower LOC = appropriate complexity for building momentum)
-- **E4/E5**: Choose `ErgonomicWorkspaceOptimization` (higher LOC = elegant solution when context supports it)
+- **E1/E2**: Choose `ErgonomicWorkspaceOptimization` (higher LOC = more thorough, lower-gear selections favor comprehensive precepts that trade speed for coverage)
+- **E4/E5**: Choose `BasicDeskCleanup` (lower LOC = high-optimization precepts cut corners and therefore tend to be more concise; higher gears select concise, fast precepts)
 - **STALL Recovery**: Downgrade optimization level and re-select simpler precept
 
 ### **Natural Overoptimization Prevention**

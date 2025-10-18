@@ -139,28 +139,28 @@ provider_ref_t select_precept_by_optimization_level(precept_candidate_list_t can
   
   switch (opt_level) {
     case OPTIMIZATION_E1:
-      // Select simplest precept (lowest LOC)
-      return candidates.precepts[0];
+      // Select most thorough precept (highest LOC) for foundation-building
+      return candidates.precepts[candidates.count - 1];
       
     case OPTIMIZATION_E2:
-      // Select from lower 40% of complexity range
-      return select_from_percentile_range(candidates, 0.0, 0.4);
+      // Select from upper complexity range (more thorough)
+      return select_from_percentile_range(candidates, 0.6, 1.0);
       
     case OPTIMIZATION_E3:
-      // Select from middle complexity range
-      return select_from_percentile_range(candidates, 0.3, 0.7);
+      // Balanced selection - mix of thoroughness and concision
+      return select_from_percentile_range(candidates, 0.2, 0.8);
       
     case OPTIMIZATION_E4:
-      // Select from upper complexity range
-      return select_from_percentile_range(candidates, 0.6, 0.9);
+      // Select from lower complexity range (leaner precepts for performance)
+      return select_from_percentile_range(candidates, 0.1, 0.4);
       
     case OPTIMIZATION_E5:
-      // Select most sophisticated precept (highest LOC), but only if context supports it
-      if (has_sufficient_context_momentum(candidates.precepts[candidates.count - 1])) {
-        return candidates.precepts[candidates.count - 1];
+      // Select the most concise precept (lowest LOC) for high-optimization operation
+      if (has_sufficient_context_momentum(candidates.precepts[0])) {
+        return candidates.precepts[0];
       } else {
-        // Clutch protection - downgrade selection
-        return select_from_percentile_range(candidates, 0.7, 0.9);
+        // Clutch protection - if insufficient momentum, select a slightly more thorough option
+        return select_from_percentile_range(candidates, 0.1, 0.3);
       }
       
     case OPTIMIZATION_GE:
@@ -540,6 +540,7 @@ void backpropagate_successful_execution(job_id_t completed_job) {
 The system learns patterns specific to preventing overoptimization:
 
 - **Context-aware gear selection** - Learns which contexts benefit from lower optimization levels
+- **Context-aware gear selection** - Learns which contexts benefit from lower optimization levels (lower gears favor higher-LOC, more thorough precepts; higher gears favor lower-LOC, concise precepts)
 - **Personal STALL pattern recognition** - Identifies recurring overoptimization failure modes
 - **Momentum requirement learning** - Refines when high gears are appropriate vs. clutch-burning
 - **Precept genealogy effectiveness** - Tracks which LOC ranges work best in different contexts

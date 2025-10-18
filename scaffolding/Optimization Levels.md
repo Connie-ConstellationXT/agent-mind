@@ -32,8 +32,8 @@ Optimization levels in intent scaffolding represent the **executive's computatio
 
 The executive uses **Lines of Code (LOC)** as the primary heuristic for optimization-appropriate precept selection:
 
-- **Lower optimization levels** → Select precepts with **smaller LOC** (simpler genealogies)
-- **Higher optimization levels** → Select precepts with **larger LOC** (more sophisticated solutions)
+- **Lower optimization levels** → Select precepts with **larger LOC** (more thorough genealogies — prefer coverage over speed)
+- **Higher optimization levels** → Select precepts with **smaller LOC** (concise, corner-cutting precepts optimized for speed)
 - **Multiple candidates** → LOC serves as tiebreaker based on current optimization level
 - **STALL recovery** → Executive downgrades optimization level and re-selects simpler precepts
 

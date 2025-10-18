@@ -104,7 +104,7 @@ The world model is **outside the scope of this repository** - it's a separate un
 ### **RESOLVE First**
 Normal execution always tries RESOLVE first:
 - Fast cache lookups (Priority 1, 2, 3)
-- LOC-based precept selection
+- LOC-based precept selection (note: executive LOC heuristic maps lower optimization gears to higher-LOC, more thorough precepts, and higher gears to lower-LOC, concise precepts)
 - Confidence assessment
 
 ### **INFER Escalation**
