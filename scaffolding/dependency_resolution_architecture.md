@@ -188,6 +188,50 @@ Database/repository lookup:
 
 ---
 
+## Emergent Singleton Behavior
+
+### **Priority-Based Deduplication**
+The three-tier priority system creates **natural deduplication** that prevents redundant provider instantiation. When a dependency is missing, the resolver searches priorities in order and selects the **closest available provider**, creating emergent singleton behavior.
+
+### **Example: Preventing Redundant Providers**
+```xml
+<Precept name="MakeOmelette">
+  <Precept name="CrackEggs">
+    <Output><Artifact name="cracked_eggs" /></Output>
+  </Precept>
+  
+  <!-- Later in document order -->
+  <Precept name="SeasonEggs">
+    <RequiredInstrument instrumentName="cracked_eggs" preflight="true" />
+  </Precept>
+</Precept>
+```
+
+**Scenario**: During DOM loading, `SeasonEggs` runs preflight validation and finds `cracked_eggs` missing.
+
+**Resolution Process**:
+1. **Priority 1 (Active Runtime)**: Empty - DOM just loaded
+2. **Priority 2 (Intent DOM)**: Finds `CrackEggs` precept already declared 
+3. **Priority 3 (Repository)**: Has `BuyEggsFromStore` precept available
+
+**Result**: Resolver selects the **already-declared** `CrackEggs` from Priority 2, not the repository's `BuyEggsFromStore`.
+
+### **"Closer Providers Win" Principle**
+- **Intent DOM providers** (Priority 2) are preferred over repository providers (Priority 3)
+- **Active runtime providers** (Priority 1) are preferred over planned providers (Priority 2)
+- This prevents spawning redundant providers when a suitable one already exists in the execution scope
+- **Natural deduplication**: The same dependency will consistently resolve to the same provider within an execution context
+
+### **Benefits of Emergent Singleton Behavior**
+- **Resource conflict prevention**: Avoids multiple precepts trying to satisfy the same dependency
+- **Execution efficiency**: No duplicate work (e.g., buying eggs when already cracking eggs)
+- **Predictable behavior**: Same dependency → same provider within execution scope
+- **Locality preference**: Closer providers reduce coordination overhead and latency
+
+This emergent singleton behavior arises from the priority search order, not explicit singleton enforcement. The architecture naturally prevents redundant instantiation through **locality preference**.
+
+---
+
 ## Design Implications
 
 ### **Most RESOLVE is Now Preflight**
