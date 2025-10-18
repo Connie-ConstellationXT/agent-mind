@@ -61,6 +61,8 @@ Intent scaffolding is a TypeScript-inspired, hierarchical XML markup language fo
 <Context type="food_preparation" />
 ```
 
+**Note**: Optimization levels (E1-E5, GE) are **executive strategy**, not precept declarations. Precepts focus on capabilities and constraints; the executive manages computational elegance and complexity selection.
+
 ## Execution Model
 
 ### **Document Order Execution**

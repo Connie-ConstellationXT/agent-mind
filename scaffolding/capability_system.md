@@ -30,11 +30,13 @@ The capability system enables automatic goal decomposition by declaring what pre
 - **NOT data flow**: Unlike instruments, capabilities are not about passing data between precepts
 - **Resolver optimization**: Context enables lightning-fast search space filtering
 - **Multiple capabilities**: One precept can handle several related sub-goals across different contexts
+- **Optimization-level agnostic**: Precepts declare capabilities without optimization level awareness - executive manages complexity selection
 
 ### **Instrument vs Capability Distinction**
 - **Instruments** (`RequiredInstrument`): Concrete resources needed for precept execution (data, tools, validated states)
 - **Capabilities** (`Provides`): Abstract problem-solving abilities that help RESOLVE decompose complex goals
-- **Separation of concerns**: Instruments handle "what do I need", capabilities handle "what can I do"
+- **Optimization Levels**: Executive strategy for precept selection complexity, never declared in precepts themselves
+- **Separation of concerns**: Instruments handle "what do I need", capabilities handle "what can I do", executive handles "how sophisticated should this be"
 
 ## Multi-Context Capabilities
 
@@ -224,6 +226,48 @@ PreceptIndex: (capability_name, context_id) → precept_list
 - **Modularity**: Universal precepts (seasoning, chopping, validation) separate from specific recipes
 - **Scalability**: Repository can efficiently index and match precepts by capabilities and domains
 - **Reusability**: Any recipe can resolve common food preparation patterns
+- **Optimization-aware selection**: Executive uses LOC heuristics to select precepts appropriate for current optimization level
+
+## Executive Precept Selection Strategy
+
+When multiple precepts provide the same capability, the executive resolves ambiguity using **Lines of Code (LOC)** as a complexity proxy:
+
+### **Simple vs. Sophisticated Alternatives**
+```xml
+<!-- Candidate 1: Simple approach (low LOC) -->
+<Precept name="BasicDeskCleanup">
+  <Provides>
+    <Capability name="workspace_organization" context="office_environment" />
+  </Provides>
+  <RequiredInstrument instrumentName="available_storage" />
+  <Action>Sort items into basic categories and store</Action>
+</Precept>
+
+<!-- Candidate 2: Sophisticated approach (high LOC) -->
+<Precept name="ErgonomicWorkspaceOptimization">
+  <Provides> 
+    <Capability name="workspace_organization" context="office_environment" />
+  </Provides>
+  <RequiredInstrument instrumentName="available_storage" />
+  <RequiredInstrument instrumentName="workflow_analysis_data" />
+  <R:Precept name="AnalyzeUsagePatterns" providing="capability:ergonomic_analysis" />
+  <R:Precept name="OptimizePlacement" providing="capability:spatial_optimization" />
+  <R:Precept name="ValidateAccessibility" providing="capability:usability_testing" />
+  <Action>Arrange workspace based on ergonomic principles and usage frequency</Action>
+  <!-- ... additional complexity ... -->
+</Precept>
+```
+
+### **Executive Selection Logic**
+- **E1/E2**: Choose `BasicDeskCleanup` (lower LOC = appropriate complexity for building momentum)
+- **E4/E5**: Choose `ErgonomicWorkspaceOptimization` (higher LOC = elegant solution when context supports it)
+- **STALL Recovery**: Downgrade optimization level and re-select simpler precept
+
+### **Natural Overoptimization Prevention**
+- **Complex precepts STALL** when genealogy depth exceeds available context momentum
+- **Executive downgrades gear** and selects simpler alternatives
+- **System learns** from STALL patterns to prevent future overoptimization
+- **Clutch protection** prevents starting complex tasks in inappropriate gears
 
 ## Implementation Guidelines
 

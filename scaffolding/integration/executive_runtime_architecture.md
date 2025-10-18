@@ -26,6 +26,8 @@ typedef struct {
   emergent_singleton_map_t singletons;  // Tracks singleton provider assignments
   uint64_t estimated_cycles;            // Resource estimation
   job_state_t state;                    // WAITING, READY, RUNNING, BLOCKED, COMPLETE
+  optimization_level_t current_optimization; // E1-E5, GE - executive's current gear
+  precept_selection_history_t selection_log; // LOC-based selection decisions for learning
 } modern_job_descriptor_t;
 ```
 
@@ -102,7 +104,7 @@ provider_ref_t resolve_dependency(resolve_query_t query, job_id_t requesting_job
   
   // Priority 3: Repository query with "heavy sigh"
   // Works for both instrument and capability queries
-  provider = repository_resolve(query);
+  provider = repository_resolve_with_optimization(query, requesting_job->current_optimization);
   if (provider.valid) {
     // Cache for future use, promote to Priority 2
     cache_resolved_provider(provider, requesting_job->dom_scope);
@@ -112,6 +114,62 @@ provider_ref_t resolve_dependency(resolve_query_t query, job_id_t requesting_job
   // Dependency cannot be satisfied (instrument or capability)
   emit_dependency_failure(query, requesting_job);
   return PROVIDER_NOT_FOUND;
+}
+
+// LOC-based precept selection for optimization-aware resolution
+provider_ref_t repository_resolve_with_optimization(resolve_query_t query, optimization_level_t opt_level) {
+  // 1. Find all candidate precepts matching capability/context filters
+  precept_candidate_list_t candidates = filter_precepts_by_capability(query);
+  
+  if (candidates.count == 0) {
+    return PROVIDER_NOT_FOUND;
+  }
+  
+  if (candidates.count == 1) {
+    return candidates.precepts[0];
+  }
+  
+  // 2. Multiple candidates - use LOC heuristic based on optimization level
+  return select_precept_by_optimization_level(candidates, opt_level);
+}
+
+provider_ref_t select_precept_by_optimization_level(precept_candidate_list_t candidates, optimization_level_t opt_level) {
+  // Sort candidates by Lines of Code (LOC)
+  sort_candidates_by_loc(candidates);
+  
+  switch (opt_level) {
+    case OPTIMIZATION_E1:
+      // Select simplest precept (lowest LOC)
+      return candidates.precepts[0];
+      
+    case OPTIMIZATION_E2:
+      // Select from lower 40% of complexity range
+      return select_from_percentile_range(candidates, 0.0, 0.4);
+      
+    case OPTIMIZATION_E3:
+      // Select from middle complexity range
+      return select_from_percentile_range(candidates, 0.3, 0.7);
+      
+    case OPTIMIZATION_E4:
+      // Select from upper complexity range
+      return select_from_percentile_range(candidates, 0.6, 0.9);
+      
+    case OPTIMIZATION_E5:
+      // Select most sophisticated precept (highest LOC), but only if context supports it
+      if (has_sufficient_context_momentum(candidates.precepts[candidates.count - 1])) {
+        return candidates.precepts[candidates.count - 1];
+      } else {
+        // Clutch protection - downgrade selection
+        return select_from_percentile_range(candidates, 0.7, 0.9);
+      }
+      
+    case OPTIMIZATION_GE:
+      // Gamma entrainment - select based on creative potential, not LOC
+      return select_for_creative_restructuring(candidates);
+      
+    default:
+      return candidates.precepts[0]; // Default to simplest
+  }
 }
 
 // Resolve query type definitions
@@ -430,6 +488,62 @@ job_admission_result_t attempt_job_creation(precept_ref_t root_precept) {
   return create_job_descriptor(root_precept, compilation);
 }
 ```
+
+---
+
+## Executive Learning and Adaptation
+
+### **Cache State Backpropagation**
+
+After successful job completion, the executive captures execution traces for system improvement:
+
+```c
+typedef struct {
+  resolve_decision_log_t selection_decisions;  // All LOC-based precept selections made
+  actual_execution_cost_t real_cost;          // Actual cycles vs. estimated
+  stall_recovery_log_t stall_patterns;        // STALL events and recovery strategies
+  cache_promotion_history_t promotions;       // Cache tier promotions during execution
+  optimization_effectiveness_t opt_results;   // Did optimization level work appropriately?
+  context_momentum_assessment_t momentum;     // Context momentum vs. gear selection
+} successful_execution_trace_t;
+
+void backpropagate_successful_execution(job_id_t completed_job) {
+  successful_execution_trace_t trace = extract_execution_trace(completed_job);
+  
+  // 1. Refine LOC selection heuristics
+  update_loc_selection_weights(trace.selection_decisions, trace.opt_results);
+  
+  // 2. Improve optimization level effectiveness prediction
+  refine_optimization_level_thresholds(trace.momentum, trace.opt_results);
+  
+  // 3. Learn from STALL recovery patterns
+  improve_stall_recovery_strategies(trace.stall_patterns);
+  
+  // 4. Optimize cache promotion policies
+  tune_cache_promotion_timing(trace.promotions);
+  
+  // 5. Update context momentum assessment
+  improve_context_momentum_detection(trace.momentum, trace.selection_decisions);
+}
+```
+
+### **Adaptive Optimization Regulation**
+
+The system learns patterns specific to preventing overoptimization:
+
+- **Context-aware gear selection** - Learns which contexts benefit from lower optimization levels
+- **Personal STALL pattern recognition** - Identifies recurring overoptimization failure modes
+- **Momentum requirement learning** - Refines when high gears are appropriate vs. clutch-burning
+- **Precept genealogy effectiveness** - Tracks which LOC ranges work best in different contexts
+
+### **Executive Function Prosthetic Evolution**
+
+Through backpropagation, the system becomes a more effective **cognitive clutch protection mechanism**:
+
+1. **Predictive gear limiting** - Prevents inappropriate high-gear starts before they cause STALL
+2. **Personalized complexity budgeting** - Learns individual optimization tolerance patterns  
+3. **Context-sensitive elegance management** - Adapts sophistication levels to situational appropriateness
+4. **Automatic intervention refinement** - Improves timing and sensitivity of optimization regulation
 
 ---
 
