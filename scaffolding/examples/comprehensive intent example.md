@@ -126,6 +126,58 @@ Purpose: Complete reference showing every XML element, pattern, and capability
       </Output>
     </StagingPhase>
   </D:Precept>
+  
+  <!-- Non-emergency event-driven D:Precepts (examples) -->
+  <!-- These D:Precepts demonstrate using the DISRUPT/event mechanism for non-critical events -->
+  <D:Precept name="HandleLowPriorityNotification"
+             description="Event-driven handler for low-priority user notifications">
+    <Provides>
+      <Capability name="notification_handling" domain="ux" />
+    </Provides>
+    <MLPTrigger model="notification_detector"
+                symbol="user_noncritical_notification"
+                confidence_threshold="0.70" />
+    <Action>Aggregate notification into daily digest</Action>
+    <Action>Schedule gentle reminder if not acknowledged within 24h</Action>
+    <Output>
+      <Artifact name="notification_digest_updated">
+        <Type>state_vector</Type>
+        <Description>Low-priority notification queued for digest</Description>
+      </Artifact>
+    </Output>
+  </D:Precept>
+
+  <D:Precept name="HandleScheduledMaintenance"
+             description="Start maintenance tasks at scheduled windows (non-critical)">
+    <Provides>
+      <Capability name="maintenance_orchestration" domain="operations" />
+    </Provides>
+    <Trigger>cron:schedule=02:00_Sat</Trigger>
+    <Action>Drain noncritical traffic</Action>
+    <Action>Run maintenance scripts with low-priority IO</Action>
+    <Output>
+      <Artifact name="maintenance_completed">
+        <Type>state_vector</Type>
+        <Description>Scheduled maintenance completed</Description>
+      </Artifact>
+    </Output>
+  </D:Precept>
+
+  <D:Precept name="HandleUserPreferenceUpdate"
+             description="Event-driven update when user changes noncritical settings">
+    <Provides>
+      <Capability name="preference_sync" domain="user_prefs" />
+    </Provides>
+    <Trigger>user_event:preference_change</Trigger>
+    <Action>Validate preference schema</Action>
+    <Action>Propagate preference to cache and noncritical services</Action>
+    <Output>
+      <Artifact name="preferences_synced">
+        <Type>state_vector</Type>
+        <Description>User preferences validated and synchronized</Description>
+      </Artifact>
+    </Output>
+  </D:Precept>
 
   <!--
   ===========================================
@@ -788,7 +840,7 @@ Purpose: Complete reference showing every XML element, pattern, and capability
   <!-- Documentation notes -->
   <Notes>
     <Note>This example demonstrates every major feature of Intent Scaffolding markup</Note>
-    <Note>D:Precepts show emergency response patterns with preflight validation</Note>
+  <Note>D:Precepts are event-driven handlers (emergency or non-critical) and support preflight validation</Note>
     <Note>Staging phases demonstrate both preflight and execution boundaries</Note>
     <Note>R:Precepts show capability-based resolution with parameter binding</Note>
     <Note>Parallel execution tracks show concurrent workflow coordination</Note>

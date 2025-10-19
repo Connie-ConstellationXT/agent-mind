@@ -9,6 +9,7 @@
 ### **`omelette_concise.xml`** - Complete Working Example
 Comprehensive demonstration of all modern intent scaffolding patterns:
 - **D:Precept emergency handlers** with preflight validation  
+ - **D:Precept event-driven handlers** (emergency or non-critical) with preflight validation  
 - **Three preflight validation patterns** (simple, R:Precept, emergent)
 - **R:Precept universal precepts** with parameter binding
 - **Staging phases** with temporal optimization
@@ -47,7 +48,7 @@ Example of capability-based reusable logic:
 | **Simple Preflight** | `omelette_concise.xml` | `preflight="true"` existence checks |
 | **R:Precept Preflight** | `omelette_concise.xml` | `preflight="R:ValidateSomething"` |
 | **Emergent Validation** | `omelette_concise.xml` | `<PreflightValidation>` blocks |
-| **Emergency Handlers** | `omelette_concise.xml` | `<D:Precept>` for safety |
+| **Event-driven Handlers (D:Precept)** | `omelette_concise.xml` | `<D:Precept>` for event-driven (emergency or non-critical) handling |
 | **Staging Phases** | `omelette_concise.xml` | Execution boundaries |
 | **Universal Precepts** | `season_food.xml` | Reusable parameterized logic |
 | **Complex Validation** | `validate_emergency_kit.xml` | Multi-step validation workflows |
@@ -76,11 +77,11 @@ Example of capability-based reusable logic:
 </Precept>
 ```
 
-### **Emergency Handler**
+### **Event-driven Handler (D:Precept)**
 ```xml
-<D:Precept name="HandleEmergency" providing="capability:emergency_response">
+<D:Precept name="HandleEvent" providing="capability:event_response">
   <RequiredInstrument instrumentName="safety_equipment" preflight="true" />
-  <Action>Immediate emergency response</Action>
+  <Action>Immediate or event-driven response (emergency or non-critical)</Action>
 </D:Precept>
 ```
 
@@ -104,7 +105,7 @@ Example of capability-based reusable logic:
 
 ### **Intermediate (15 minutes)**
 1. Study the preflight validation patterns in `omelette_concise.xml`
-2. Look at emergency handlers (`<D:Precept>`)
+2. Look at D:Precept event-driven handlers (`<D:Precept>`) — these can be emergency or non-critical event handlers
 3. Understand staging phases for complex workflows
 
 ### **Advanced (30 minutes)**
