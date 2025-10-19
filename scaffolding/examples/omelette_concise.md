@@ -1,3 +1,8 @@
+# Concise Omelette Recipe
+
+This example demonstrates core Intent Scaffolding patterns through a complete omelette recipe, including DISRUPT handlers for emergency situations, yield-safe points, and vigils for optional monitoring tasks.
+
+```xml
 <!-- Concise Omelette Recipe - Demonstrating Core Intent Scaffolding Patterns -->
 <IntentDOM root="MakeOmelette">
 
@@ -315,3 +320,4 @@
         
   </Precept>
 </IntentDOM>
+```

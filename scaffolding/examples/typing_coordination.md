@@ -1,3 +1,8 @@
+# Typing Coordination Example
+
+This example demonstrates typing coordination with finger delta computation, including RESOLVE patterns and fallback mechanisms.
+
+```xml
 <!-- Typing IntentDOM fragment -->
 <IntentDOM root="TypeHelloWorld">
 
@@ -36,3 +41,4 @@
   </D:Precept>
 
 </IntentDOM>
+```

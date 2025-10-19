@@ -1,3 +1,8 @@
+# Emergency Kit Validation
+
+This example demonstrates comprehensive emergency kit validation with branching logic, multiple validation steps, and detailed acceptance criteria.
+
+```xml
 <!-- Emergency Kit Validation - Comprehensive Safety Preparedness Precept -->
 <IntentDOM root="ValidateEmergencyKit">
   <Precept name="ValidateEmergencyKit">
@@ -160,3 +165,4 @@
     
   </Precept>
 </IntentDOM>
+```

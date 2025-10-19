@@ -1,3 +1,8 @@
+# Canonical Egg Freshness Test
+
+This example shows a reusable precept for testing egg freshness using the standard water float test, designed for RESOLVE mode.
+
+```xml
 <!-- Canonical Egg Freshness Test - Reusable Precept for RESOLVE Mode -->
 <IntentDOM root="TestEggFreshness">
   <Precept name="TestEggFreshness">
@@ -46,3 +51,4 @@
     
   </Precept>
 </IntentDOM>
+```

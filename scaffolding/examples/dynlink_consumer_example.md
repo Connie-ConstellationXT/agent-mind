@@ -1,3 +1,8 @@
+# Dynamic Link Consumer Example
+
+This example demonstrates how to consume a dynamically linked precept and use its output artifact.
+
+```xml
 <!-- Example IntentDOM: Consuming a dynamically linked precept and using its output artifact -->
 <IntentDOM root="DemoDynlinkConsumer">
 
@@ -32,3 +37,4 @@
   </Precept>
 
 </IntentDOM>
+```

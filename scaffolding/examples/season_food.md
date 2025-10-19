@@ -1,3 +1,8 @@
+# Universal Seasoning Precept
+
+This example shows a reusable seasoning precept that can be applied to any food preparation context.
+
+```xml
 <!-- Universal Seasoning Precept - Reusable for Any Food Preparation -->
 <IntentDOM root="SeasonFood">
   <Precept name="SeasonFood">
@@ -34,3 +39,4 @@
     
   </Precept>
 </IntentDOM>
+```

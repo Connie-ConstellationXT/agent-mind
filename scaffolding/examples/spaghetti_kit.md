@@ -1,3 +1,8 @@
+# Cheap Spaghetti Kit Recipe
+
+This example demonstrates Intent Scaffolding with pre-packaged ingredients, showing workflow optimization, yield-safe points, and background task monitoring.
+
+```xml
 <!-- Cheap Spaghetti Kit Recipe - Demonstrating Intent Scaffolding with Pre-packaged Ingredients -->
 <IntentDOM root="MakeSpaghettiKit">
 <!-- DISRUPT Handlers: Emergency preparedness for pasta cooking -->
@@ -288,3 +293,4 @@
         
   </Precept>
 </IntentDOM>
+```

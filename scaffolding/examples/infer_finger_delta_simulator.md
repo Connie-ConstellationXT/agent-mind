@@ -1,3 +1,8 @@
+# INFER Finger Delta Simulator
+
+This example shows an INFER simulator that runs lightweight predictive simulations over candidate finger-delta precepts and publishes a resolver cache artifact for RESOLVE consumers.
+
+```xml
 <!-- INFER Simulator: Finger Delta Resolver Cache Provider -->
 <IntentDOM root="InferFingerDeltaSimulator">
 
@@ -26,3 +31,4 @@
   </Precept>
 
 </IntentDOM>
+```
