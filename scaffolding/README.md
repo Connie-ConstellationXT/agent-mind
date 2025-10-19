@@ -71,7 +71,7 @@ The system handles problems never seen before by:
 5. **Emergent orchestration** - Complex behaviors emerge from simple rules
 
 ### **Scale-Invariant Applications**
-- **� Personal**: *"Learn quantum physics"* → decompose to study plan → execute learning
+- **� Personal**: *"Learn to ride a unicycle"* → decompose into skills → practice and adapt
 - **🏢 Corporate**: *"Become carbon neutral"* → decompose across departments → coordinate execution  
 - **🏛️ Government**: *"Solve homelessness"* → decompose across agencies → multi-year execution
 - **🌌 Civilization**: *"Become interplanetary species"* → multi-generational recursive decomposition

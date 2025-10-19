@@ -43,8 +43,10 @@ Both mirrors run concurrently in the cooperative scheduler. Each mirror maintain
 
 The blinkenlights panel is a **usage dashboard**, not a mode switch:
 - Reports where runtime spends most busy cycles (EXECUTE-dominant, INFER-dominant, or mixed)
-- Shows health/verbosity of the predictor (quiet, chatty, shouting)
-- Displays per-mirror confidence and drift estimates
+ - Reports where runtime spends most busy cycles (EXECUTE-dominant, INFER-dominant, or mixed)
+ - Dominant runtime mode (one annunciator light per mode)
+ - Optimization level
+ - One annunciator light for each ALARM
 
 The panel reflects reality: both mirrors always run. Operators see the locus of productive work, not a forced global mode.
 
@@ -76,16 +78,6 @@ The mirror-yield mechanism creates natural, emergent preference switching:
 
 ---
 
-## Verbosity & Alarm States
-
-The INFER predictor has internal verbosity levels:
-- **Quiet**: Low prediction error, high confidence; predictor confidence > EXECUTE-led outcomes.
-- **Chatty**: Moderate prediction error or uncertainty; predictor is informative but not commanding.
-- **Shouting**: High persistent prediction error or anomaly detection (e.g., detected drift, conflicting sensor evidence). Shouting triggers DISRUPT-level handlers and may escalate to human-in-the-loop.
-
-The blinkenlights panel displays verbosity; operators can monitor predictor health in real-time.
-
----
 
 ## ALARM 1204: Mirror Divergence & Manifold Alignment
 
