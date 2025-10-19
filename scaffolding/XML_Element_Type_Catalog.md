@@ -60,10 +60,12 @@
 **Example Context**: Temperature checks, completion verification
 
 ### MLPTrigger
-**Purpose**: Optional linkage from D:Precepts to machine-learned pattern symbols (MLP activations). Enables event-driven activation of emergency handlers from neural detectors (audio/olfactory/vision models).
-**Attributes**: `model` (model identifier), `symbol` (activation symbol/name), `confidence_threshold` (float 0-1 for activation gating)
+**Purpose**: Hardware neural wiring declaration that connects specific output neurons from trained MLPs directly to the power latch of precepts/vigils. When the neuron fires above threshold, it instantly activates the circuit - pure hardware event-driven activation with zero software polling overhead.
+**Attributes**: `model` (trained MLP model identifier), `symbol` (specific output neuron name), `confidence_threshold` (float 0-1 for power latch activation threshold)
 **Children**: None (self-closing)
-**Example Context**: Trigger D:Precept when a neural model detects a boil-over sound spike or burning odor signal.
+**Example Context**: Wire "egg_cracking_detected" neuron to cleanup daemon, "system_degradation_pattern" neuron to emergency handler, "cascading_test_failures" neuron to build failure response.
+
+**Emergent Pattern Discovery**: MLP models continuously observe all system signals (internal state, external sensors, qualia patterns, physical manifestations). Over time, they learn to recognize patterns like "every time agent cracks an egg" or "system about to crash". MLPTrigger enables pure emergent coordination - precepts can respond to learned patterns without explicit dependencies or coordination overhead.
 
 ### PreceptList
 **Purpose**: Container for multiple precepts within an intent scaffold
