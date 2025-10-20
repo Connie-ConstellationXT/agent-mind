@@ -1,13 +1,14 @@
 # Intent Scaffolding Documentation Index
 
-**Complete Reference**: Modular documentation for intent scaffolding architecture
+**Note**: This project is a work of science fiction and is not intended as a complete implementation of an agentic mind. While it explores the principles of recursive goal decomposition and distributed execution, achieving a fully functional agentic mind is constrained by the author's current access to tools and resources. If this were achievable today, the author's career trajectory would undoubtedly look very different.
 
 ---
 
 ## What Problem Does This Solve?
 
 ### **The Grand Challenge: Formalizing Agentic Cognition**
-How do you model the way any mind—biological or synthetic—breaks down complex goals into achievable actions? How do you enable an agent to tackle absurdly complex zero-shot challenges like *"It's 1950. Invent all technology needed to land a man on the moon and execute the mission"* by recursively decomposing the problem until every dependency is satisfied and the output of the final action produces the desired artifact?
+How do you model the way any mind —biological or synthetic— breaks down complex goals into achievable actions? How do you enable an agent to tackle absurdly complex zero-shot challenges like *"It's 1950. Invent all technology needed to land a man on the moon and execute the mission"*?
+-> By recursively decomposing the problem until every dependency is satisfied and the output of the final action produces the desired artifact.
 
 **Intent scaffolding is a formal language for modeling agentic cognition at any scale.**
 
