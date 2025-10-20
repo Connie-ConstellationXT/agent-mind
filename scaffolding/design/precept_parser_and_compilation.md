@@ -21,7 +21,7 @@ Parser convention
 Rationale
 - Feed-forward parsing (look at tag name prefix) allows the compiler to decide compilation strategy without needing to interpret the entire element body.
 - This mirrors simple, deterministic language grammars (Pascal-style), avoiding C-like recursive signature ambiguity.
-- The `R:Precept` is the canonical marker for "this child may cause runtime mutation". No separate `dynlink` flag is required.
+- The `R:Precept` is the canonical marker for "this child may cause runtime mutation". No separate `dynlink` flag is required, but a developer may choose to include it for self-documentation.
 
 H:Precept id encoding
 - `H:Precept` nodes use an opaque `id` attribute representing an octree-like address (fixed-length integer, hex/base32, or variable-length path). Example:
