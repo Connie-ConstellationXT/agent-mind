@@ -1,3 +1,5 @@
+The following example demonstrates all features of the Intent Scaffolding markup system within a single comprehensive intent DOM. It includes multiple domain declarations, complex capability definitions, various required instruments, constraints, preflight validations, staging phases, yield-safe points, MLPTriggers, and DISRUPT handlers.
+
 ``` xml
 <!-- 
 COMPREHENSIVE INTENT DOM EXAMPLE

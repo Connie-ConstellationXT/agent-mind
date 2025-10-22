@@ -1,6 +1,6 @@
 # Intent Scaffolding Documentation Index
 
-**Note**: This project is a work of science fiction and is not intended as a complete implementation of an agentic mind. While it explores the principles of recursive goal decomposition and distributed execution, achieving a fully functional agentic mind is constrained by the author's current access to tools and resources. If this were achievable today, the author's career trajectory would undoubtedly look very different.
+**Note**: This project is a work of science fiction and is not intended as a complete implementation of an agentic mind. While it explores the principles of recursive goal decomposition and distributed execution, achieving a fully functional agentic mind is constrained by the author's current access to tools, knowledge, and resources. If this were achievable today, the author's career trajectory would undoubtedly look very different.
 
 ---
 

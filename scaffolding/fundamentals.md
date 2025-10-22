@@ -1,179 +1,115 @@
-# Intent Scaffolding Fundamentals
+# Intent Scaffolding — Friendly Fundamentals
 
-**Core Concepts**: Type-safe precepts, instruments, and basic execution model
+This is a short, plain-English introduction to the vocabulary and mental model used across this repository. It’s intended for people who land here and ask: “what do you even mean by ‘intent’, ‘precept’, or ‘artifact’?”
 
----
+For full technical details and formal definitions, see the specialized files linked at the end of this page.
 
-## Purpose
+## Quick glossary
 
-Intent scaffolding is a TypeScript-inspired, hierarchical XML markup language for declaratively describing tasks, workflows, and goals for intelligent agents. It compiles to hardware-accelerated RALN networks while maintaining semantic continuity through ULEM (Universal Latent Embedding Microcode).
+- Intent
+  A high-level goal or purpose the system is trying to accomplish (e.g., “Make a sandwich”, “Find relevant source files”). Intents describe *what* to achieve, not how to do it.
 
-## Core Principles
+- Precept
+  A single, named unit of work inside the intent DOM. Precepts are declarative, typed, and composable — they are the building blocks of intent trees. Example:
+  ```xml
+  <Precept name="MakeOmelette">
+    <Description>Prepare a basic cheese omelette</Description>
+  </Precept>
+  ```
 
-### **1. Type-Safe Precept Structure**
-- Every actionable item is a type-safe precept: `<Precept name="GenerateProjectArchitectureDoc">`, `<Precept name="SearchWorkspaceForCodeFiles">`, etc.
-- Direct XML element naming is deprecated in favor of explicit type safety: `<GenerateProjectArchitectureDoc>` → `<Precept name="GenerateProjectArchitectureDoc">`
-- There is no distinction between root intents and subtasks; all are precepts and can be nested arbitrarily.
-- Avoid generic tags like `<Subtask>` or `<Task>`.
+- RequiredInstrument (or instrument)
+  A declared dependency a precept needs before it can run. This can be a physical object, a piece of knowledge, another agent, or abstract resources like time or attention. Example:
+  ```xml
+  <RequiredInstrument instrumentName="eggs" quantity="2" />
+  ```
 
-### **2. Hardware-Aligned Terminology**
-- Use `RequiredInstrument` to align with RALN architecture
-- Use `instrumentName`  for parameter names
-- Instruments represent concrete dependencies needed for precept execution
+- Artifact / Output
+  The product a precept promises to produce. Outputs become instruments for downstream precepts.
+  ```xml
+  <Output><Artifact name="cracked_eggs" /></Output>
+  ```
 
-### **3. Infinite Composability**
-- A precept must not care if it's a root or child element
-- Dependencies and provisions are declared, not hardcoded
-- All precepts are modular and indifferent to their position in the hierarchy
+- Domain / Context
+  Labels that give situational meaning and restrict where certain knowledge or behaviors apply. Domains tell the system which physical laws, conventions, norms, or reasoning modes are relevant — for example, `kitchen` vs `quantum_lab`, or `FrenchCuisine` vs `CorporatePolicy`. The same observation or technique may be valid in one domain but invalid in another (you don't reason about electron behavior the same way you reason about apples; social behaviors that are OK in one culture may be inappropriate in another). Domains are used to guide RESOLVE searches, validation, and runtime selection of behavior.
 
-### **4. Emergent Coordination through Learned Patterns**
-- MLP models continuously observe all system activity (internal state, external signals, qualia patterns, physical manifestations)
-- Neural networks learn behavioral signatures like "every time agent cracks an egg" or "system about to crash"
-- MLPTrigger enables pure hardware event-driven activation: when learned pattern detected → instant precept/vigil activation
-- Zero coordination overhead: daemons auto-spawn based on neural pattern recognition without explicit dependencies
-- Creates biological-inspired reflexes in synthetic systems through emergent intelligence
+- YieldSafePoint & Vigil (short)
+  YieldSafePoint: a safe place in a precept tree to pause and capture state.  
+  Vigil: a low-priority background check that runs opportunistically when attention is available.
 
-## Basic Syntax
+- MLP cluster (super simple)
+  A group of learned neural components that recognize patterns in system activity. In plain language: “a trained detector that notices useful or risky patterns (habits, faults, anomalies) and can trigger precepts or background checks.” They are pattern detectors, not oracle brains.
 
-### **Precept Declaration**
-```xml
-<Precept name="MakeOmelette">
-  <Description>Prepare and cook a basic cheese omelette</Description>
-  
-  <!-- Child precepts -->
-  <Precept name="CrackEggs" />
-  <Precept name="CookEggs" />
-</Precept>
-```
+## How things run — short overview
 
-### **Instrument Dependencies**
-```xml
-<RequiredInstrument instrumentName="eggs" quantity="2-3" alias="chosen_eggs" />
-<RequiredInstrument instrumentName="non_stick_pan" />
-```
 
-**Instrument Universality**: `RequiredInstrument` treats all dependency types uniformly - physical objects (`eggs`, `pan`), knowledge (`recipe_knowledge`, `technique_mastery`), other agents (`chef_assistant`, `safety_monitor`), validated states (`ingredients_fresh`, `equipment_ready`), and abstract resources (`time_allocation`, `attention_capacity`) are all handled identically by the dependency resolution system.
 
-### **Output Artifacts**
-```xml
-<Output>
-  <Artifact name="finished_omelette">
-    <Type>food_item</Type>
-    <Description>Completed omelette ready to serve</Description>
-  </Artifact>
-</Output>
-```
+- Authoring: you write an Intent DOM using `Precept`s, `RequiredInstrument`s, `Output`s and the other elements.
+- precepts are instantiated into executable units called **job descriptors** or simply **jobs** by the runtime.
+- Each precept is instantiated into two jobs: one for EXECUTE ()
+- all jobs are managed in a central job queue and will attempt to run immediately when created.
+- There is no guaranteed order of execution beyond the dependencies declared by required instruments, but the runtime will attempt to run precepts in document order.
+- Jobs that cannot run yet (due to missing instruments) will trigger RESOLVE to find providers and yield (wait) until the instruments are available.
+- Execution: precepts are evaluated in document order;
+- Missing instruments: RESOLVE is invoked to find providers (hot cache → warm cache → repository). If RESOLVE is uncertain, INFER can run simulations to validate candidate providers before committing.
 
-### **Constraints and Context**
-```xml
-<Constraint type="temperature">Medium heat throughout cooking</Constraint>
-<Context type="food_preparation" />
-```
+For the full algorithms and runtime semantics see `dependency_resolution_architecture.md` and `INFER_specification.md`.
 
-**Note**: Optimization levels (E1-E5, GE) are **executive strategy**, not precept declarations. Precepts focus on capabilities and constraints; the executive manages computational elegance and complexity selection.
+## From intent to action — turtles all the way down
 
-## Execution Model
+At a high level, a precept declares that it either (a) knows how to produce a desired output directly, or (b) knows a group of other precepts that can be composed to produce that output. The runtime composes and expands these declarations into an executable tree of jobs — potentially hundreds or thousands of layers deep — until it reaches precepts that actually affect hardware or the environment.
 
-### **Document Order Execution**
-- Precepts execute from top to bottom (document order)
-- Nested precepts run depth-first: parent → first child → second child, etc.
-- This provides predictable, human-intuitive execution flow
+Think "turtles all the way down": each precept may be implemented by lower-level precepts, and those by still lower-level precepts. Eventually you reach a leaf precept we call turtle-0. A turtle-0 precept is the only layer that directly manipulates physical or virtual I/O: moving a muscle, setting an actuator, flipping a valve, toggling an IO port, or emitting a single, verifiable sensor reading. Turtle-0 is intentionally small and simple so its behavior is easy to audit and reason about.
 
-### **Dependency-Driven Activation**
-- Precepts check `RequiredInstrument` dependencies before executing
-- If dependencies satisfied → execute
+Why this matters:
 
-### **Dependency-Driven Activation**
-- Precepts check `RequiredInstrument` dependencies before executing.
-- If dependencies are satisfied → the precept executes.
-- If required dependencies are missing → the **RESOLVE** system is invoked immediately. RESOLVE queries for providers using the canonical priority order (Priority 1: Active runtime / hot cache → Priority 2: Intent DOM / warm cache → Priority 3: Repository / cold storage) as defined in `dependency_resolution_architecture.md`.
-- If RESOLVE returns uncertain results (low confidence, no candidates, or multiple equivalent options) → the **INFER** system performs simulation-based validation by executing candidate precept trees against a world model rather than physical reality. See `INFER_specification.md` for complete simulation architecture.
-- The dependent precept yields (suspends) until the resolver locates a validated provider and the required instrument/artifact becomes available, or until a configured timeout/failure occurs. There is no semantic "NOP" or explicit flow control; the precept simply waits for its dependencies to be satisfied before proceeding.
-- How a provider is instantiated does not change this behavior — whether the provider was predeclared in the Intent DOM, resolved from cache, repository lookup, or validated through INFER simulation, the dependent precept simply yields until its dependency is satisfied. Execution order and yielding are therefore emergent from dependency-driven resolution and cache promotion policies.
-- Yield/concurrency semantics are equivalent to a blocking call that returns when the artifact is produced; function-call style delegation and yield-based concurrency are unified under the same resolution semantics.
+- Declarative composition: higher-level precepts stay declarative — they don't need to know exactly how an actuator works, only which capabilities (instruments) are required and which lower-level precepts provide them.
+- Verifiability: by pushing side-effects to turtle-0, we keep the majority of the runtime analyzable and testable; only a narrow, auditable boundary touches the world.
+- Graceful degradation: if a low-level provider fails, RESOLVE can find alternative providers or INFER can validate fallbacks before the higher-level precept commits to a plan.
 
-### **Artifact Pipelining**
+Example (informal):
+
+- `MakeOmelette` -> composes `CrackEggs`, `MixEggs`, `HeatPan`, `CookEggs` (mid-level precepts)
+- `HeatPan` -> composes `FindPan`, `PlacePanOnStove`, `SetBurnerPower` (lower-level precepts)
+- `SetBurnerPower` -> turtle-0 precept: set hardware PWM to X (actuator-level command)
+
+In this way the runtime scales from declarative intent to precise actuator commands while preserving traceability and the ability to simulate candidate paths with INFER before touching real hardware.
+
+## Tiny example (end-to-end)
 ```xml
 <Precept name="CrackEggs">
-  <Output>
-    <Artifact name="cracked_eggs" />
-  </Output>
+  <Output><Artifact name="cracked_eggs" /></Output>
 </Precept>
 
 <Precept name="SeasonEggs">
   <RequiredInstrument instrumentName="cracked_eggs" />
-  <Output>
-    <Artifact name="seasoned_eggs" />
-  </Output>
+  <Output><Artifact name="seasoned_eggs" /></Output>
 </Precept>
 ```
 
-## Domain and Context Integration
+Read this as: `CrackEggs` produces `cracked_eggs`. `SeasonEggs` depends on `cracked_eggs` and will wait until they exist.
 
-### **Domain References**
-```xml
-<Domains>
-  <Domain ref="kitchen" />
-  <Domain ref="food_safety" />
-  <Domain type="culture" ref="FrenchCuisine" />
-</Domains>
-```
+## Where to read next
 
-### **Behavioral Control Elements**
-Use semantic elements that affect agent reasoning:
-- `Context` - Provides situational information for agent reasoning
-- `Source` - Indicates information source for credibility assessment  
-- `Location` - Enables spatial reasoning and resource proximity decisions
-- `Purpose` - Guides goal alignment and optimization decisions
+- `scaffolding/XML_Element_Type_Catalog.md` — full element catalog and examples
+- `scaffolding/dependency_resolution_architecture.md` — how RESOLVE finds providers
+- `scaffolding/INFER_specification.md` — simulation-based validation
+- `scaffolding/capability_system.md` — capability modeling and provides/consumes
 
-### **Yield-Safe Points and Background Monitoring**
-```xml
-<YieldSafePoint name="checkpoint_name">
-  <StateVector>
-    <State key="variable_name" value="current_value" />
-  </StateVector>
-  <WaitCondition duration="expected_time" reason="explanation" />
-</YieldSafePoint>
+## Why the Apollo guidance computer of all things?
 
-<Vigil name="background_monitoring" 
-       frequency="every_30s" 
-       during="checkpoint_name">
-  <Description>Optional periodic monitoring when attention is available</Description>
-  <Action>Check status or perform light maintenance</Action>
-  <Condition>Only if not busy with other tasks</Condition>
-</Vigil>
-```
+# "a 1960s analog digital converter for a gyroscope can't possibly be useful for solving the hard problem of general intelligence, right???"
 
-**Yield-Safe Points** declare explicit checkpoints where precept execution can be safely interrupted and resumed later. They capture sufficient state to enable context switching without losing progress.
+So why are the ideas expressed here explicitly inspired by the Apollo Guidance Computer (AGC)?
 
-**Vigils** represent background monitoring tasks that run periodically when the executive has spare attention. Unlike interrupts, vigils are optional and only execute when the agent is not busy with higher-priority tasks. The executive/runtime may wake vigil tasks earlier than their scheduled frequency if conditions warrant attention.
+Short answer: space is cool. Fite me irl.
 
-## RALN Compilation Target
+Longer answer:
 
-### **Hardware Alignment**
-- Precepts compile to RALN goal/instrument/domain/compressedstate parameters
-- `RequiredInstrument` maps to RALN input requirements
-- `Output` artifacts map to RALN state transitions
-- Context and domain references enable deterministic network topology selection
+The AGC shows up in our language because its engineering questions and constraints mirror a mindset we value: the very first design question the team at MIT Instrumentation Laboratory asked was not "how should it run when everything is fine?" but rather "how can it keep running when the unexpected happens and our most basic assumptions collapse?" That emphasis on graceful continuity under failure — deterministic, auditable primitives, tiny trusted boundaries, and a hard focus on what must remain correct even while everything else degrades — is what the AGC teaches us.
 
-### **Semantic Continuity**
-- ULEM (Universal Latent Embedding Microcode) maintains semantic meaning across compilation
-- Human-readable scaffolds → RALN networks without semantic loss
-- Hardware acceleration while preserving intent semantics
+Put another way, asking "how does the system continue to run when things break in surprising ways?" is an operational form of asking "what does it mean to act robustly?" That question is close to the start of agency: systems that can plan, detect when their plan's assumptions are violated, and switch to verified fallback behaviors are expressing a minimal, practical form of agency. In the same way, recognizing "I don't know" is the beginning of practical wisdom; recognizing failure modes and planning for them is the beginning of trustworthy action.
 
----
+We borrow the AGC's stance, not its hardware. The goal is to design small, verifiable building blocks (the turtle-0 boundary among them), clear interfaces between perception, decision, and action, and a runtime that favors auditable fallbacks and simulation-validated choices (INFER) over opaque, monolithic behaviors. This engineering stance helps prevent learned components from becoming unmoored black boxes — it gives learned subsystems discipline and a narrow, testable surface where they interact with the world.
 
-## Key Differences from Traditional Programming
+If you want a deeper historical or technical tie, see `scaffolding/Hardware/RALN.md` and `scaffolding/Hardware/ULEM.md` for how the hardware/compilation target and semantic embedding themes map to that engineering stance.
 
-| Traditional Code | Intent Scaffolding |
-|------------------|-------------------|
-| Imperative steps | Declarative goals |
-| Function calls | Precept dependencies |
-| Return values | Artifact outputs |
-| Control flow | Document order + dependencies |
-| Error handling | Constraint validation |
-| Resources | Instruments |
-
----
-
-**Next:** See `dependency_resolution_architecture.md` for advanced dependency patterns, `staging_and_execution.md` for execution control, and `capability_system.md` for RESOLVE mode integration.

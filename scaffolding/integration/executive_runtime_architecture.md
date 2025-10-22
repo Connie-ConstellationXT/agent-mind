@@ -243,15 +243,15 @@ typedef struct {
 
 ## Modern Interrupt Model
 
-### **DISRUPT (D) - Emergency Response**
+### **DISRUPT (D) - Hardware Signal Response**
 ```c
 // Modern D:Precept handler integration with IVT pattern support
 void d_isr_handler(disrupt_signal_t signal) {
-  // 1. Identify emergency type and required capability
-  capability_query_t emergency_query = classify_emergency(signal);
+  // 1. Identify signal type and required capability
+  capability_query_t signal_query = classify_disrupt_signal(signal);
   
-  // 2. Check for pre-loaded emergency handlers (D:Precept) - IVT lookup
-  d_precept_ref_t handler = lookup_emergency_handler(emergency_query);
+  // 2. Check for pre-loaded handlers (D:Precept) - IVT lookup
+  d_precept_ref_t handler = lookup_disrupt_handler(signal_query);
   if (!handler.valid) {
     // No handler available - normal STALL/TAC resolution will handle this
     return;
@@ -263,23 +263,23 @@ void d_isr_handler(disrupt_signal_t signal) {
     return;
   }
   
-  // 4. Create high-priority emergency job
+  // 4. Create high-priority job for hardware signal
   // Note: D:Precept may contain R:Precept for dynamic implementation resolution
-  job_descriptor_t emergency_job = {
-    .priority = PRIORITY_EMERGENCY,
-    .compilation = INTENT_FULLY_DETERMINISTIC,  // Emergency handlers must be fast
+  job_descriptor_t disrupt_job = {
+    .priority = PRIORITY_DISRUPT,
+    .compilation = INTENT_FULLY_DETERMINISTIC,  // Handlers must be fast
     .realtime_promise = signal.deadline,
     .root_precept = handler.precept_ref
   };
   
   // 5. Preempt current jobs if necessary
-  preempt_for_emergency(&emergency_job);
-  enqueue_job(emergency_job);
+  preempt_for_disrupt(&disrupt_job);
+  enqueue_job(disrupt_job);
 }
 ```
 
 **IVT Pattern Implementation:**
-- `lookup_emergency_handler()` finds the **D:Precept interrupt vector** by capability
+- `lookup_disrupt_handler()` finds the **D:Precept interrupt vector** by capability
 - **D:Precept executes** as normal precept (may contain R:Precept for dynamic linking)
 - **R:Precept within D:Precept** resolves actual implementation from repository
 - **Stable interrupt addressing** with **dynamic implementation resolution**
@@ -573,9 +573,9 @@ provider_ref_t resolve_r_precept(precept_name_t name, parameter_bindings_t param
 bool register_singleton_provider(instrument_name_t name, provider_ref_t provider);
 void promote_provider_cache(provider_ref_t provider, cache_tier_t target_tier);
 
-// Emergency response
-bool register_disrupt_handler(capability_filter_t emergency_type, d_precept_ref_t handler);
-void emit_emergency_signal(disrupt_signal_t signal);
+// DISRUPT hardware signal response
+bool register_disrupt_handler(capability_filter_t signal_type, d_precept_ref_t handler);
+void emit_disrupt_signal(disrupt_signal_t signal);
 
 // Vigil and yield-safe point management
 bool register_vigil(vigil_ref_t vigil, yield_safe_point_t checkpoint);
