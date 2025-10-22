@@ -83,4 +83,4 @@ This ensures a one-pass feed-forward parser for node classification.
 
 ---
 
-If you want, I can add a short paragraph with this design note to `scaffolding/integration/executive_runtime_architecture.md` (job admission section) so it is colocated with the admission algorithm and alarms. I can also add the pseudocode block there. Say which file you prefer and I'll add it. I won't edit any files until you confirm.
+If you want, I can add a short paragraph with this design note to `cascading/integration/executive_runtime_architecture.md` (job admission section) so it is colocated with the admission algorithm and alarms. I can also add the pseudocode block there. Say which file you prefer and I'll add it. I won't edit any files until you confirm.

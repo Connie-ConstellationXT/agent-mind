@@ -1,6 +1,6 @@
-# Intent Scaffolding Tree: DesignTimeDbContextFactory Name Placement
+# Intent Cascading Tree: DesignTimeDbContextFactory Name Placement
 
-This is an illustrative, incomplete intent scaffolding tree for the process of writing a `DesignTimeDbContextFactory` in Entity Framework, focusing on the recursive, dynlinked, and ML-driven reasoning needed to remember where the DbContext name goes.
+This is an illustrative, incomplete intent cascading tree for the process of writing a `DesignTimeDbContextFactory` in Entity Framework, focusing on the recursive, dynlinked, and ML-driven reasoning needed to remember where the DbContext name goes.
 
 ```xml
 <IntentDOM root="WriteDesignTimeDbContextFactory">
@@ -13,7 +13,7 @@ This is an illustrative, incomplete intent scaffolding tree for the process of w
     <RequiredInstrument instrumentName="DbContextType" description="The name/type of the target DbContext" />
     <RequiredInstrument instrumentName="IDEState" description="Current code buffer and UI context" />
 
-    <StagingPhase type="execution" name="factory_scaffolding">
+    <StagingPhase type="execution" name="factory_cascading">
       <Precept name="WhereDoesTheNameGo">
         <Description>Resolve the correct placeholder for the DbContext name in the factory</Description>
         <Provides>
@@ -30,7 +30,7 @@ This is an illustrative, incomplete intent scaffolding tree for the process of w
                   description="Inject simulated qualia into MLP to recognize the correct spot for the name" />
 
         <!-- Vigil: watches for the correct spot to appear in the UI/code buffer -->
-        <Vigil name="SpotRecognitionVigil" frequency="every_500ms" during="factory_scaffolding">
+        <Vigil name="SpotRecognitionVigil" frequency="every_500ms" during="factory_cascading">
           <Description>Monitor IDE/code buffer for the qualia/neuron firing that signals the correct placeholder</Description>
           <MLPTrigger model="placeholder_spot_detector"
                       symbol="dbcontext_name_placeholder"
@@ -74,4 +74,4 @@ This is an illustrative, incomplete intent scaffolding tree for the process of w
 - **Vigil Reentry**: When the neuron fires, the vigil reenters the intent, binding the name to the recognized spot and continuing code generation.
 - **Embodied, Interactive Reasoning**: The process is not static; it is interactive, context-sensitive, and can retry or adapt as new evidence appears in the IDE or code buffer.
 
-This tree is incomplete but captures the recursive, event-driven, and ML-integrated nature of intent scaffolding for real-world programming tasks.
+This tree is incomplete but captures the recursive, event-driven, and ML-integrated nature of intent cascading for real-world programming tasks.

@@ -26,7 +26,7 @@ The initial kernel is created by an explicit axiom, not by derivation from inter
     </Capability>
   </Provides>
   <RequiredInstrument instrumentName="execution_environment">
-    <Constraint type="not_intent_scaffold" />
+    <Constraint type="not_intent_cascade" />
     <AllowedDomains>
       <Domain>hardware</Domain>
       <Domain>trusted_os</Domain>

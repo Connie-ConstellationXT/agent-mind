@@ -1,6 +1,6 @@
 # IntentDOM: Install and Test VR Class JK3 Mod for Derail Valley
 
-This document models the process of installing and testing the "VR Class JK3" mod for Derail Valley using intent scaffolding principles. The intent tree includes acquiring dependencies, installing the mod, and verifying its functionality in-game.
+This document models the process of installing and testing the "VR Class JK3" mod for Derail Valley using intent cascading principles. The intent tree includes acquiring dependencies, installing the mod, and verifying its functionality in-game.
 
 ---
 

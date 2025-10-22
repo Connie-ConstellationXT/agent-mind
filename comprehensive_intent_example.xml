@@ -1,6 +1,6 @@
 <!-- 
 COMPREHENSIVE INTENT DOM EXAMPLE
-Demonstrates ALL features of the Intent Scaffolding markup system
+Demonstrates ALL features of the Intent Cascading markup system
 Author: GitHub Copilot
 Date: October 19, 2025
 Purpose: Complete reference showing every XML element, pattern, and capability
@@ -777,16 +777,16 @@ Purpose: Complete reference showing every XML element, pattern, and capability
   <!-- Comprehensive metadata -->
   <Meta>
     <Author>GitHub Copilot - AI Programming Assistant</Author>
-    <Topic>Comprehensive Intent Scaffolding Feature Demonstration</Topic>
+    <Topic>Comprehensive Intent Cascading Feature Demonstration</Topic>
     <Context>Complete reference implementation showing all XML elements and patterns</Context>
-    <Source>Intent Scaffolding Documentation and Examples</Source>
+    <Source>Intent Cascading Documentation and Examples</Source>
     <Location>Agent Mind Workspace</Location>
     <Purpose>Educational reference and copy-paste template for Intent DOM authoring</Purpose>
   </Meta>
 
   <!-- Documentation notes -->
   <Notes>
-    <Note>This example demonstrates every major feature of Intent Scaffolding markup</Note>
+    <Note>This example demonstrates every major feature of Intent Cascading markup</Note>
     <Note>D:Precepts show emergency response patterns with preflight validation</Note>
     <Note>Staging phases demonstrate both preflight and execution boundaries</Note>
     <Note>R:Precepts show capability-based resolution with parameter binding</Note>

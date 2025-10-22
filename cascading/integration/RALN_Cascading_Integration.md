@@ -40,7 +40,7 @@ Intent Cascade → Executive Compiler → RALN Netlist → Hardware Fabric → P
 
 ### Basic Compilation Pattern
 ```xml
-<!-- Intent Scaffold Precept -->
+<!-- Intent Cascade Precept -->
 <Precept name="GenerateProjectDocumentation">
   <RequiredInstrument instrumentName="existingCodebase" />
   <Precept name="SearchWorkspaceForProjectFiles">
@@ -77,7 +77,7 @@ RALN_ROOT {
 
 ### Alternative Example: Software Project Documentation
 ```xml
-<!-- Intent Scaffold Precept -->
+<!-- Intent Cascade Precept -->
 <Precept name="GenerateProjectArchitectureDoc">
   <StagingPhase type="preflight">
     <ValidateInstrumentCondition 
@@ -193,7 +193,7 @@ typedef struct {
   // RALN-specific extensions
   raln_netlist_t* topology;      // Compiled RALN network
   ulem_context_t* semantic_ctx;   // ULEM translation context
-  execution_context_t exec_ctx;   // "accelerated" or "scaffold-vm"
+  execution_context_t exec_ctx;   // "deterministic" vs "cascading-VM"
   
   // Hardware resource accounting
   uint16_t raln_count;           // Number of RALNs in network
@@ -209,10 +209,10 @@ typedef struct {
 **Accelerated Context** (for well-practiced precepts):
 - Direct RALN network execution
 - Pre-bound MLP_CLUSTER repositories
-- Minimal scaffolding overhead
+- Minimal cascading overhead
 - Deterministic resource budgets
 
-**Scaffold-VM Context** (for dynamic precepts):
+**Cascading-VM Context** (for dynamic precepts):
 - Runtime RALN synthesis
 - Dynamic MLP_CLUSTER loading
 - On-the-fly network compilation
@@ -248,7 +248,7 @@ RALN_EXECUTION_CYCLE {
 
 ### Intent → ULEM → Hardware Pipeline
 ```
-Intent Scaffold Precept
+Intent Cascade Precept
     ↓ (compile)
 Semantic Tensor Goals
     ↓ (ULEM encode)

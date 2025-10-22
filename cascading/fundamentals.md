@@ -1,6 +1,6 @@
 # Intent Cascading — Friendly Fundamentals
 
-This is a short, plain-English introduction to the vocabulary and mental model used across this repository. It's intended for people who land here and ask: "what do you even mean by 'intent', 'precept', or 'artifact'?"ntent Scaffolding — Friendly Fundamentals
+This is a short, plain-English introduction to the vocabulary and mental model used across this repository. It's intended for people who land here and ask: "what do you even mean by 'intent', 'precept', or 'artifact'?"
 
 This is a short, plain-English introduction to the vocabulary and mental model used across this repository. It’s intended for people who land here and ask: “what do you even mean by ‘intent’, ‘precept’, or ‘artifact’?”
 
@@ -92,10 +92,10 @@ Read this as: `CrackEggs` produces `cracked_eggs`. `SeasonEggs` depends on `crac
 
 ## Where to read next
 
-- `scaffolding/XML_Element_Type_Catalog.md` — full element catalog and examples
-- `scaffolding/dependency_resolution_architecture.md` — how RESOLVE finds providers
-- `scaffolding/INFER_specification.md` — simulation-based validation
-- `scaffolding/capability_system.md` — capability modeling and provides/consumes
+- `cascading/XML_Element_Type_Catalog.md` — full element catalog and examples
+- `cascading/dependency_resolution_architecture.md` — how RESOLVE finds providers
+- `cascading/INFER_specification.md` — simulation-based validation
+- `cascading/capability_system.md` — capability modeling and provides/consumes
 
 ## Why the Apollo guidance computer of all things?
 
@@ -113,5 +113,5 @@ Put another way, asking "how does the system continue to run when things break i
 
 We borrow the AGC's stance, not its hardware. The goal is to design small, verifiable building blocks (the turtle-0 boundary among them), clear interfaces between perception, decision, and action, and a runtime that favors auditable fallbacks and simulation-validated choices (INFER) over opaque, monolithic behaviors. This engineering stance helps prevent learned components from becoming unmoored black boxes — it gives learned subsystems discipline and a narrow, testable surface where they interact with the world.
 
-If you want a deeper historical or technical tie, see `scaffolding/Hardware/RALN.md` and `scaffolding/Hardware/ULEM.md` for how the hardware/compilation target and semantic embedding themes map to that engineering stance.
+If you want a deeper historical or technical tie, see `cascading/Hardware/RALN.md` and `cascading/Hardware/ULEM.md` for how the hardware/compilation target and semantic embedding themes map to that engineering stance.
 

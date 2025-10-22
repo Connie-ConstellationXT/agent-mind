@@ -26,7 +26,7 @@ Optimization levels in intent cascading represent the **executive's computationa
 
 - **Level 5:** **Elegant Cruising** - Executive selects the most sophisticated available precepts, building maximally elegant genealogies. Only appropriate when full context and momentum are established. High clutch protection sensitivity.
 
-- **GE (Gamma Entrainment):** **Creative Restructuring** - Special mode for insight-driven precept composition. Attempts novel genealogy patterns and semantic scaffold restructuring. Not sequential with other levels.
+- **GE (Gamma Entrainment):** **Creative Restructuring** - Special mode for insight-driven precept composition. Attempts novel genealogy patterns and semantic cascade restructuring. Not sequential with other levels.
 
 ## Precept Selection Heuristics
 

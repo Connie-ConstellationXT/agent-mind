@@ -305,7 +305,7 @@ Notes:
 
 ### **The Supreme Elegance: Learned Pattern Coordination**
 
-MLPTrigger enables one of the most elegant aspects of the Intent Scaffolding architecture: **emergent coordination through learned neural patterns**.
+MLPTrigger enables one of the most elegant aspects of the Intent Cascading architecture: **emergent coordination through learned neural patterns**.
 
 #### **Universal System Observation**
 MLP models continuously observe all system activity:

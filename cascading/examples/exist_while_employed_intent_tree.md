@@ -1,4 +1,4 @@
-# Intent Scaffolding Tree: ExistWhileEmployed
+# Intent Cascading Tree: ExistWhileEmployed
 
 This example models the intent of "existing while employed" as a long-lived precept with two nested sub-precepts: one for handling any work-related task (with a vigil and yieldsafepoint), and one dynlinked precept for handling personal tasks. The only possible outputs are `unemployed` or `pensioned` state vectors, representing the only valid terminations.
 

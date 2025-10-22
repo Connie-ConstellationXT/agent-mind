@@ -96,7 +96,7 @@ typedef struct {
 ### Basic Precept → RALN Compilation
 
 ```xml
-<!-- Example: Type-safe intent scaffold precept -->
+<!-- Example: Type-safe intent cascade precept -->
 <Precept name="AnalyzeCodebase">
   <Description>Comprehensive codebase analysis</Description>
   

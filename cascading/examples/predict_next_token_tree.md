@@ -1,4 +1,4 @@
-# PredictNextToken: Intent Scaffolding Tree for LLM Token Prediction
+# PredictNextToken: Intent Cascading Tree for LLM Token Prediction
 
 This is an incomplete but illustrative decomposition of how an LLM's `PredictNextToken` precept can recursively contain precepts for logical reasoning, constraint satisfaction, and SAT-like resolution.
 
@@ -255,5 +255,5 @@ This is an incomplete but illustrative decomposition of how an LLM's `PredictNex
 
 5. **Emergent Behavior**: Predicting the next token "just" samples from a probability distribution, but the emergent result—through the recursive decomposition of logic, semantics, syntax, and intent—is reasoning about arbitrary logical statements.
 
-This incomplete tree illustrates the core insight: intent scaffolding reveals how reasoning emerges from a simple root operation through compositional decomposition of constraints.
+This incomplete tree illustrates the core insight: intent cascading reveals how reasoning emerges from a simple root operation through compositional decomposition of constraints.
 

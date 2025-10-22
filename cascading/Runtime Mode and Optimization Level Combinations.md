@@ -27,7 +27,7 @@ Examples:
 ## Valid Combinations
 
 - **IGE**: INFER mode + GE (gamma entrainment)
-  - The agent is actively synthesizing or reasoning, leveraging creative or high-compression strategies (eureka moments, semantic scaffold collapse).
+  - The agent is actively synthesizing or reasoning, leveraging creative or high-compression strategies (eureka moments, semantic cascade collapse).
   - This is a valid and advanced operational state.
 
 - **E2**: EXECUTE mode + 2 (low gear)
@@ -78,7 +78,7 @@ Below is an example of a real-world logfile using runtime mode and optimization 
 - `N1`: NAVIGATE mode, optimization level 1. The agent is performing an internal knowledge/database query.
 - `STALL`: Again, the agent cannot proceed—internal query failed or was inconclusive.
 - `NGE`: NAVIGATE mode, gamma entrainment (GE) optimization. The agent is now traversing the bounds of the query at an accellerating rate to force the storage controller to find a compressed representation of the query (the desired result)
-- `L`: LEAP mode. After a significant delay, the agent has a creative breakthrough or eureka moment, restructuring the intent scaffold.
+- `L`: LEAP mode. After a significant delay, the agent has a creative breakthrough or eureka moment, restructuring the intent cascade.
 - `E1`: EXECUTE mode, optimization level 1. The agent resumes action, likely with a new or revised plan.
 - `R1`: RESOLVE mode, optimization level 1. The agent retrieves a cached solution or precept.
 - `E3`: EXECUTE mode, optimization level 3. The agent is now executing with greater optimization, possibly due to increased confidence or efficiency.

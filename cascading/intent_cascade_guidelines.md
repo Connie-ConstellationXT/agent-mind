@@ -99,7 +99,7 @@ This is not necessary for the runtime execution, because the RESOLVE system will
 **Guideline:**
 - The name before `as` is the artifact produced by the provider precept.
 - The name after `as` is the local alias used as instrumentName in the consumer DOM.
-- This practice enables intent scaffolds to be validated and composed even when the provider precept is not locally defined.
+- This practice enables intent cascades to be validated and composed even when the provider precept is not locally defined.
 
 ---
 
@@ -109,7 +109,7 @@ This is not necessary for the runtime execution, because the RESOLVE system will
 - Use clear, descriptive names for all precepts
 - Use type-safe patterns: `<Precept name="ActionName">` instead of direct `<ActionName>`
 - Align terminology with RALN hardware architecture (instruments, not resources)
-- All scaffolds must be platform-independent and declarative
+- All cascades must be platform-independent and declarative
 
 ### **Composability Rules**
 - A precept must not care if it's a root or child element - infinite composability is key
@@ -142,7 +142,7 @@ See **[Migration Guide](./migration_guide.md)** for comprehensive transition ins
 
 ## Reuse Guidelines
 
-Whenever you request a new implementation or scaffold, reference the appropriate module documentation:
+Whenever you request a new implementation or cascade, reference the appropriate module documentation:
 
 1. **Start with [Fundamentals](./fundamentals.md)** for basic syntax and concepts
 2. **Check [Dependency Resolution](./dependency_resolution_architecture.md)** for instrument and validation patterns  
@@ -614,7 +614,7 @@ Validation & authoring guidelines
 </IntentDOM>
 ```
 ```xml
-<IntentScaffold date="YYYY-MM-DD">
+<IntentCascade date="YYYY-MM-DD">
   <Objective>...</Objective>
   <PreceptList>
     <Precept name="SomeActionName">
@@ -647,7 +647,7 @@ Validation & authoring guidelines
   <NextActions>
     <Action>...</Action>
   </NextActions>
-</IntentScaffold>
+</IntentCascade>
 ```
 
 ## 14. Precept Repository Architecture
@@ -664,7 +664,7 @@ Validation & authoring guidelines
 - Use clear, descriptive names for all precepts.
 - Prefer explicitness and composability over brevity.
 - Avoid runtime-specific tags (e.g., `<RuntimeMode>`).
-- All scaffolds must be platform-independent and declarative.
+- All cascades must be platform-independent and declarative.
 - A precept must not care if it's a root or child element - infinite composability is key.
 - Use type-safe patterns: `<Precept name="ActionName">` instead of direct `<ActionName>`.
 - Align terminology with RALN hardware architecture (instruments, not resources).
@@ -672,7 +672,7 @@ Validation & authoring guidelines
 ---
 
 ## Reuse
-Whenever you request a new implementation or scaffold, reference this document to ensure conformity to the enhanced type-safe vision.
+Whenever you request a new implementation or cascade, reference this document to ensure conformity to the enhanced type-safe vision.
 
 **Migration Notes**:
 - Legacy `<DirectElementName>` patterns should be updated to `<Precept name="DirectElementName">`

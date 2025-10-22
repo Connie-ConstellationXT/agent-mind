@@ -1,4 +1,4 @@
-# XML Element Type Catalog for Intent Scaffolding System
+# XML Element Type Catalog for Intent Cascading System
 
 *Generated: October 16, 2025*
 # XML Element Type Catalog for Intent Cascading System
@@ -9,11 +9,11 @@
 
 ## 1. STRUCTURAL/CONTAINER TYPES
 
-### IntentScaffold
+### IntentCascade
 **Purpose**: Root container for complete intent definitions with metadata
 **Attributes**: `date`
 **Children**: Objective, PreceptList, ContextSwitchProtocol, Notes, STOPCodes, NextActions
-**Example Context**: Task management scaffolds, project planning
+**Example Context**: Task management cascades, project planning
 
 ### IntentDOM  
 **Purpose**: Root container for domain-specific intent trees
@@ -72,7 +72,7 @@
 **Emergent Pattern Discovery**: MLP models continuously observe all system signals (internal state, external sensors, qualia patterns, physical manifestations). Over time, they learn to recognize patterns like "every time agent cracks an egg" or "system about to crash". MLPTrigger enables pure emergent coordination - precepts can respond to learned patterns without explicit dependencies or coordination overhead.
 
 ### PreceptList
-**Purpose**: Container for multiple precepts within an intent scaffold
+**Purpose**: Container for multiple precepts within an intent cascade
 **Attributes**: None
 **Children**: Multiple precept elements
 **Example Context**: Task organization, grouping related actions
@@ -88,7 +88,7 @@
 1. **`type="preflight"`**: Readiness validation before execution begins
    - Automatically triggered when precept is imported/referenced
    - Quality assurance, instrument validation, precondition checking
-   - Aligns with existing preflight assertion system from Intent Scaffolding Key Concepts
+   - Aligns with existing preflight assertion system from Intent Cascading Key Concepts
    - Can reference external manifest capabilities
    - Stateless pass/fail gates
 
@@ -152,7 +152,7 @@
 **Example Context**: Error handling, completion signaling
 
 ### NextActions
-**Purpose**: Container for follow-up actions after scaffold completion
+**Purpose**: Container for follow-up actions after cascade completion
 **Attributes**: None
 **Children**: Action elements
 **Example Context**: Task continuation, next steps
@@ -424,7 +424,7 @@
 ## 8. SPECIAL PURPOSE TYPES
 
 ### Objective
-**Purpose**: High-level goal statement for intent scaffold
+**Purpose**: High-level goal statement for intent cascade
 **Attributes**: None
 **Children**: Text content
 **Example Context**: Goal setting, scope definition
@@ -441,7 +441,7 @@
 This corrected catalog reveals that most of what appeared to be distinct element types are actually named instances of the single `Precept` type. The true type system is much simpler than initially cataloged, focused on infrastructure elements that support the precept-based structure.
 
 **Key Integration Points**:
-- **StagingPhase** now unifies with existing preflight assertion system from Intent Scaffolding Key Concepts
+- **StagingPhase** now unifies with existing preflight assertion system from Intent Cascading Key Concepts
 - **Preflight staging** enables automatic validation when precepts are imported/referenced
 - **Execution staging** provides natural breakpoints for RALN network compilation and context switch resilience
 - **State vector boundaries** align with the principle: "You don't need to remember fine-grained state across stage boundaries"

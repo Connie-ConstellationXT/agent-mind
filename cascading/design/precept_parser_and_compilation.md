@@ -66,5 +66,5 @@ Migration guidance
 - Remove `dynlink="true"` from authoring. Authors should use `R:Precept` when runtime resolution is intended, and `H:Precept` or inline `Precept` for hard-linked precepts.
 
 Where to document further
-- This note belongs in `scaffolding/design/` and should be cross-referenced from `scaffolding/integration/executive_runtime_architecture.md` (job admission / compilation analysis section).
+- This note belongs in `cascading/design/` and should be cross-referenced from `cascading/integration/executive_runtime_architecture.md` (job admission / compilation analysis section).
 

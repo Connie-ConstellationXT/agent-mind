@@ -1,9 +1,9 @@
-The following example demonstrates all features of the Intent Scaffolding markup system within a single comprehensive intent DOM. It includes multiple domain declarations, complex capability definitions, various required instruments, constraints, preflight validations, staging phases, yield-safe points, MLPTriggers, and DISRUPT handlers.
+The following example demonstrates all features of the Intent Cascading markup system within a single comprehensive intent DOM. It includes multiple domain declarations, complex capability definitions, various required instruments, constraints, preflight validations, staging phases, yield-safe points, MLPTriggers, and DISRUPT handlers.
 
 ``` xml
 <!-- 
 COMPREHENSIVE INTENT DOM EXAMPLE
-Demonstrates ALL features of the Intent Scaffolding markup system
+Demonstrates ALL features of the Intent Cascading markup system
 Author: GitHub Copilot
 Date: October 19, 2025
 Purpose: Complete reference showing every XML element, pattern, and capability
@@ -529,7 +529,7 @@ Purpose: Complete reference showing every XML element, pattern, and capability
           <Description>Core infrastructure and foundational components</Description>
           
           <R:Precept name="SetupProjectStructure" 
-                     providing="capability:project_scaffolding AND domain:software_development"
+                     providing="capability:project_cascading AND domain:software_development"
                      architecture="system_architecture"
                      team_preferences="project_team"
                      description="Generate project structure and development environment setup" />
@@ -832,16 +832,16 @@ Purpose: Complete reference showing every XML element, pattern, and capability
   <!-- Comprehensive metadata -->
   <Meta>
     <Author>GitHub Copilot - AI Programming Assistant</Author>
-    <Topic>Comprehensive Intent Scaffolding Feature Demonstration</Topic>
+    <Topic>Comprehensive Intent Cascading Feature Demonstration</Topic>
     <Context>Complete reference implementation showing all XML elements and patterns</Context>
-    <Source>Intent Scaffolding Documentation and Examples</Source>
+    <Source>Intent Cascading Documentation and Examples</Source>
     <Location>Agent Mind Workspace</Location>
     <Purpose>Educational reference and copy-paste template for Intent DOM authoring</Purpose>
   </Meta>
 
   <!-- Documentation notes -->
   <Notes>
-    <Note>This example demonstrates every major feature of Intent Scaffolding markup</Note>
+    <Note>This example demonstrates every major feature of Intent Cascading markup</Note>
   <Note>D:Precepts are event-driven handlers (emergency or non-critical) and support preflight validation</Note>
     <Note>Staging phases demonstrate both preflight and execution boundaries</Note>
     <Note>R:Precepts show capability-based resolution with parameter binding</Note>
