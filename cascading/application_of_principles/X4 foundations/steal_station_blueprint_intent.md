@@ -31,6 +31,7 @@
     <RequiredInstrument instrumentName="selection" options="decryption_module,interface_unit" />
     <Output>
       <ExclusiveAny>
+        <Quantity="1" />
         <Artifact name="decryption_module" />
         <Artifact name="interface_unit" />
       </ExclusiveAny>
@@ -42,11 +43,13 @@
       <RequiredInstrument instrumentName="mission_type" value="acquire_uncommon_item" />
       <RequiredInstrument instrumentName="agent" level="proficient" skill="espionage" />
       <RequiredInstrument instrumentName="intelligence_network" influenceLevel="low_to_medium" />
-      <RequiredInstrument instrumentName="credits" quantity="" />
+      <RequiredInstrument instrumentName="credits" quantity="15000" />
       <Output>
-        <Artifact name="AGI_processor" />
+        <Artifact name="AGI_processor" quantity="1" />
       </Output>
     </Precept>
+
+  
 </IntentDOM>
 ```
 
