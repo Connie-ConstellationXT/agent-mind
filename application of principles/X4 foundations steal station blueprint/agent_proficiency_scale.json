@@ -1,0 +1,54 @@
+{
+  "name": "agent_proficiency_scale",
+  "description": "Map a float input (0.0 - 1.0) to ordered agent proficiency levels using nonlinear thresholds. Order (low -> high): Unskilled, Novice, Competent, Proficient, Experienced, Expert.",
+  "input": {
+    "type": "float",
+    "range": [0.0, 1.0],
+    "notes": "Input represents a normalized proficiency score from 0 (worst) to 1 (best)."
+  },
+  "levels": [
+    "Unskilled",
+    "Novice",
+    "Competent",
+    "Proficient",
+    "Experienced",
+    "Expert"
+  ],
+  "thresholds": {
+    "note": "Nonlinear thresholds chosen so visual order and spacing are clear; thresholds are inclusive on the lower bound. Format: level: [min, max)",
+    "Unskilled": [0.00, 0.08],
+    "Novice": [0.08, 0.20],
+    "Competent": [0.20, 0.45],
+    "Proficient": [0.45, 0.70],
+    "Experienced": [0.70, 0.90],
+    "Expert": [0.90, 1.01]
+  },
+  "mapping_function": {
+    "type": "threshold",
+    "description": "Map input float to the first level whose [min,max) interval contains the input. Intervals are nonlinear (wider in the middle to reflect diminishing returns near extremes).",
+    "example": {
+      "input": 0.12,
+      "mapped_level": "Novice"
+    }
+  },
+  "u32_mapping": {
+    "description": "Map input float [0.0,1.0] to the unsigned 32-bit integer range [0, 4294967295] and assign contiguous subranges to each proficiency level. This is just for human eyes.",
+    "total_range": [0, 4294967295],
+    "level_u32_ranges": {
+      "Unskilled": [0, 9],
+      "Novice": [10, 99],
+      "Competent": [100, 999],
+      "Proficient": [1000, 9999],
+      "Experienced": [10000, 99999999],
+      "Expert": [100000000, 4294967295]
+    },
+    "mapping_algorithm": "u32 = floor(input_float * 4294967295); find level whose u32 range contains u32; if input_float == 1.0 map to highest u32 (4294967295) and therefore 'Expert'.",
+    "example": {
+      "input": 0.12,
+      "u32": 515396075,
+      "mapped_level": "Novice"
+    }
+  },
+  "visual_hint": "Levels are ordered low->high in the 'levels' array and the thresholds increase monotonically; spacing is nonlinear to make mid-levels more granular.",
+  "version": "0.1"
+}
