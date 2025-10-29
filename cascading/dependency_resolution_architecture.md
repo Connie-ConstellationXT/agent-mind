@@ -105,6 +105,47 @@ Database/repository lookup:
 
 ---
 
+## Instrument Resolution & Output Binding
+
+**Core contract**: `RequiredInstrument` declares a name and optional constraints. The runtime resolves that name to a provider precept using RESOLVE (searching the three priority tiers above), and then binds the provider's output to the instrument name via `allocateOutput`.
+
+### Simple case (no constraints)
+```xml
+<RequiredInstrument instrumentName="eggs" quantity="2" />
+```
+Runtime finds any precept that produces output named `eggs` and binds it.
+
+### With constraints (clean pattern — example 3)
+```xml
+<RequiredInstrument instrumentName="lunar_module" />
+
+<R:Precept name="AcquireGrummanLM"
+           providing="capability:lunar_surface_landing AND 
+                      manufacturer:Grumman AND
+                      contract:NAS_9-1100"
+           allocateOutput="lm as lunar_module" />
+```
+The `providing` attribute includes capability, domain, and constraint filters. When resolved, `allocateOutput` binds the provider's output (`lm`) to the requester's instrument name (`lunar_module`).
+
+### Alternative patterns (also valid)
+```xml
+<!-- Inline constraints as child nodes -->
+<RequiredInstrument instrumentName="component">
+  <Constraint type="manufacturer">Company Name</Constraint>
+  <Constraint type="model">Model Number</Constraint>
+</RequiredInstrument>
+
+<!-- Constraint attributes -->
+<RequiredInstrument instrumentName="lunar_module"
+                    manufacturer="Grumman"
+                    model="LM-5"
+                    contract="NAS_9-1100" />
+```
+
+**How it works**: RESOLVE matches RequiredInstrument constraints against provider precept metadata (from `providing` attribute and capability declarations). Once matched and executed (or retrieved from cache), the provider's Output is aliased to the instrument name via `allocateOutput`. Downstream precepts reference the instrument by name, and the runtime resolves that name to the provider's artifact.
+
+---
+
 ## RESOLVE Mode Integration
 
 ### **Preflight RESOLVE (Most Common)**
