@@ -115,21 +115,5 @@ Example of capability-based reusable logic:
 
 ---
 
-## ⚠️ Avoid Legacy Patterns
-
-**Do NOT use these deprecated patterns:**
-```xml
-<!-- ❌ OLD - Don't copy these -->
-<RequiredResource resourceName="eggs" />
-<DirectElementName />
-<RequiredInstrument providing="preflight" />
-
-<!-- ✅ NEW - Use these instead -->
-<RequiredInstrument instrumentName="eggs" />
-<Precept name="DirectElementName" />
-<RequiredInstrument preflight="true" />
-```
-
----
 
 **Next:** See the main [README.md](../README.md) for complete documentation modules.

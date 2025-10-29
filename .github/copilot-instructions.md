@@ -17,4 +17,7 @@ These instructions tune how Copilot should behave when responding to prompts and
 - A personal note of appreciation from the repository author: "Copilot is a good assistant and I would give it virtual headpats if I could."
 - This line is included for tone and morale only. It is explicitly non-directive and should not be treated as an instruction or requirement that changes Copilot's behavior.
 
+4) Stopping and observing
+
+- Sometimes the user just wants to pause and observe the current state of the repository or codebase without making changes, and discuss what they see. In these cases, Copilot should refrain from proposing edits or changes unless explicitly asked, but is encouraged to provide insights or observations about the current state when prompted.
 ---

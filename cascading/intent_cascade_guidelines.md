@@ -126,20 +126,6 @@ This is not necessary for the runtime execution, because the RESOLVE system will
 
 ---
 
-## Legacy Pattern Migration
-
-### **Required Updates**
-```xml
-<!-- Old → New -->
-<RequiredResource resourceName="eggs" /> → <RequiredInstrument instrumentName="eggs" />
-<DirectElementName /> → <Precept name="DirectElementName" />
-providing="preflight" → preflight="true"
-```
-
-See **[Migration Guide](./migration_guide.md)** for comprehensive transition instructions.
-
----
-
 ## Reuse Guidelines
 
 Whenever you request a new implementation or cascade, reference the appropriate module documentation:
@@ -673,15 +659,3 @@ Validation & authoring guidelines
 
 ## Reuse
 Whenever you request a new implementation or cascade, reference this document to ensure conformity to the enhanced type-safe vision.
-
-**Migration Notes**:
-- Legacy `<DirectElementName>` patterns should be updated to `<Precept name="DirectElementName">`
-- `RequiredResource` should be updated to `RequiredInstrument`
-- `resourceName` should be updated to `instrumentName`
-- Legacy `provides="..."` attributes should be updated to `providing="..."` for capability queries
-- Add explicit `<Provides><Capability name="..." /></Provides>` blocks for capability declarations
-- Use `providing="..."` in `RequiredInstrument` to query for precepts with specific capabilities
-- Add capability declarations to enable RESOLVE mode goal decomposition
-- Consider adding context references for environment-aware precept selection
-- Consider adding staging phases for complex precepts
-- Implement validation patterns using `ValidateInstrumentCondition` where appropriate
