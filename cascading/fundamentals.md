@@ -90,8 +90,20 @@ In this way the runtime scales from declarative intent to precise actuator comma
 
 Read this as: `CrackEggs` produces `cracked_eggs`. `SeasonEggs` depends on `cracked_eggs` and will wait until they exist.
 
+## Auditing and Trust
+
+For a full treatment of auditing, trust propagation, and the lattice of execution states, see `cascading/audit-and-trust.md`. That document defines:
+
+- **termination-confirmed**: precepts with proven execution history
+- **reuse-trusted**: precepts eligible for safe reuse via domain coverage
+- **statically valid, run-ready, statically solvable, convergent-decidable**: the execution lattice
+- **The Apollo 13 principle**: executing statically-valid-but-unproven trees when built on proven atoms under justifiable necessity
+
+Key insight: trust propagates upward through proven composition. A parent can be reuse-trusted only if all its children are termination-confirmed and their domainsets collectively cover the parent's domains (strict per-child inclusion, not union). This prevents unsafe propagation while allowing natural convergence.
+
 ## Where to read next
 
+- `cascading/audit-and-trust.md` — trust lattice, termination-confirmedness, reuse-trust, and the Apollo 13 case study
 - `cascading/XML_Element_Type_Catalog.md` — full element catalog and examples
 - `cascading/dependency_resolution_architecture.md` — how RESOLVE finds providers
 - `cascading/INFER_specification.md` — simulation-based validation

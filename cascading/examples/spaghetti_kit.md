@@ -5,16 +5,16 @@ This example demonstrates Intent Cascading with pre-packaged ingredients, showin
 ```xml
 <!-- Cheap Spaghetti Kit Recipe - Demonstrating Intent Cascading with Pre-packaged Ingredients -->
 <IntentDOM root="MakeSpaghettiKit">
-<!-- DISRUPT Handlers: Emergency preparedness for pasta cooking -->
+<!-- DISRUPT Handlers: external signal preparedness for pasta cooking -->
   <D:Precept name="HandleBoilOver" 
-             description="Emergency response to pasta water boiling over">
+             description="external signal response to pasta water boiling over">
     <MLPTrigger ref="pot_boiling_over" />
     
     <PreflightValidation>
       <R:Precept name="ValidateKitchenSafety" 
-                 providing="capability:emergency_validation AND domain:kitchen"
+                 providing="capability:external signal_validation AND domain:kitchen"
                  description="Ensure stove safety and spill cleanup materials available" />
-      <RequiredInstrument instrumentName="emergency_kit" />
+      <RequiredInstrument instrumentName="external signal_kit" />
     </PreflightValidation>
     <RequiredInstrument instrumentName="kitchen_towels" preflight="true" />
     <RequiredInstrument instrumentName="pot_holders" preflight="true" />
@@ -26,14 +26,14 @@ This example demonstrates Intent Cascading with pre-packaged ingredients, showin
     
     <Output>
       <Artifact name="boil_over_controlled">
-        <Type>emergency_intervention</Type>
-        <Description>Boil over emergency handled safely</Description>
+        <Type>external signal_intervention</Type>
+        <Description>Boil over external signal handled safely</Description>
       </Artifact>
     </Output>
   </D:Precept>
 
   <D:Precept name="HandleBurnedSauce" 
-             description="Emergency response to burning sauce">
+             description="external signal response to burning sauce">
     <MLPTrigger ref="sauce_burning" />
     
     <PreflightValidation>
@@ -50,7 +50,7 @@ This example demonstrates Intent Cascading with pre-packaged ingredients, showin
     
     <Output>
       <Artifact name="sauce_recovered">
-        <Type>emergency_intervention</Type>
+        <Type>external signal_intervention</Type>
         <Description>Burned sauce rescued or replaced</Description>
       </Artifact>
     </Output>
@@ -261,7 +261,7 @@ This example demonstrates Intent Cascading with pre-packaged ingredients, showin
       
       <Precept name="CombineAndServe">
         <Provides>
-          <Capability name="dish_assembly" domain="food_presentation" />
+          <Capability name="dish_assembly" domain="food_preparation" />
           <Capability name="portioning" domain="serving" />
         </Provides>
         
