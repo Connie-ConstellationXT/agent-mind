@@ -202,16 +202,19 @@
 ## 3. INSTRUMENT/DEPENDENCY TYPES
 
 ### RequiredInstrument
-**Purpose**: Declares instrument dependencies for precepts (hardware-aligned with RALN architecture)
-**Attributes**: `instrumentName`, plus type-specific attributes (`quantity`, `type`, `temperature`, etc.)
-**Children**: None
-**Example Context**: Dependency declaration, instrument management
+**Purpose**: Declares global pattern descriptors that reference shared world model memory (kernel space). Not function parameters, but reactive triggers based on pattern availability in global cognitive/perceptual space.
+**Architecture**: Precepts activate when matching patterns become available in global memory, following three-tier pattern recognition hierarchy.
+**Attributes**: `instrumentName` (pattern descriptor), plus constraint attributes (`quantity`, `type`, `temperature`, etc.)
+**Children**: Optional constraint child elements for complex pattern matching
+**Identity Binding**: Connected to provider outputs via `allocateOutput` which asserts continuous ontological identity through transformation
+**Example Context**: Pattern dependency declaration, reactive precept activation, world model pattern matching
 
 ### Output
-**Purpose**: Declares expected outputs and their characteristics
+**Purpose**: Declares expected patterns to be created in global world model and their characteristics
 **Attributes**: `type`, `format`, `audience`
-**Children**: Text content describing output
-**Example Context**: Result specification, interface definition
+**Children**: Text content describing output pattern
+**Identity Continuity**: Bound to downstream RequiredInstruments via `allocateOutput` assertions that maintain ontological continuity
+**Example Context**: Pattern creation specification, continuous identity preservation
 
 ## 4. CONTROL FLOW TYPES
 

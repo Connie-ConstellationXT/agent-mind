@@ -17,46 +17,49 @@ This system has evolved where **most RESOLVE calls happen during preflight valid
 
 ## RequiredInstrument Syntax
 
-### **Basic Instrument Declaration**
+**Core Architecture**: RequiredInstruments are **global pattern descriptors** that reference shared world model memory (kernel space), not function parameters. Precepts activate when matching patterns become available in the global cognitive/perceptual space.
+
+### **Basic Pattern Declaration**
 ```xml
 <RequiredInstrument instrumentName="eggs" quantity="2-3" alias="chosen_eggs" />
 ```
+**Meaning**: "Activate when global world model contains pattern matching 'eggs' with quantity 2-3, and alias this pattern as 'chosen_eggs' for local reference."
 
-### **Simple Preflight Validation**
+### **Simple Preflight Pattern Validation**
 ```xml
 <RequiredInstrument instrumentName="ice_pack" preflight="true" location="freezer" />
 ```
-- Executive checks instrument exists during Intent DOM loading
-- Fails fast if instrument unavailable
+- Executive validates pattern exists in world model during Intent DOM loading
+- Fails fast if pattern unavailable in global memory space
 
-### **R:Precept Preflight Validation**
+### **R:Precept Preflight Pattern Validation**
 ```xml
 <RequiredInstrument instrumentName="emergency_kit" 
                     preflight="R:ValidateEmergencyKit"
                     providing="capability:emergency_validation AND domain:kitchen" />
 ```
-- Executive resolves and executes validation precept during Intent DOM loading
-- Complex validation logic with branching and acceptance criteria
+- Executive resolves and executes validation precept to confirm pattern availability
+- Complex pattern validation logic with branching and acceptance criteria
 
-### **Emergent Preflight Validation**
+### **Emergent Preflight Pattern Generation**
 ```xml
 <PreflightValidation>
   <R:Precept name="ValidateEmergencyKit" 
              providing="capability:emergency_validation AND domain:kitchen"
-             description="Comprehensive emergency kit validation with branching logic" />
+             description="Generate emergency kit pattern in global world model" />
   <RequiredInstrument instrumentName="emergency_kit" />
 </PreflightValidation>
 ```
-- Validation precepts **produce** the required instrument
-- Multiple validation precepts can contribute to single instrument
-- Instrument only becomes available if all validations pass
+- Validation precepts **create** the required pattern in global memory
+- Multiple validation precepts can contribute to single pattern instantiation
+- Pattern only becomes available if all validations pass
 
-### **Runtime Dependency Resolution**
+### **Runtime Pattern Recognition**
 ```xml
 <RequiredInstrument instrumentName="ingredients_ready" providing="execution:concurrent_preparation" />
 ```
-- Traditional runtime dependency - waits for artifact from previous precept/stage
-- No preflight validation - resolved during execution
+- Traditional runtime pattern dependency - waits for pattern to appear in global world model
+- No preflight validation - pattern resolved during execution through three-tier recognition
 
 ---
 
@@ -105,17 +108,17 @@ Database/repository lookup:
 
 ---
 
-## Instrument Resolution & Output Binding
+## Pattern Resolution & Continuous Identity Binding
 
-**Core contract**: `RequiredInstrument` declares a name and optional constraints. The runtime resolves that name to a provider precept using RESOLVE (searching the three priority tiers above), and then binds the provider's output to the instrument name via `allocateOutput`.
+**Core contract**: `RequiredInstrument` declares a pattern descriptor. The runtime resolves that pattern in the global world model using RESOLVE (searching the three priority tiers), and then establishes **continuous identity** between provider output and requester input via `allocateOutput`.
 
-### Simple case (no constraints)
+### Simple pattern recognition (no constraints)
 ```xml
 <RequiredInstrument instrumentName="eggs" quantity="2" />
 ```
-Runtime finds any precept that produces output named `eggs` and binds it.
+Runtime finds any pattern in global world model matching `eggs` with quantity constraint satisfied.
 
-### With constraints (clean pattern — example 3)
+### With constraints and continuous identity assertion
 ```xml
 <RequiredInstrument instrumentName="lunar_module" />
 
@@ -125,9 +128,9 @@ Runtime finds any precept that produces output named `eggs` and binds it.
                       contract:NAS_9-1100"
            allocateOutput="lm as lunar_module" />
 ```
-The `providing` attribute includes capability, domain, and constraint filters. When resolved, `allocateOutput` binds the provider's output (`lm`) to the requester's instrument name (`lunar_module`).
+The `providing` attribute includes capability, domain, and constraint filters. When resolved, `allocateOutput` asserts **ontological continuity**: the pattern `lm` and pattern `lunar_module` have literally the same identity in reality - same physical entity, continuous through transformation.
 
-### Alternative patterns (also valid)
+### Alternative constraint patterns (also valid)
 ```xml
 <!-- Inline constraints as child nodes -->
 <RequiredInstrument instrumentName="component">
@@ -142,7 +145,12 @@ The `providing` attribute includes capability, domain, and constraint filters. W
                     contract="NAS_9-1100" />
 ```
 
-**How it works**: RESOLVE matches RequiredInstrument constraints against provider precept metadata (from `providing` attribute and capability declarations). Once matched and executed (or retrieved from cache), the provider's Output is aliased to the instrument name via `allocateOutput`. Downstream precepts reference the instrument by name, and the runtime resolves that name to the provider's artifact.
+**How continuous identity works**: RESOLVE matches RequiredInstrument pattern descriptors against provider precept metadata. Once matched and executed, `allocateOutput` establishes identity continuity - the same real entity is tracked under different pattern names as it undergoes transformation. This prevents arbitrary pattern substitution and maintains rigorous ontological accountability.
+
+**Identity verification**: 
+- **External affirmation**: Observer can track continuous identity through transformation
+- **Self-affirmation**: Sentient entities can affirm their own continuity ("I am still me")
+- **Non-sentient entities**: Require external validation of material/spatial/temporal continuity
 
 ---
 
@@ -168,12 +176,12 @@ The `providing` attribute includes capability, domain, and constraint filters. W
 - **Failure Mode**: Precept STALLs until dependency resolved or times out
 - **Caching**: Results promoted to Priority 1 (active runtime)
 
-### **D:Precept RESOLVE (Emergency)**
+### **D:Precept RESOLVE (Signal response)**
 ```xml
-<D:Precept name="HandleBurnInjury" providing="capability:emergency_response" />
+<D:Precept name="HandleBurnInjury" providing="capability:sensor_response" />
 ```
 - **When**: DISRUPT handler activation
-- **Purpose**: Fast emergency response with pre-validated equipment
+- **Purpose**: Fast disrupt response with pre-validated equipment
 - **Failure Mode**: Fallback to repository lookup (Priority 3)
 - **Caching**: Pre-loaded in Priority 1 for zero-latency access
 

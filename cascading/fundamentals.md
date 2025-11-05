@@ -20,10 +20,11 @@ For full technical details and formal definitions, see the specialized files lin
   ```
 
 - RequiredInstrument (or instrument)
-  A declared dependency a precept needs before it can run. This can be a physical object, a piece of knowledge, another agent, or abstract resources like time or attention. Example:
+  A pattern descriptor that references shared global memory (kernel space). Rather than a function parameter, this describes a pattern in the world model that must be available for the precept to activate. The precept becomes reactive to pattern availability in shared perceptual/cognitive space. This can be a physical object pattern, knowledge pattern, state pattern, or abstract resource pattern. Example:
   ```xml
   <RequiredInstrument instrumentName="eggs" quantity="2" />
   ```
+  This means: "activate when global world model contains pattern matching 'eggs' with quantity constraint satisfied."
 
 - Artifact / Output
   The product a precept promises to produce. Outputs become instruments for downstream precepts.
@@ -88,7 +89,7 @@ In this way the runtime scales from declarative intent to precise actuator comma
 </Precept>
 ```
 
-Read this as: `CrackEggs` produces `cracked_eggs`. `SeasonEggs` depends on `cracked_eggs` and will wait until they exist.
+Read this as: `CrackEggs` creates a pattern called `cracked_eggs` in the global world model. `SeasonEggs` activates when the world model contains a pattern matching `cracked_eggs` and maintains continuous identity through transformation via `allocateOutput`.
 
 ## Auditing and Trust
 
