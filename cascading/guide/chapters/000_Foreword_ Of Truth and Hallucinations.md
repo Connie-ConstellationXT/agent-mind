@@ -70,97 +70,69 @@ The implication states that if internalizing s1 leads to internalizing s2, then 
 
 ## Example belief statement about reality
 
-s1: "all bodies fall.", s2: "The moon is a body.",
+Consider three statements:
 
-let M1 be a model that has internalized s1 and s2.
+s1: "opened containers of liquid can leak their contents"
+s2: "stuff falls down"
+s3: "the moon is made of cheese"
 
-we write 
-M1 ⊢ (s1, s2) -> M1[s1, s2]
+Let M1 be a model that has internalized all three: M1 ⊢ (s1, s2, s3) -> M1[s1, s2, s3]
 
-When M1 uses its internalized statements to predict the fall of the moon, we denote this as:
-Predicts(M1, {s1, s2}, Q) -> Q' where Q is the current qualia of the moon's state and Q' is the predicted qualia of the moon falling. 
+Now consider a current qualia Q = "I am pouring a bottle of water over my carpet" and the predicted outcome Q' = "my carpet is wet and damaged."
 
-If T(M1, {s1, s2} < 0, the model should learn the implicit boundary condition, the limit of applicability of the statements, "all bodies fall" and "the moon is a body" in the context of predicting the moon's behavior.
+We can use s1 and s2 together to predict Q': the bottle is open, liquid will leak, and gravity will pull the liquid onto the carpet below.
+
+But what about s3? Believing or not believing that the moon is made of cheese has absolutely no impact on P(M1, {s1, s2, s3}, Q) -> Q' in this scenario. The truth value of s3 is functionally irrelevant to the prediction.
+
+In our example, s3 ("the moon is made of cheese") belongs to the domain d_astronomy, while Q ("pouring water on carpet") belongs to d_household. These domains are disjoint. In the household domain, we observe:
+
+T(M₁, s₃ | d_household) ≈ 0    and    T(M₁, {s₁, s₂} | d_household) ≫ 0
+
+The statements s1 and s2 have strong positive truth value for household predictions, while s3 contributes nothing.
+
+For most of human life, beliefs about the moon's composition have truth value near zero in the domains humans actually inhabit, even though s3, "the moon is made of cheese," can easily be falsified in the appropriate domain.
+
+Unless you work in astronomy or a space program—domains where d_moon_properties overlaps with d_practice—then the moon's composition becomes deeply relevant to prediction and planning:
+
+T(M₁, s₃ | d_astronomy) ≪ 0    and    T(M₁, s₃ | d_space_program) ≪ 0
+
+Here, s3 has significantly negative truth value—it directly contradicts reality and degrades predictive performance in those domains.
+
+In the carpet example, s1 and s2 together imply a generalized statement s4: "the net effect of gravity and container dynamics applies universally and is derivable from deeper principles of Newtonian physics." This s4 unifies s1 and s2 within a common domain structure, giving their conjunction predictive power.
 
 Therefore, we define D as the set of boundary conditions di that limit the applicability of statements s1 and s2.
 
 D = {d1, d2, d3 ... dn} where each di is a boundary condition, or "domain".
 
-A meta–statement can mark the restricted evaluation domain of a statement s.
+The key insight is that **statements S are only relevant for prediction within the domain set {d} they apply to, and only if the observed qualia Q also exists within that domain set {d}.**
 
-Let each domain predicate d ∈ D be a boolean function over extended evaluation tuples τ = (Q_current, Q_future, θ, M) where:
-
-Q_current is present qualia
-Q_future is target or observed subsequent qualia
-θ collects contextual parameters (e.g. gravitational regime, velocity class, medium, frame)
-We write d(τ) = true when the transition/context satisfies the boundary condition. The domain library is D = {d1, d2, …, dn}.
-
-Define restricted truth evaluation by conditioning the loss distribution on d:
-
-T(M, s ; D_eval | d) = ℒ(M ; D_eval | d) − ℒ(M[s] ; D_eval | d)
+Formally: A statement s has predictive relevance only when both the observation Q and the statement s are elements of the same domain: Q ∈ d ∧ s ∈ d.
 
 ### Meta–statement notation:
+A meta–statement can mark the restricted evaluation domain of a statement s.
 
 ↑₍d₎ s := “s has positive truth value for M under transitions satisfying d”
 i.e. T(M, s ; D_eval | d) > 0.
 
-Shorthand: Q ∈ d is an informal contraction for “there exists Q_future, θ such that (Q, Q_future, θ, M) ⊨ d”, keeping the visual Q.E.D. pun while acknowledging the transition/context basis.
-
-#### Example:
-For “all bodies fall” a domain predicate excluding stable orbital trajectories:
-d_orbital_exclusion(τ) = (θ.orbital_trajectory = false).
-Then ↑₍d_orbital_exclusion₎ s means the statement improves predictions only off orbital regimes.
 
 #### Derived bounded statement:
 s_bound := “s holds only over transitions τ with d(τ) = true”
 Formal: ∀τ (d(τ) ⇒ T(M, s ; D_eval | d) > 0) and ∀τ (¬d(τ) ⇒ T(M, s ; D_eval | d) ≤ 0).
 
-### Formal proof that internalising bounded statements improves model performance using the moon example:
-Let s1_bound := ↑₍d_orbital_exclusion₎ s1 and s2_bound := ↑₍d_orbital_exclusion₎ s2. 
-Then internalising s1_bound and s2_bound into M1 should yield a model M1' with improved predictive performance over M1 when predicting the moon's behavior across all regimes, including orbital trajectories.
-M1' ⊢ (s1_bound, s2_bound) -> M1'[s1_bound, s2_bound] 
+### Formal proof that internalising bounded statements improves model performance using the household domain example:
 
-Predicts(M1', {s1_bound, s2_bound}, Q) -> Q'' where Q'' is the predicted qualia of the moon's behavior considering the bounded statements.
+Let s1_bound := ↑₍d_household₎ s1 and s2_bound := ↑₍d_household₎ s2. Then internalising s1_bound and s2_bound into M1 should yield a model M1' with improved predictive performance when predicting household scenarios across all contexts.
 
-If T(M1', {s1_bound, s2_bound}) > T(M1, {s1, s2}), then internalizing the bounded statements has improved the model's predictive performance across all regimes.
-This formalism allows predictive systems to internalize statements with an understanding of their applicable domains, enhancing their ability to model complex realities without succumbing to overgeneralization or falsehoods.
+M1' ⊢ (s1_bound, s2_bound) -> M1'[s1_bound, s2_bound]
 
-### Deriving the truth gradient
+Predicts(M1', {s1_bound, s2_bound}, Q) -> Q'' where Q'' is the predicted qualia of the carpet damage considering the bounded statements.
 
-We already have the truth function defined as a scalar field over model–statement pairs:
-T(M,s) = Δℒ(M, s) = ℒ(M0) - ℒ(M[s])
-This gives a signed scalar value indicating the change in predictive performance upon internalizing statement s into model M.
+The bounded statements explicitly encode: "In household contexts, s1 and s2 apply universally. Outside household contexts (e.g., in vacuum environments or space), they do not."
 
-To speak of 'truer' or 'more false' statements is to talk about the rate of change of truth value - how fast truth increases (loss decreases) or decreases (loss increases) as a function of internalization depth, parameter updates, or epistemic commitment.
+If T(M1', {s1_bound, s2_bound}) > T(M1, {s1, s2}), then internalizing the bounded statements has improved the model's predictive performance across all household regimes. Meanwhile, in domains where these statements don't apply—such as orbital mechanics or vacuum environments—the bounded versions correctly remain silent.
 
-We can define the truth gradient ∇T as the vector of partial derivatives of the truth function with respect to the parameters φ of model M:
-∇φ T = -∇φ ℒ(M[φ]) 
+This formalism allows predictive systems to internalize statements with an explicit understanding of their applicable domains, preventing overgeneralization while preserving truth value within appropriate contexts.
 
-This gradient indicates the direction and rate of change of truth value as we adjust the model parameters φ. A positive component in the gradient indicates that increasing that parameter will increase the truth value (decrease loss), while a negative component indicates that increasing that parameter will decrease the truth value (increase loss).
-This formalism allows us to quantify not just whether a statement is true or false relative to a model, but how 'true' or 'false' it is in terms of its impact on the model's predictive performance as we adjust our beliefs and internal representations, making the notions of 'truer' and 'more false' mathematically precise.
-
-### step 2: making 'truer' derivable
-
-"Is truer" is conceptually a comparative predicate:
-s₁ is truer than s₂  ⇔  T(M, s₁) > T(M, s₂)
-
-That is a hard step function H(x) over the difference in truth values:
-H(T(M, s₁) - T(M, s₂)) = 
-    { 1 if T(M, s₁) > T(M, s₂)
-    { 0 otherwise 
-
-To make "is truer" differentiable, we can replace the hard step function H(x) with a smooth approximation, such as the logistic (sigmoid) function σ(x):
-σ(x) = 1 / (1 + e^(-kx))
-where k is a steepness parameter that controls how quickly the function transitions from 0 to 1.
-Then we define the differentiable "is truer" function as:
-is_truer(s₁, s₂) = σ(T(M, s₁) - T(M, s₂))
-
-The gradient of is_truer with respect to individual truth values shows how the trueness predicate flows through changes in model parameters:
-
-∂(is_truer)/∂T(M, s₁) = k · σ(ΔT) · (1 − σ(ΔT))
-∂(is_truer)/∂T(M, s₂) = −k · σ(ΔT) · (1 − σ(ΔT))
-
-where ΔT = T(M, s₁) − T(M, s₂). This shows that increasing s₁'s truth value increases is_truer, while increasing s₂'s decreases it—the sigmoid acts as a smooth, differentiable comparison operator whose sensitivity peaks near equality and flattens at extremes.
 
 # Formal Definitions: Idea, Innovation, and Hallucination
 ## Definition 1: Idea
@@ -284,8 +256,32 @@ a plan is the prediction of events that explain how a world with Q["my house is 
 
 or more formally: a plan is a theorem that proves that Q' has a higher truth value than Q, by gradually transforming the state of the world Qw towards Q'w through a series of intermediate qualia states Q1, Q2, ... Qn such that each transition Qi -> Qi+1 is predicted by the model M with internalized statements S.
 
+### Self-modeling in Planning
+
+No plan will incorporate all details down to every individual muscle movement, keystroke, or sensory feedback loop. A plan necessarily operates at some level of abstraction, leaving details to be filled in (or improvised) during execution.
+
+But there is a critical constraint hidden in this formalism: **a plan necessarily predicts not just future qualia, but future model states.**
+
+When a predictive system makes a plan that involves intermediate steps requiring knowledge or capabilities it does not currently possess, it is necessarily predicting that at some point during execution, the model M will have changed into a new model M'. The system is asserting: "At step i, I will know X" or "At step i, I will have learned Y" or "At step i, I will have acquired tool Z."
+
+This is self-modeling: the model predicts its own transformation.
+
+The full form of a plan is therefore:
+
+$$P(M, \{s\}, Q) \to (Q', M')$$
+
+Where M' is the predicted state of the model after executing the plan. This is not just a prediction about the world; it is a prediction about the predictor itself.
+
+Consider the example of renovating a house. The plan predicts intermediate states: "First, I will assess the structural integrity. Then, I will identify problems and acquire the skills to fix them. Then, I will execute repairs." At the moment of planning, the agent may not know what problems will be found behind the walls, nor what skills will be required to fix them. But the plan implicitly asserts: "After step 1 (assessment), I will have acquired knowledge of the problems. After step 2 (discovery), I will have learned or acquired the tools to address them." The prediction encodes M → M': from "a model that didn't know about hidden water damage" to "a model that does and knows how to remediate it."
+
+This is why planning often feels aspirational or involves faith: the agent is predicting that it will become a different agent, one more capable or knowledgeable than it currently is. And this prediction may be wrong—the model may fail to acquire the necessary knowledge, may discover that the problems are more complex than anticipated, may lack resources to address them, or may find that its predictions about its own learning trajectory were overly optimistic.
+
+All planning requires some form of self-modeling.
+
 the human planning prediction algorithm is not sequential. It's procedural and it is satisfied with incomplete or vague plans. It can form a valid expression of a plan where there would be huge gaps in what we put in a sequence of qualia patterns
 for a plan Q0, Q1, ..., Qn
+
+
 
 Humans do **non-sequential** prediction, which looks like:
 ​
@@ -330,3 +326,6 @@ The brain just asserts:
 This is literally an MLP stepping through procedural generation resolution, hallucinating a continuous path through latent space.
 
 Planning is prediction through latent-space pathfinding. When a human says "I will renovate my house," they aren't enumerating steps - they're asserting connectivity in conceptual space, a high-dimensional path from Q[old_house] to Q'[renovated_house] that feels traversable even with enormous gaps. The brain solves this as a constraint satisfaction problem across procedural manifolds, generating just enough structure to believe the transformation is possible, then filling details on demand or never at all. This requires a formal system that can represent incomplete plans as valid executable structures, resolve dependencies lazily through recursive decomposition, validate feasibility before commitment, and handle emergency interruptions without losing the thread. And intent cascading is that system.
+
+
+Note: Predictive Truth Theory does not claim to be a universally applicable epistemology. It is bounded to the domain of predictive systems that build internal models to forecast future states of the world.
