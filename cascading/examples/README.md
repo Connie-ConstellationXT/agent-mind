@@ -52,6 +52,7 @@ Example of capability-based reusable logic:
 | **Staging Phases** | `omelette_concise.xml` | Execution boundaries |
 | **Universal Precepts** | `season_food.xml` | Reusable parameterized logic |
 | **Complex Validation** | `validate_emergency_kit.xml` | Multi-step validation workflows |
+| **Fiber optic splicing** | `fiber_optic_splicing_intent_tree.md` & `fiber_optic_splicing_fusion.md` & `fiber_optic_splicing_mechanical.md` | Example of method selection via `R:Precept`, preflight validation, and both fusion & mechanical splicing patterns |
 
 ---
 
