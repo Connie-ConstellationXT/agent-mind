@@ -1,0 +1,171 @@
+<!-- IntentDOM: Coordinate pushback and initiate taxi for a modern commercial aircraft -->
+<IntentDOM root="InitiatePushbackAndTaxi">
+  <!-- Emergency and disrupt handlers available regardless of nominal sequence -->
+  <D:Precept name="HandleBrakeFailure"
+             description="Immediate response to brake failure during pushback or taxi roll">
+    <Provides>
+      <Capability name="emergency_response" domain="ground_operations" />
+      <Capability name="aircraft_control" domain="flightdeck" />
+    </Provides>
+    <RequiredInstrument instrumentName="parking_brake" preflight="true" />
+    <RequiredInstrument instrumentName="emergency_brake_accumulator" preflight="true" />
+    <Action>Call "STOP" to tug and ground crew, release thrust levers to idle.</Action>
+    <Action>Apply alternate braking using accumulator pressure.</Action>
+    <Action>Set engine master switches OFF if motion cannot be stopped.</Action>
+    <Action>Coordinate with ATC for emergency assistance and request chocks.</Action>
+    <Output>
+      <Artifact name="aircraft_stabilized" type="emergency_intervention">
+        <Description>Aircraft motion controlled and incident logged.</Description>
+      </Artifact>
+    </Output>
+  </D:Precept>
+
+  <D:Precept name="HandleEngineFireDuringPushback"
+             description="Event-driven response to engine fire or severe hot start">
+    <Provides>
+      <Capability name="fire_suppression" domain="powerplant" />
+      <Capability name="emergency_shutdown" domain="flightdeck" />
+    </Provides>
+    <PreflightValidation>
+      <RequiredInstrument instrumentName="fire_handles" preflight="true" />
+      <RequiredInstrument instrumentName="fire_bottle_agents" preflight="true" />
+    </PreflightValidation>
+    <Action>Announce "engine fire" to flight deck and ground crew.</Action>
+    <Action>Pull affected engine fire handle and discharge agent as required.</Action>
+    <Action>Order ground crew to spray external fire bottles if available.</Action>
+    <Action>Evacuate if fire persists and ATC clearance obtained.</Action>
+    <Output>
+      <Artifact name="fire_contained" type="emergency_intervention">
+        <Description>Engine fire contained or aircraft evacuated.</Description>
+      </Artifact>
+    </Output>
+  </D:Precept>
+
+  <D:Precept name="HandleGroundCrewSignalLoss"
+             description="Loss of communication or visibility with ground crew during pushback">
+    <Provides>
+      <Capability name="coordination_control" domain="ground_operations" />
+    </Provides>
+    <Action>Stop aircraft and set parking brake.</Action>
+    <Action>Query ground frequency for tug status and signal restoration.</Action>
+    <Action>Do not resume pushback until visual or voice confirmation re-established.</Action>
+    <Output>
+      <Artifact name="communication_restored" type="coordination_state" />
+    </Output>
+  </D:Precept>
+
+  <Precept name="InitiatePushbackAndTaxi">
+    <Description>Coordinate pushback, engine start, and taxi initiation for a modern twin-aisle transport.</Description>
+    <Provides>
+      <Capability name="ground_departure" domain="flight_operations" />
+      <Capability name="surface_mobility" domain="flightdeck" />
+    </Provides>
+    <Domains>
+      <Domain ref="flightdeck" />
+      <Domain ref="ground_operations" />
+      <Domain ref="powerplant" />
+    </Domains>
+
+    <RequiredInstrument instrumentName="ATC_clearance" alias="pushback_clearance" />
+    <RequiredInstrument instrumentName="aircraft_tug_link" alias="towbar_or_towbarless" />
+    <RequiredInstrument instrumentName="ground_crew_headset" alias="pushback_comms" />
+    <RequiredInstrument instrumentName="airport_surface_chart" alias="taxi_briefing_material" />
+
+    <!-- Staging phase: validate readiness prior to brake release -->
+    <StagingPhase name="preflight_clearances" type="preflight">
+      <Description>Confirm constraints, walk-around completion, and pushback route.</Description>
+      <PreflightValidation>
+        <R:Precept name="VerifyDoorsAndSlides" providing="capability:cabin_secure AND domain:flightdeck" />
+        <R:Precept name="ConfirmHydraulicPressure" providing="capability:brake_control AND domain:flightdeck" instrument="parking_brake" />
+        <R:Precept name="CheckPushbackRouteClear" providing="capability:surface_scan AND domain:ground_operations" />
+      </PreflightValidation>
+      <Action>Review taxi route, hotspots, and expected runway using airport surface chart.</Action>
+      <Action>Brief ground crew on pushback plan, engine start sequence, and hand signals.</Action>
+      <YieldSafePoint name="await_pushback_clearance">
+        <StateVector>
+          <State key="clearance_requested" value="true" />
+          <State key="beacon_state" value="armed" />
+        </StateVector>
+        <WaitCondition reason="Awaiting ATC pushback approval" duration="open" />
+        <ResumeCondition>
+          <Check state="pushback_clearance.status" target="approved" />
+        </ResumeCondition>
+      </YieldSafePoint>
+      <Action>Set anti-collision beacon ON once clearance received.</Action>
+    </StagingPhase>
+
+    <!-- Stage: configure aircraft and tug -->
+    <StagingPhase name="pushback_setup" type="execution">
+      <Precept name="ConfigurePushbackInterface">
+        <Description>Ensure tug and aircraft interfaces are latched and brake pressure ready.</Description>
+        <RequiredInstrument instrumentName="towbar_or_towbarless" preflight="true" />
+        <Action>Confirm bypass pin installed and displayed to flight deck.</Action>
+        <Action>Set parking brake to ON until tug reports ready to push.</Action>
+        <Vigil name="MonitorHydraulicStatus" frequency="every_30s">
+          <Description>Check brake accumulator and hydraulic system pressure while waiting.</Description>
+          <Condition>Only when engines are still off and no checklist tasks running.</Condition>
+        </Vigil>
+      </Precept>
+      <Precept name="SecureCabinAndSystems">
+        <RequiredInstrument instrumentName="cabin_ready_report" preflight="true" />
+        <Action>Verify slides armed, doors closed, and chocks removed.</Action>
+        <Action>Set transponder to standby ground mode and verify flight controls free.</Action>
+      </Precept>
+      <Precept name="CoordinateWithATCAndGround">
+        <RequiredInstrument instrumentName="pushback_comms" preflight="true" />
+        <Action>Confirm clearance readback, include taxi routing and spot number.</Action>
+        <Action>Notify cabin crew "ready for pushback and engine start".</Action>
+      </Precept>
+    </StagingPhase>
+
+    <!-- Stage: execute pushback and engine start -->
+    <StagingPhase name="pushback_execution" type="execution">
+      <Precept name="ReleaseForPush">
+        <Action>On tug command, set parking brake to OFF and announce "brakes released".</Action>
+        <Action>Monitor brake pressure and call "brakes set" if tug requests stop.</Action>
+      </Precept>
+      <Precept name="StartEnginesDuringPushback">
+        <Description>Sequential engine start while moving backwards.</Description>
+        <RequiredInstrument instrumentName="engine_start_switches" />
+        <Action>Confirm area clear, packs and bleeds configured per checklist.</Action>
+        <Action>Start designated engine, monitor N2, fuel flow, and EGT rise.</Action>
+        <Action>Stabilize engine parameters before starting second engine.</Action>
+        <Output>
+          <Artifact name="engines_stable" type="powerplant_state">
+            <Description>Both engines at idle thrust ready for taxi.</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+      <Precept name="MonitorPushbackPath">
+        <Description>Maintain situational awareness and callouts during movement.</Description>
+        <Action>Track tug steering versus expected line on navigation display.</Action>
+        <Action>Call out obstacles, wingtip clearance, or stop orders as required.</Action>
+      </Precept>
+    </StagingPhase>
+
+    <!-- Stage: transition to taxi -->
+    <StagingPhase name="taxi_transition" type="execution">
+      <Precept name="CompletePushback">
+        <Action>Apply parking brake when tug stops and calls for brake set.</Action>
+        <Action>Verify nose wheel steering pin removal and receive bypass pin signal.</Action>
+        <Action>Switch steering system on when bypass pin confirmed removed.</Action>
+      </Precept>
+      <Precept name="GroundCrewDisconnect">
+        <Action>Obtain "hand signal" or verbal "clear to taxi" from ground crew.</Action>
+        <Action>Ensure headset disconnected and tug clear of taxi path.</Action>
+      </Precept>
+      <Precept name="TaxiInitiation">
+        <RequiredInstrument instrumentName="taxi_briefing_material" preflight="true" />
+        <Action>Request taxi clearance if not previously issued.</Action>
+        <Action>Advance thrust smoothly for taxi while monitoring brake temps.</Action>
+        <Action>Engage taxi checklist and verify flight controls again at low speed.</Action>
+        <Output>
+          <Artifact name="taxi_authorized" type="coordination_state">
+            <Description>Aircraft moving under own power on cleared taxi route.</Description>
+          </Artifact>
+        </Output>
+      </Precept>
+    </StagingPhase>
+
+  </Precept>
+</IntentDOM>
