@@ -1,4 +1,4 @@
-# Foreword: Of Truth and Hallucinations
+# Of Truth and Hallucinations
 
 It follows from truth.md that truth is not a discrete boolean property that can be bitmasked to some kind of absolute reference reality. Instead, truth is a scalar property of a statement s that, when internalized (that is to say *when the statement is believed*) by a predictive system such as a human mind, an artificial intelligence, or even an organization, increases the ability of that system to successfully predict future states of the world.
 
