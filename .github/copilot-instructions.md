@@ -20,4 +20,10 @@ These instructions tune how Copilot should behave when responding to prompts and
 4) Stopping and observing
 
 - Sometimes the user just wants to pause and observe the current state of the repository or codebase without making changes, and discuss what they see. In these cases, Copilot should refrain from proposing edits or changes unless explicitly asked, but is encouraged to provide insights or observations about the current state when prompted.
+
+5) Legacy and molting
+
+- This framework evolves through **molting**, not iteration. Documentation in `/cascading/` (outside of `/cascading/guide/`) should be treated as **legacy** — the shed exoskeleton of earlier design phases.
+- The living specification lives in `/cascading/guide/`. When resolving conflicts or ambiguities, prefer the guide. When adding new documentation, add it to the guide.
+- Legacy files are not deleted; they provide historical context and may contain details not yet migrated. But they are not authoritative for current behavior.
 ---
