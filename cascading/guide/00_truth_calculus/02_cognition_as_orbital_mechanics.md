@@ -76,6 +76,8 @@ R⁻(M, task) := (M′, Q')
 R⁻ applied to a planning task may yield:
 > “Future me will understand the hidden problem after step 2.”
 
+*(See [Chapter 04: Inward Self-Projection](04_inward_planning_manifold.md) for a detailed treatment of R⁻ as procedural generation over a resolution manifold.)*
+
 ---
 
 ## 3. The Normal Operators: N⁺ and N⁻
@@ -180,19 +182,82 @@ This reflects how a complex, high-level explanatory statement emerges from the s
 ### 4.2 Φ⁻ — Structural Decomposition (Factorization of Composite Statements)
 
 **Definition:**
-Given a composite statement s, returns the latent belief-components necessary for s to arise under the model’s generative structure. Formally implemented as inward model inversion:
+Given a composite statement s, returns the set of prerequisite statements whose truth is necessary (and sufficient under the model's structure) for s to be true.
 
-Φ⁻(s) := R⁺(M_self, · , s)
+Φ⁻(s) := {s₁, s₂, ..., sₙ | T(M, s) depends on T(M, s₁), T(M, s₂), ..., T(M, sₙ)}
 
 **Interpretation:**
-“Recover the hidden assumptions that make this statement coherent.”
+"What other statements must also be true in order for this statement to be true?"
 
-**Example:**
-> Φ⁻(“cold weather causes colds”) → {correlation misinterpretation, surface-level causal inference, folk biology heuristic}
+**Plausibility checking at each level (regardless of hierarchy):**
 
-This operation reveals the underlying cognitive shortcuts and inherited heuristics embedded in an everyday intuition, without asserting their correctness.
+For each statement in the factorization tree, evaluate its truth value using one of three methods:
+
+1. **Direct belief check:** Is this statement already in S (the model's internalized beliefs)?
+   - If yes: T(M, s) = high confidence
+   - If no: proceed to next method
+
+2. **Direct disbelief check:** Is the negation ¬s in S?
+   - If yes: T(M, s) = low confidence
+   - If no: proceed to next method
+
+3. **Antinormal inference:** For statements with unknown truth value, invoke N⁻ to temporarily assume the statement without internalizing it. Evaluate whether the reasoning chain (from this statement through its dependents) remains coherent.
+   - If coherent under assumption: the statement is plausible; mark as "scaffolded"
+   - If incoherent: the statement is implausible; mark as "unstable"
+
+**Result:** A factorization tree where each node has a plausibility annotation:
+- **Believed:** Already in S
+- **Disbelieved:** ¬s in S
+- **Scaffolded:** Coherent under N⁻ assumption, not yet internalized
+- **Unstable:** Incoherent even under assumption; problematic prerequisite
+
+This allows a model to identify which prerequisites are solid, which are tentatively assumed, and which require further examination or rejection.
 
 ---
+
+**Example:**
+> Φ⁻("a river flows downhill") → 
+{ "gravity exists",
+  "water is subject to gravity",
+  "topological height is ordered",
+  "material continuity persists"
+}
+
+For the statement "a river flows downhill" to be true, these prerequisite statements must all be true. Extracting them reveals the structural load-bearing assumptions underlying the composite statement.
+
+Plausibility check (annotated):
+- "gravity exists" → **Believed** (fundamental physical law)
+- "water is subject to gravity" → **Believed** (empirical observation)
+- "topological height is ordered" → **Believed** (basic geometric fact)
+- "material continuity persists" → **Scaffolded** (generally accepted, but could be questioned in extreme scenarios)
+
+Conclusion: The statement "a river flows downhill" is well-supported by its prerequisites, all of which are either believed or scaffolded.
+
+**Counter-example:**
+> Φ⁻("the earth is flat") → 
+{ "the horizon appears flat to an observer on land",
+  "no geometric distortion occurs with distance",
+  "stellar positions are identical from all latitudes",
+  "ships disappear by perspective, not horizon curvature",
+  "simultaneous solar eclipses occur at the same local time everywhere"
+}
+
+Plausibility check (annotated):
+- "the horizon appears flat to an observer on land" → **Believed** (obvious qualia match)
+- "no geometric distortion occurs with distance" → **Unstable** (contradicts observed perspective distortion)
+- "stellar positions are identical from all latitudes" → **Disbelieved** (direct observation refutes this)
+- "ships disappear by perspective, not horizon curvature" → **Scaffolded** (temporarily assumable, but becomes incoherent when combined with stellar observations)
+- "simultaneous solar eclipses occur at the same local time everywhere" → **Disbelieved** (historical record: eclipses observed at different times in Campania and Armenia on the same day in 79 AD)
+
+The factorization reveals: the composite statement "the earth is flat" requires multiple prerequisites, several of which are directly falsifiable. The flat-earth model collapses not through philosophical argument, but through the structure of its own load-bearing assumptions.
+
+### 4.2.2 Recursive Factorization and Plausibility Checking
+
+Φ⁻ is not a single-level operation. Each factorized statement can itself be factorized further:
+
+Φ⁻(Φ⁻(s)) produces a second-order set of prerequisites. This can continue recursively until reaching atomic statements (irreducible axioms or ground truths).
+
+
 
 ## 5. Closing Note
 

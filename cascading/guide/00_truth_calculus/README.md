@@ -26,6 +26,24 @@ Maps cognitive primitives onto orbital maneuver directions. Defines the six fund
 
 Shows that backpropagation is not a primitive but a composite maneuver.
 
+### [03 - Delta-H and Model Divergence](03_delta_h_and_model_divergence.md)
+Introduces **ΔH** (delta-H), the metric for model divergence borrowed from the Apollo Guidance Computer. Defines three regimes:
+- **Self vs. Reality:** Epistemic drift
+- **Self vs. Other:** Interpersonal ontology drift (ALARM 1204)
+- **Plan vs. Execution:** Predictive drift
+
+Shows that ΔH determines the **metabolic cost** (ATP provisioning) required to maintain coherent operation. Explains why you can't plan an entire space program in your head, and why externalization (checklists, precepts) is necessary to manage ΔH.
+
+**Key insight:** High ΔH requires high metabolic provisioning. External structure anchors models to reduce divergence cost.
+
+### [04 - Inward Self-Projection: The Planning Manifold](04_inward_planning_manifold.md)
+Expands the definition of **R⁻** (Inward Self-Projection) into a full theory of planning as procedural generation.
+- **M' as Promise:** Planning outputs a promise of future resolvability, not just steps.
+- **Resolution Parameter (k):** Plans exist on a surface Q'(i, k) of time and resolution.
+- **Manifold Rotation:** Alternatives are generated as orthogonal trajectories in the embedding space.
+- **Reconvergence:** Orthogonal paths can intersect at shared structural states.
+- **Late Crystallization:** The collapse of superposition into a viable path, governed by ΔH limits.
+
 ---
 
 ## Relationship to Intent Cascading
