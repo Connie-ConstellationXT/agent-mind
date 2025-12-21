@@ -65,7 +65,12 @@ Where **p** represents the orthogonal axis of alternatives.
 
 This geometry implies that "Plan A" and "Plan B" are not just neighbors; they are independent basis vectors for reaching Q'. We rotate the manifold view to align with axis p₁, then p₂, revealing structurally distinct ways to preserve the invariants (Q and Q').
 
-This aligns with the "Attention Is All You Need" paradigm: the system attends to different orthogonal subspaces of the latent manifold to construct valid paths. Reconvergence occurs only when these orthogonal paths collapse back into a shared state—a structural intersection in the embedding space.
+**The "Attention" Mechanism and Field Modulation:**
+This dynamic mirrors the mechanism in "Attention Is All You Need": a token's semantic embedding vector is not static; it shifts based on how it attends to other tokens in the context window.
+
+Similarly, **planning drafts change the impedance/conductance field of the manifold.**
+The act of projecting a draft path ionizes the cognitive atmosphere, altering the conductance for other potential paths. This context-dependent modulation is what enables reconvergence: the field changes until a path of least resistance (the valid solution arc) becomes energetically possible. The final "plan" is the lightning arc that finally strikes through the pre-conditioned field.
+
 
 ## 6. Reconvergence
 

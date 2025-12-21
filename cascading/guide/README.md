@@ -6,21 +6,21 @@ This is the authoritative, living specification for Intent Cascading. This frame
 
 ## Structure
 
-### [Truth Calculus](truth_calculus/)
+### [Truth Calculus](00_truth_calculus/)
 The foundational mathematical framework. Defines truth as a scalar field, introduces metabolic chirality, and maps cognitive operations onto orbital mechanics. While developed after Intent Cascading, it provides the theoretical substrate that explains why the system works.
 
 **Read this:** After Chapters 1-5 for formal grounding, or independently for cognitive systems theory.
 
-### [Chapters](chapters/)
+### [Intent Cascading](01_intent%20cascading/)
 The core Intent Cascading specification, presented sequentially:
 
-- **[00 - Problem Description](chapters/00_problem_description_and_limitations.md)**: What Intent Cascading solves and its boundaries
-- **[01 - Semantic Intent](chapters/01_semantic_intent.md)**: The philosophy of intent-first design
-- **[02 - Precept Foundations](chapters/02_precept_foundations.md)**: The atomic unit of executable intent
-- **[03 - RequiredInstrument](chapters/03_requiredinstrument.md)**: Dependency resolution without function calls
-- **[04 - Variable & Address Space Model](chapters/04_variable_address_space_model.md)**: Why there are no variables (only global world model)
-- **[05 - Domains, Capabilities, Procedural Generation](chapters/05_domains_capabilities_procedural_generation.md)**: Semantic binding and provider selection
-- **[06 - Multi-Job Qualia Convergence](chapters/06_multi_job_qualia_convergence.md)**: R⁻/N⁺/TAC optimization across parallel jobs
+- **[00 - Problem Description](01_intent%20cascading/01_00_problem_description_and_limitations.md)**: What Intent Cascading solves and its boundaries
+- **[01 - Semantic Intent](01_intent%20cascading/01_01_semantic_intent.md)**: The philosophy of intent-first design
+- **[02 - Precept Foundations](01_intent%20cascading/01_02_precept_foundations.md)**: The atomic unit of executable intent
+- **[03 - RequiredInstrument](01_intent%20cascading/01_03_requiredinstrument.md)**: Dependency resolution without function calls
+- **[04 - Variable & Address Space Model](01_intent%20cascading/01_04_variable_address_space_model.md)**: Why there are no variables (only global world model)
+- **[05 - Domains, Capabilities, Procedural Generation](01_intent%20cascading/01_05_domains_capabilities_procedural_generation.md)**: Semantic binding and provider selection
+- **[06 - Multi-Job Qualia Convergence](01_intent%20cascading/01_06_multi_job_qualia_convergence.md)**: R⁻/N⁺/TAC optimization across parallel jobs
 
 ### [Examples & Internal Representation](internal_representation_example.md)
 Concrete implementation details showing how the global world model represents code artifacts (bitmap embeddings, role maps, reuse maps).

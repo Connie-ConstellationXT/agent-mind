@@ -4,10 +4,10 @@ This volume presents the foundational mathematical framework underlying Intent C
 
 ## Contents
 
-### [00 - Foreword: Of Truth and Hallucinations](00_foreword.md)
+### [00 - Foreword: Of Truth and Hallucinations](00_00_foreword.md)
 An exploration of truth, hallucination, and the nature of belief in predictive systems. Introduces the core question: what does it mean for a statement to be "true" to a model?
 
-### [01 - Truth Gradient and Metabolic Chirality](01_truth_gradient_and_metabolic_chirality.md)
+### [01 - Truth Gradient and Metabolic Chirality](00_01_truth_gradient_and_metabolic_chirality.md)
 Formalizes truth as a scalar field $T(M, s) = \Delta\mathcal{L}(M, s)$ and derives the truth gradient. Introduces the concept of **Metabolic Chirality** — the asymmetric cost of associative traversal — and explains why structural scaffolding (checklists, precepts) is necessary to overcome it.
 
 **Key concepts:**
@@ -17,7 +17,7 @@ Formalizes truth as a scalar field $T(M, s) = \Delta\mathcal{L}(M, s)$ and deriv
 - Safety-critical failure modes
 - Intrinsic properties vs. extrinsic relations
 
-### [02 - Cognition as Orbital Mechanics](02_cognition_as_orbital_mechanics.md)
+### [02 - Cognition as Orbital Mechanics](00_02_cognition_as_orbital_mechanics.md)
 Maps cognitive primitives onto orbital maneuver directions. Defines the six fundamental operators:
 - **A⁺/A⁻** (Azimuth): Prediction and interpretation
 - **R⁺/R⁻** (Radial): Theory of mind and self-projection
@@ -26,7 +26,7 @@ Maps cognitive primitives onto orbital maneuver directions. Defines the six fund
 
 Shows that backpropagation is not a primitive but a composite maneuver.
 
-### [03 - Delta-H and Model Divergence](03_delta_h_and_model_divergence.md)
+### [03 - Delta-H and Model Divergence](00_03_delta_h_and_model_divergence.md)
 Introduces **ΔH** (delta-H), the metric for model divergence borrowed from the Apollo Guidance Computer. Defines three regimes:
 - **Self vs. Reality:** Epistemic drift
 - **Self vs. Other:** Interpersonal ontology drift (ALARM 1204)
@@ -36,7 +36,7 @@ Shows that ΔH determines the **metabolic cost** (ATP provisioning) required to 
 
 **Key insight:** High ΔH requires high metabolic provisioning. External structure anchors models to reduce divergence cost.
 
-### [04 - Inward Self-Projection: The Planning Manifold](04_inward_planning_manifold.md)
+### [04 - Inward Self-Projection: The Planning Manifold](00_04_inward_planning_manifold.md)
 Expands the definition of **R⁻** (Inward Self-Projection) into a full theory of planning as procedural generation.
 - **M' as Promise:** Planning outputs a promise of future resolvability, not just steps.
 - **Resolution Parameter (k):** Plans exist on a surface Q'(i, k) of time and resolution.

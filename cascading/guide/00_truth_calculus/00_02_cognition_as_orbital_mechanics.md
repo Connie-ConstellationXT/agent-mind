@@ -76,7 +76,7 @@ R⁻(M, task) := (M′, Q')
 R⁻ applied to a planning task may yield:
 > “Future me will understand the hidden problem after step 2.”
 
-*(See [Chapter 04: Inward Self-Projection](04_inward_planning_manifold.md) for a detailed treatment of R⁻ as procedural generation over a resolution manifold.)*
+*(See [Chapter 04: Inward Self-Projection](00_04_inward_planning_manifold.md) for a detailed treatment of R⁻ as procedural generation over a resolution manifold.)*
 
 ---
 
