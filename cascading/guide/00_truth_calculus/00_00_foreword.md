@@ -1,8 +1,22 @@
 # Foreword: Of Truth and Hallucinations
 
-It follows from truth.md that truth is not a discrete boolean property that can be bitmasked to some kind of absolute reference reality. Instead, truth is a scalar property of a statement s that, when internalized (that is to say *when the statement is believed*) by a predictive system such as a human mind, an artificial intelligence, or even an organization, increases the ability of that system to successfully predict future states of the world.
+Truth is not a discrete boolean property that can be bitmasked against an absolute reference reality. In this framework, truth is the property of a statement s that, when internalized (that is to say: believed) by a predictive system (a human mind, an artificial intelligence, an organization), improves that system’s ability to predict future states of the world.
 
-In this light, truth is not an absolute, binary, discrete, or objective property. Truth is a continuous, scalar, signed, measurable property that is only meaningful in the context of a predictive system. Truth is a property of statements relative to predictive systems.
+In this light, truth is not absolute, binary, discrete, or objective. Truth is a continuous, scalar, signed, measurable property that is only meaningful relative to a predictive system.
+
+Crucially, truth is interventional: it is determined by comparing predictive performance with and without internalizing the statement. It is relational: the same sentence can have different truth value for different learners, tasks, and metrics. It is scalable: truth value can range from strongly harmful through neutral to strongly helpful. It is empirical: truth is not assigned by inspection or logic alone, but by counterfactual evaluation.
+
+This implies a constraint: the truth value of a statement cannot be measured “in isolation.” It only exists relative to (1) a model, (2) a prediction context, and (3) a loss or success metric.
+
+### Scope and boundary inference
+
+In a signed-scalar framework, a statement is “true” only to the extent that its incorporation into the model’s knowledge improves predictive performance. But that improvement may depend on the model correctly inferring where the statement applies and where it does not.
+
+By “boundary” we mean the implicit limits of a statement’s validity: its domain of applicability across contexts. Boundary inference is the process of recovering those limits from the statement’s content, training context, or other background knowledge, even when the boundaries are not explicitly stated.
+
+Example: the sentence “Newtonian mechanics describes the world” is predictive-positive only if the model learns the unspoken qualifier “…for macroscopic, slow-moving, weak-gravity systems.” A model that fails to infer this qualifier will overapply Newtonian rules to quantum-scale or relativistic regimes and degrade its predictions. A model with good boundary inference internalizes the sentence as domain-bounded rather than universal.
+
+Because of this, explicitly scoped statements are usually more truth-positive than boundary-blind statements. Stated scope reduces reliance on boundary inference and prevents locally reliable rules from becoming globally harmful overgeneralizations.
 
 A predictive system internalizes statements about the world in order to build a model of the world that it can use to predict future states of the world. The more accurate the model, the better the predictions. The better the predictions, the more successful the predictive system is at achieving its goals.
 
@@ -268,7 +282,7 @@ This is self-modeling: the model predicts its own transformation.
 
 The full form of a plan is therefore:
 
-$$P(M, \{s\}, Q) \to (Q', M')$$
+P(M, {s}, Q) -> (Q', M')
 
 Where M' is the predicted state of the model after executing the plan. This is not just a prediction about the world; it is a prediction about the predictor itself.
 
