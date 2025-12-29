@@ -26,4 +26,6 @@ These instructions tune how Copilot should behave when responding to prompts and
 - This framework evolves through **molting**, not iteration. Documentation in `/cascading/` (outside of `/cascading/guide/`) should be treated as **legacy** — the shed exoskeleton of earlier design phases.
 - The living specification lives in `/cascading/guide/`. When resolving conflicts or ambiguities, prefer the guide. When adding new documentation, add it to the guide.
 - Legacy files are not deleted; they provide historical context and may contain details not yet migrated. But they are not authoritative for current behavior.
+
+6) NO LATEX FORMATTING UNICODE ONLY THAN YOU VERY MUCH
 ---

@@ -4,38 +4,84 @@ Optimization levels in intent cascading represent the **executive's computationa
 
 **Critical Design Principle**: Optimization levels are **executive strategy**, not precept behavior. Precepts themselves are optimization-level agnostic—they simply declare capabilities and STALL when they cannot continue. The executive manages optimization through **precept selection heuristics** and **genealogy complexity budgeting**.
 
-## Gearbox Analogy: Clutch Protection vs. Performance
+## Gearbox Analogy: Complexity Management
 
-- **Higher gears enable elegant cruising** when you have momentum and established context
-- **Starting in high gear burns out the clutch** - attempting complex solutions without foundational work causes STALL
-- **STALL in E5 = clutch failure**, not redlining - inappropriate gear selection for current task momentum
-- **Proper gear progression** builds momentum through lower gears before enabling high-performance operation
+The gearbox manages the trade-off between **Robustness** and **Optimization Depth**.
+
+- **Low Gears (T, L, A):** High robustness, low assumption. Works in chaos. Atomic operations.
+- **High Gears (P, H, NP, GE):** High optimization, high assumption. Works in order. Non-atomic (transactional) operations.
+- **Momentum:** The degree to which the environment matches the agent's predictive model. High momentum allows the use of NP-level solvers because the search space is constrained.
+
+### Transactional State & Atomicity
+
+A critical distinction lies in the **atomicity** of the agent's operations:
+
+- **Low Gears (T, L, A) are Atomic:** They operate on immediate perception and retrieved priors. Each decision is a self-contained transaction. They are **stateless** regarding the trajectory history.
+- **High Gears (P, H, NP, GE) are Non-Atomic:** They rely on maintaining a **transactional context** across time (e.g., trajectory buffers, multi-stage inference). They are **stateful**.
+
+**The Fragility of High Gears:**
+Because high gears depend on a valid historical context (momentum), they are vulnerable to **Context Invalidation**. If the environment changes faster than the transactional context can update, the plan becomes incoherent.
+
+**Stall Recovery:**
+Downshifting is a **Context Flush**. The system discards the invalidated transactional state and reverts to atomic, stateless operation to re-acquire the environment.
 
 ---
 
+## Executive Optimization Strategy by Level (Complexity Classes)
 
-## Executive Optimization Strategy by Level
+The optimization levels are not just arbitrary "gears" but represent distinct **computational complexity classes** of decision making.
 
-- **Level 1:** **Foundation Building** - Executive selects simplest precepts (lowest LOC), prioritizes basic functionality over elegance. Suitable for starting new tasks or uncertain contexts. Minimal clutch load.
+- **Level 1: T (Lookup (T)able)**
+  - **Strategy:** **Externalized Decision.**
+  - **Behavior:** The agent follows a static lookup table, a strict checklist, or real-time commands from an instructor/operator.
+  - **Complexity:** $O(1)$. No internal search or calculation.
+  - **Use Case:** Emergency recovery, cold start, "safe mode".
 
-- **Level 2:** **Building Momentum** - Executive begins selecting slightly more sophisticated precepts while maintaining stability bias. Allows some genealogy depth but prefers proven patterns.
+- **Level 2: L (Linear)**
+  - **Strategy:** **Simple Heuristic / Reactivity.**
+  - **Behavior:** The agent uses simple, robust algorithms (e.g., Bang-Bang control, basic PID). Decisions are fast and robust but may lack elegance or handle edge cases poorly.
+  - **Complexity:** $O(n)$. Linear scaling with input.
+  - **Use Case:** Building momentum, stabilizing chaotic states.
 
-- **Level 3:** **Balanced Selection** - Executive actively pursues more elegant precept combinations, building deeper genealogies when beneficial. Balance between sophistication and reliability.
+- **Level 3: A (Associative)**
+  - **Strategy:** **Pattern Matching / Prior Search.**
+  - **Behavior:** The agent actively searches for priors to "attach" actions to. It stabilizes the necessary actions into an understanding scaffold by recognizing the current state pattern and retrieving a stored schema. Pre-Grokking learning can occur here.
+  - **Complexity:** $O(n \log n)$. Search and retrieval.
+  - **Use Case:** Context recognition, scaffolding understanding, bridging reactivity and planning.
 
-- **Level 4:** **Sophisticated Cruising** - Executive selects complex, feature-rich precepts for well-understood domains. Builds deep genealogies with advanced capabilities. Requires established momentum.
+- **Level 4: P (Polynomial)**
+  - **Strategy:** **Algorithmic Verification.**
+  - **Behavior:** Standard planning and optimization. The agent solves problems that are verifiable within the resource budget.
+  - **Complexity:** $P$. Solvable in polynomial time.
+  - **Use Case:** Normal operation, standard cruising.
 
-- **Level 5:** **Elegant Cruising** - Executive selects the most sophisticated available precepts, building maximally elegant genealogies. Only appropriate when full context and momentum are established. High clutch protection sensitivity.
+- **Level 5: H (Heuristic)**
+  - **Strategy:** **Bounded Optimization.**
+  - **Behavior:** The agent faces an NP-hard problem but applies a "Rule of Thumb" to prune the search space. It accepts a suboptimal solution to stay within the P-time budget.
+  - **Complexity:** $APX$ (Approximable within P).
+  - **Use Case:** High-speed decision making under uncertainty, "good enough" optimization.
 
-- **GE (Gamma Entrainment):** **Creative Restructuring** - Special mode for insight-driven precept composition. Attempts novel genealogy patterns and semantic cascade restructuring. Not sequential with other levels.
+- **Level 6: NP (Non-Deterministic / Deep Optimization)**
+  - **Strategy:** **High-Dimensional Optimization.**
+  - **Behavior:** The agent employs sophisticated, multi-variable control (e.g., Quaternion-based smooth control, deep genealogy generation).
+  - **Constraint:** This level assumes the problem has been constrained enough (by momentum/context) that the NP-hard search space is locally tractable.
+  - **Complexity:** $NP$. Requires "momentum" to avoid hitting the Computational Horizon.
+  - **Use Case:** Elegant cruising, high-precision maneuvers.
+
+- **Level 7: GE (Gamma Entrainment)**
+  - **Strategy:** **Creative Restructuring.**
+  - **Behavior:** Insight-driven precept composition. Attempts novel genealogy patterns and semantic cascade restructuring.
+  - **Complexity:** Meta-cognitive.
+  - **Use Case:** Breakthroughs, reframing the problem space. What machine learning would call "grokking" generalization.
 
 ## Precept Selection Heuristics
 
-The executive uses **Lines of Code (LOC)** as the primary heuristic for optimization-appropriate precept selection:
+The executive uses **Lines of Code (LOC)** and **Algorithmic Density** as heuristics:
 
-- **Lower optimization levels** → Select precepts with **larger LOC** (more thorough genealogies — prefer coverage over speed)
-- **Higher optimization levels** → Select precepts with **smaller LOC** (concise, corner-cutting precepts optimized for speed)
-- **Multiple candidates** → LOC serves as tiebreaker based on current optimization level
-- **STALL recovery** → Executive downgrades optimization level and re-selects simpler precepts
+- **T / L (Levels 1-2):** Select precepts with **Explicit Logic** (often higher LOC, unrolled loops, hardcoded checks). Robustness > Elegance.
+- **A / P / H (Levels 3-5):** Select precepts with **Structured Patterns** (moderate LOC, schema-based). Balance between search and execution.
+- **NP (Level 6):** Select precepts with **Elegant Math** (often lower LOC, dense matrix operations, solver calls). Elegance > Robustness (relies on solver convergence).
+- **STALL recovery:** Executive downshifts (e.g., NP $\to$ H $\to$ A) to trade elegance for robust recovery.
 
 
 
@@ -62,7 +108,7 @@ Optimization levels are stored in the **Job Descriptor** as executive state, nev
 ```c
 typedef struct {
   // ... other fields ...
-  optimization_level_t current_optimization; // E1-E5, GE - executive's current gear
+  optimization_level_t current_optimization; // T, L, A, P, H, NP, GE
 } modern_job_descriptor_t;
 ```
 

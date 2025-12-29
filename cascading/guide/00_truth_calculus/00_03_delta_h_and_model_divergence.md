@@ -6,7 +6,7 @@ During the Apollo 11 lunar descent, the guidance computer tracked altitude using
 
 The difference between these two measurements — the IMU's *prediction* versus the radar's *observation* — was the **ΔH** (delta-H).
 
-**This was not a fault.** The engineers knew IMUs drift. They designed the AGC to *integrate* radar data with IMU predictions, using ΔH as a signal for when and how much correction to apply. When ΔH grew large, it meant "my predictive model has drifted; I need to update it with ground truth."
+**This was not a fault.** The engineers knew IMUs drift. They designed the AGC to *integrate* radar data with IMU predictions, using ΔH as a signal for when and how much correction to apply. The AGC then worked to minimize ΔH over time as it descended and the ground radar became an available data source.
 
 The critical insight: **ΔH is a designed-in metric for model divergence. The system uses it to know when to provision more resources, when to update beliefs, and when to shed load.**
 

@@ -44,6 +44,13 @@ Expands the definition of **R⁻** (Inward Self-Projection) into a full theory o
 - **Reconvergence:** Orthogonal paths can intersect at shared structural states.
 - **Late Crystallization:** The collapse of superposition into a viable path, governed by ΔH limits.
 
+### [05 - P vs NP: The Computational Horizon of Reconvergence](00_05_p_vs_np_and_fault_tolerance.md)
+Frames the system's fault handling (Alarms/Stopcodes) as a response to the P vs NP problem.
+- **Reconvergence is NP-Hard:** Finding a path to reconcile divergent models is computationally expensive.
+- **Verification is P:** Checking a proposed solution is cheap.
+- **The Computational Horizon:** The resource budget acts as a hard boundary, converting undecidable problems into decidable "budget exhausted" faults.
+- **Truth Value of P != NP:** Asserts that assuming P != NP has positive truth value because it enables the design of fault-tolerant systems that fail safely rather than looping infinitely.
+
 ---
 
 ## Relationship to Intent Cascading

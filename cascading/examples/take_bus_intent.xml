@@ -1,0 +1,101 @@
+<!-- 
+  Intent Tree for: Take the bus to a destination in an unfamiliar city.
+
+  This model demonstrates several key concepts from the Intent Cascading framework:
+  1.  **Recursive Decomposition**: The high-level goal `TakeBusToDestination` is broken down into sequential phases: planning, traveling, and arriving.
+  2.  **RequiredInstrument**: Each step declares its dependencies, like needing a `bus_route_plan` before you can go to the stop.
+  3.  **Artifacts**: Successful precepts produce "artifacts" (new states or information) that satisfy the requirements of subsequent precepts.
+  4.  **Vigil (Continuous Monitoring)**: The `MonitorForDestinationStop` precept is a Vigil. It runs in the background while the agent is on the bus, continuously monitoring the "qualia field" (GPS, stop announcements, visual landmarks) for the trigger to get off. This is crucial for the "unfamiliar city" aspect.
+  5.  **External Dependency**: The plan implicitly relies on the bus driver. The agent's actions (like `AlightFromBus`) are contingent on the driver's actions (`bus_is_stopped_at_destination`). The agent doesn't control the driver; it reacts to the state the driver creates.
+  6.  **DISRUPT Handler (D:Precept)**: The `HandleMissedStop` precept is a reactive emergency handler. It provides the `capability:recover_from_navigation_error` and would only be triggered if the main flow fails (e.g., the `AlightFromBus` precept's window of opportunity closes).
+-->
+<Intent name="TakeBusToDestinationInUnfamiliarCity">
+
+  <!-- Phase 1: Planning. Figure out the route before doing anything else. -->
+  <Precept name="PlanBusRoute">
+    <Description>Use a navigation service to determine the bus number, start stop, and end stop.</Description>
+    <RequiredInstrument instrumentName="current_location" type="statevector" />
+    <RequiredInstrument instrumentName="destination_location" type="statevector" />
+    <RequiredInstrument instrumentName="capability:transit_navigation" description="Access to a map or transit app" />
+    <Artifact name="bus_route_plan" type="datagram" description="Contains bus number, start/end stops, and key landmarks." />
+  </Precept>
+
+  <!-- Phase 2: Go to the bus stop. -->
+  <Precept name="GoToStartingBusStop">
+    <RequiredInstrument instrumentName="bus_route_plan" />
+    <RequiredInstrument instrumentName="capability:pedestrian_navigation" />
+    <Artifact name="agent_at_start_stop" type="statevector" />
+  </Precept>
+
+  <!-- Phase 3: Wait for and board the correct bus. -->
+  <Precept name="WaitForAndBoardBus">
+    <RequiredInstrument instrumentName="agent_at_start_stop" />
+    <RequiredInstrument instrumentName="bus_route_plan" />
+    <RequiredInstrument instrumentName="payment_method" />
+    
+    <!-- This sub-precept involves its own monitoring vigil -->
+    <Vigil name="IdentifyCorrectBus" frequency="on_arrival" during="WaitForAndBoardBus">
+      <Description>Monitor arriving buses and match their number against the plan.</Description>
+      <Action>Compare bus number with bus_route_plan.bus_number.</Action>
+    </Vigil>
+
+    <Action>Once correct bus is identified and has stopped, board and validate payment.</Action>
+    <Artifact name="agent_on_bus" type="statevector" />
+  </Precept>
+
+  <!-- 
+    Phase 4: The core of the challenge. Travel and monitor for the destination.
+    This precept represents the state of being on the bus, with the Vigil doing the actual work.
+  -->
+  <Precept name="TravelOnBus">
+    <RequiredInstrument instrumentName="agent_on_bus" />
+    <RequiredInstrument instrumentName="bus_route_plan" />
+
+    <!-- 
+      This Vigil is the key to handling the "unfamiliar city" problem.
+      It runs continuously in the background, processing the "qualia field"
+      for any signs that the destination is approaching.
+    -->
+    <Vigil name="MonitorForDestinationStop" frequency="continuous" during="TravelOnBus">
+      <Description>Monitor sensory input (qualia) to detect when the destination stop is imminent.</Description>
+      <MonitoredQualia>
+        <Qualia source="gps" match="proximity_to(bus_route_plan.end_stop_coords)" />
+        <Qualia source="audio" match="pattern_match(bus_route_plan.end_stop_name)" />
+        <Qualia source="vision" match="landmark_recognition(bus_route_plan.landmarks)" />
+        <Qualia source="internal" match="stop_count >= (bus_route_plan.total_stops - 2)" />
+      </MonitoredQualia>
+      <!-- When any of the monitored qualia fire with high confidence, this artifact is produced. -->
+      <Artifact name="destination_stop_imminent" type="event" />
+    </Vigil>
+  </Precept>
+
+  <!-- Phase 5: Signal and exit the bus. -->
+  <Precept name="SignalAndAlight">
+    <RequiredInstrument instrumentName="destination_stop_imminent" />
+    <Action>Press the 'stop request' button.</Action>
+    <Artifact name="stop_request_signaled" type="statevector" />
+    
+    <!-- This is the dependency on the external agent (the driver). -->
+    <RequiredInstrument instrumentName="bus_is_stopped_at_destination" description="A state created by the driver's action." />
+    <Action>Exit the bus safely.</Action>
+    <Artifact name="agent_at_destination_stop" type="statevector" />
+  </Precept>
+  
+  <!-- Final Phase: Walk to the final destination from the bus stop. -->
+  <Precept name="WalkToFinalDestination">
+    <RequiredInstrument instrumentName="agent_at_destination_stop" />
+    <RequiredInstrument instrumentName="destination_location" />
+    <RequiredInstrument instrumentName="capability:pedestrian_navigation" />
+    <Artifact name="agent_at_final_destination" type="statevector" />
+  </Precept>
+
+  <!-- DISRUPT HANDLER: This precept exists outside the main flow to handle failure. -->
+  <D:Precept name="HandleMissedStop" providing="capability:recover_from_navigation_error">
+    <Description>A reactive plan for when the agent fails to alight at the correct stop.</Description>
+    <Action>
+      1. Alight at the very next stop.
+      2. Re-invoke the "PlanBusRoute" capability with updated current_location to find a route back or an alternative.
+    </Action>
+  </D:Precept>
+
+</Intent>
