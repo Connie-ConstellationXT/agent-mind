@@ -34,38 +34,38 @@ The optimization levels are not just arbitrary "gears" but represent distinct **
 - **Level 1: T (Lookup (T)able)**
   - **Strategy:** **Externalized Decision.**
   - **Behavior:** The agent follows a static lookup table, a strict checklist, or real-time commands from an instructor/operator.
-  - **Complexity:** $O(1)$. No internal search or calculation.
+  - **Complexity:** O(1). No internal search or calculation.
   - **Use Case:** Emergency recovery, cold start, "safe mode".
 
 - **Level 2: L (Linear)**
   - **Strategy:** **Simple Heuristic / Reactivity.**
   - **Behavior:** The agent uses simple, robust algorithms (e.g., Bang-Bang control, basic PID). Decisions are fast and robust but may lack elegance or handle edge cases poorly.
-  - **Complexity:** $O(n)$. Linear scaling with input.
+  - **Complexity:** O(n). Linear scaling with input.
   - **Use Case:** Building momentum, stabilizing chaotic states.
 
 - **Level 3: A (Associative)**
   - **Strategy:** **Pattern Matching / Prior Search.**
   - **Behavior:** The agent actively searches for priors to "attach" actions to. It stabilizes the necessary actions into an understanding scaffold by recognizing the current state pattern and retrieving a stored schema. Pre-Grokking learning can occur here.
-  - **Complexity:** $O(n \log n)$. Search and retrieval.
+  - **Complexity:** O(n log n). Search and retrieval.
   - **Use Case:** Context recognition, scaffolding understanding, bridging reactivity and planning.
 
 - **Level 4: P (Polynomial)**
   - **Strategy:** **Algorithmic Verification.**
   - **Behavior:** Standard planning and optimization. The agent solves problems that are verifiable within the resource budget.
-  - **Complexity:** $P$. Solvable in polynomial time.
+  - **Complexity:** P. Solvable in polynomial time.
   - **Use Case:** Normal operation, standard cruising.
 
 - **Level 5: H (Heuristic)**
   - **Strategy:** **Bounded Optimization.**
   - **Behavior:** The agent faces an NP-hard problem but applies a "Rule of Thumb" to prune the search space. It accepts a suboptimal solution to stay within the P-time budget.
-  - **Complexity:** $APX$ (Approximable within P).
+  - **Complexity:** APX (Approximable within P).
   - **Use Case:** High-speed decision making under uncertainty, "good enough" optimization.
 
 - **Level 6: NP (Non-Deterministic / Deep Optimization)**
   - **Strategy:** **High-Dimensional Optimization.**
   - **Behavior:** The agent employs sophisticated, multi-variable control (e.g., Quaternion-based smooth control, deep genealogy generation).
   - **Constraint:** This level assumes the problem has been constrained enough (by momentum/context) that the NP-hard search space is locally tractable.
-  - **Complexity:** $NP$. Requires "momentum" to avoid hitting the Computational Horizon.
+  - **Complexity:** NP. Requires "momentum" to avoid hitting the Computational Horizon.
   - **Use Case:** Elegant cruising, high-precision maneuvers.
 
 - **Level 7: GE (Gamma Entrainment)**
@@ -81,7 +81,7 @@ The executive uses **Lines of Code (LOC)** and **Algorithmic Density** as heuris
 - **T / L (Levels 1-2):** Select precepts with **Explicit Logic** (often higher LOC, unrolled loops, hardcoded checks). Robustness > Elegance.
 - **A / P / H (Levels 3-5):** Select precepts with **Structured Patterns** (moderate LOC, schema-based). Balance between search and execution.
 - **NP (Level 6):** Select precepts with **Elegant Math** (often lower LOC, dense matrix operations, solver calls). Elegance > Robustness (relies on solver convergence).
-- **STALL recovery:** Executive downshifts (e.g., NP $\to$ H $\to$ A) to trade elegance for robust recovery.
+- **STALL recovery:** Executive downshifts (e.g., NP → H → A) to trade elegance for robust recovery.
 
 
 

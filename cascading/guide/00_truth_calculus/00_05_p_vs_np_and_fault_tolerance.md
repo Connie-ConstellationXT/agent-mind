@@ -11,7 +11,7 @@ Finding this intersection—proving that two divergent states can be reconciled�
 ## 2. Verification is Polynomial (P)
 
 However, **verifying** a proposed reconvergence path is efficient.
-- If an oracle provides a mapping between referent $R$ and topic $T$, the system can verify it in polynomial time (ALARM 1205).
+- If an oracle provides a mapping between referent R and topic T, the system can verify it in polynomial time (ALARM 1205).
 - If an oracle provides a schedule that satisfies two realtime promises, the system can verify it in polynomial time (STOPCODE 0xE2).
 
 ## 3. The Curtain Wall: Resource-Bounded Decidability
@@ -20,7 +20,7 @@ The system operates under strict metabolic and temporal constraints (the "Resour
 
 When an alarm fires (e.g., `ALARM 1204 MODEL_INVERSION_OVERFLOW`), it does not signify that reconvergence is ontologically impossible. It signifies that:
 
-$$ \text{SearchCost}(\text{Reconvergence}) > \text{Budget} $$
+SearchCost(Reconvergence) > Budget
 
 The alarm is a **P-time proof-of-work guard**. It asserts that the system cannot find a solution within the allocated polynomial time slice.
 
@@ -29,11 +29,11 @@ We adopt the term **Computational Horizon** to describe this hard resource bound
 
 ## 4. Truth Value of P != NP
 
-In the context of Truth Calculus, the statement $s = \text{"P} \neq \text{NP"}$ is not just a mathematical conjecture; it is an architectural necessity.
+In the context of Truth Calculus, the statement s = "P ≠ NP" is not just a mathematical conjecture; it is an architectural necessity.
 
-If we assumed $P = NP$, the system would be obligated to solve reconvergence problems perfectly in real-time. By assuming $P \neq NP$, we acknowledge that there exist problems whose solutions cannot be found efficiently, even if they can be verified efficiently.
+If we assumed P = NP, the system would be obligated to solve reconvergence problems perfectly in real-time. By assuming P ≠ NP, we acknowledge that there exist problems whose solutions cannot be found efficiently, even if they can be verified efficiently.
 
-Therefore, **assuming P != NP has a positive truth value** ($T(M, s) > 0$) for the system.
+Therefore, **assuming P != NP has a positive truth value** (T(M, s) > 0) for the system.
 
 **Why?**
 Because this assumption justifies the existence of the **Stopcode**. It allows the system to treat "budget exhaustion" as a valid, safe termination state rather than a failure of the algorithm. It transforms an infinite loop (searching forever for a solution) into a handled fault (acknowledging the Curtain Wall).
