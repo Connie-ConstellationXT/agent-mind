@@ -1,6 +1,6 @@
 # Optimization Levels in Intent Cascading
 
-Optimization levels in intent cascading represent the **executive's computational elegance budget**—how much complexity the system is willing to spend on building sophisticated precept genealogies. The model is inspired by a gearbox: each level (1 through 5, plus GE) is a "gear" that controls precept selection strategy and stack composition elegance.
+Optimization levels in intent cascading represent the **executive's computational elegance budget**—how much complexity the system is willing to spend on building sophisticated precept genealogies. The model is inspired by a gearbox: each level (1 through 7, plus GE) is a "gear" that controls precept selection strategy and stack composition elegance.
 
 **Critical Design Principle**: Optimization levels are **executive strategy**, not precept behavior. Precepts themselves are optimization-level agnostic—they simply declare capabilities and STALL when they cannot continue. The executive manages optimization through **precept selection heuristics** and **genealogy complexity budgeting**.
 
