@@ -1,4 +1,4 @@
-# Inward Self-Projection: The Planning Manifold
+# Chapter 5: Inward Self-Projection: The Planning Manifold
 
 **R⁻ (Inward Self-Projection)** is the cognitive maneuver that turns "I want outcome Q'" into a workable commitment without requiring an enumerated procedure. In the orbital-mechanics basis, R⁻ is a radial-in maneuver that generates a future model-state and future qualia that are not yet available to the present model.
 
@@ -25,7 +25,7 @@ Q'₀, Q'₁, ..., Q'ₙ
 
 These are not "steps" in a linear plan. They are **frames**: partial future-state sketches that the system can use to test feasibility, detect convergence with other jobs, or decide where to refine.
 
-As described in Chapter 6 (Multi-Job Convergence), these frames exist in a shared latent substrate. The object you manipulate is not a single chain, but a family of projected frames anchored on the single desired artifact Q'.
+As described in Chapter 7 (Inter-Agent Collaboration), these frames exist in a shared latent substrate. The object you manipulate is not a single chain, but a family of projected frames anchored on the single desired artifact Q'.
 
 ## 3. Planning as Procedural Generation: The Resolution Parameter (k)
 

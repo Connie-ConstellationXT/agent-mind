@@ -1,3 +1,5 @@
+# Chapter 2: Truth Gradient and Metabolic Chirality
+
 ### Deriving the truth gradient
 
 We already have the truth function defined as a scalar field over model–statement pairs:

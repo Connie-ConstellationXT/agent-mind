@@ -1,4 +1,4 @@
-# Delta-H: Model Divergence and Metabolic Provisioning
+# Chapter 4: Delta-H: Model Divergence and Metabolic Provisioning
 
 ## Origin: The Apollo Guidance Computer
 

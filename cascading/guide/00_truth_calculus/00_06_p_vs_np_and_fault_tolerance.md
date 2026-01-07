@@ -1,10 +1,10 @@
-# P vs NP: The Computational Horizon of Reconvergence
+# Chapter 6: P vs NP: The Computational Horizon of Reconvergence
 
 The Truth Calculus provides the theoretical substrate for Intent Cascading, much like UML describes the structure of source code. In this framework, we encounter a fundamental computational limit that defines our fault handling strategy: the distinction between verifying a solution and finding one.
 
-## 1. Reconvergence is NP-Hard
+## Reconvergence is NP-Hard
 
-As established in Chapter 4, planning involves generating trajectories in a high-dimensional manifold. **Reconvergence** is the discovery of an intersection point between two orthogonal trajectories (e.g., Agent Model vs. Operator Model, or Intent A vs. Intent B).
+As established in Chapter 5, planning involves generating trajectories in a high-dimensional manifold. **Reconvergence** is the discovery of an intersection point between two orthogonal trajectories (e.g., Agent Model vs. Operator Model, or Intent A vs. Intent B).
 
 Finding this intersection—proving that two divergent states can be reconciled—is an **NP-hard** search problem. The search space of possible epistemic bridges, discourse mappings, or schedule interleavings grows exponentially with the complexity of the state vector.
 
